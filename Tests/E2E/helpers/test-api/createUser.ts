@@ -1,6 +1,6 @@
 
 export async function createUser(name: string, password: string, roles: string[]): Promise<void> {
-    const response = await fetch('http://127.0.0.1:8081/test/create-user', {
+    const response = await fetch('http://onedimension.localhost:8081/test/create-user', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

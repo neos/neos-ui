@@ -1,7 +1,11 @@
 
-export async function removeAllUsers(): Promise<void> {
-    const response = await fetch('http://127.0.0.1:8081/test/remove-all-users', {
-        method: 'POST'
+export async function removeAllUsers(prefix: string): Promise<void> {
+    const response = await fetch('http://onedimension.localhost:8081/test/remove-all-users', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({prefix})
     });
     const json = await response.json();
     if (!('success' in json) || !json.success) {

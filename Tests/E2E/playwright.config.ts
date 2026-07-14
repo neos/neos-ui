@@ -6,6 +6,18 @@ const testDir = defineBddConfig({
     steps: "steps/**/*.ts",
 });
 
+const sharedBrowserConfiguration = {
+    viewport: {
+        width: 1280,
+        height: 800
+    },
+    // FIXME, disable animations for popups so there is no flickering when viewing the screenshot-video in interactive mode
+    // contextOptions: {
+    //     reducedMotion: 'reduce',
+    // }
+} as const;
+
+
 export default defineConfig({
     testDir,
     fullyParallel: false,
@@ -21,7 +33,7 @@ export default defineConfig({
         ? [['html', {open: 'never'}], ['json', {outputFile: 'playwright-report/results.json'}]]
         : [['html', {open: 'on-failure'}], ['list']],
     use: {
-        baseURL: "http://localhost:8081",
+        baseURL: "http://onedimension.localhost:8081",
         actionTimeout: 10_000,
         trace: 'on-first-retry',
         screenshot: 'only-on-failure',
@@ -29,7 +41,7 @@ export default defineConfig({
     },
     webServer: {
         command: `echo "Neos not running please start via 'make start-sut'"; exit 1;`,
-        url: "http://localhost:8081/",
+        url: "http://onedimension.localhost:8081/neos",
         reuseExistingServer: true,
         timeout: 600_000,
         stdout: "pipe",
@@ -38,15 +50,15 @@ export default defineConfig({
     projects: [
         {
             name: 'chromium',
-            use: {...devices['Desktop Chrome'], viewport: {width: 1280, height: 800}}
+            use: {...devices['Desktop Chrome'], ...sharedBrowserConfiguration}
         },
         {
             name: 'firefox',
-            use: {...devices['Desktop Firefox'], viewport: {width: 1280, height: 800}}
+            use: {...devices['Desktop Firefox'], ...sharedBrowserConfiguration}
         },
         {
             name: 'webkit',
-            use: {...devices['Desktop Safari'], viewport: {width: 1280, height: 800}}
+            use: {...devices['Desktop Safari'], ...sharedBrowserConfiguration}
         }
     ],
 });

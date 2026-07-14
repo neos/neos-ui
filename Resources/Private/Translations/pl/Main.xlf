@@ -596,6 +596,14 @@
         <source>Select target workspace</source>
         <target state="final">Wybierz docelowy obszar roboczy</target>
       </trans-unit>
+      <trans-unit id="publish" xml:space="preserve" approved="yes">
+        <source>Publish</source>
+        <target state="final">Publikuj</target>
+      </trans-unit>
+      <trans-unit id="published" xml:space="preserve" approved="yes">
+        <source>Published</source>
+        <target state="final">Opublikowano</target>
+      </trans-unit>
       </body>
   </file>
 </xliff>

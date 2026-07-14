@@ -566,6 +566,14 @@
         <source>Select target workspace</source>
         <target state="translated">Seleziona spazio di lavoro di destinazione</target>
       </trans-unit>
+      <trans-unit id="publish" xml:space="preserve">
+        <source>Publish</source>
+        <target state="translated">Pubblica</target>
+      </trans-unit>
+      <trans-unit id="published" xml:space="preserve">
+        <source>Published</source>
+        <target state="translated">Pubblicato il</target>
+      </trans-unit>
       </body>
   </file>
 </xliff>

@@ -655,6 +655,14 @@
         <source>Select target workspace</source>
         <target state="final">Izvēlēties darba virsmu</target>
       </trans-unit>
+      <trans-unit id="publish" xml:space="preserve" approved="yes">
+        <source>Publish</source>
+        <target state="final">Publicēt</target>
+      </trans-unit>
+      <trans-unit id="published" xml:space="preserve" approved="yes">
+        <source>Published</source>
+        <target state="final">Publicēts</target>
+      </trans-unit>
       </body>
   </file>
 </xliff>

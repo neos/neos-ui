@@ -641,6 +641,14 @@
         <source>Select target workspace</source>
         <target state="final">Vælg destinations arbejdsrum</target>
       </trans-unit>
+      <trans-unit id="publish" xml:space="preserve" approved="yes">
+        <source>Publish</source>
+        <target state="final">Publicér</target>
+      </trans-unit>
+      <trans-unit id="published" xml:space="preserve" approved="yes">
+        <source>Published</source>
+        <target state="final">Publiceret</target>
+      </trans-unit>
       </body>
   </file>
 </xliff>

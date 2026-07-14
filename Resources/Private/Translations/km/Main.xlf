@@ -596,6 +596,14 @@
         <source>Select target workspace</source>
         <target state="final">ជ្រើសតំបន់ការងារគោលដៅ</target>
       </trans-unit>
+      <trans-unit id="publish" xml:space="preserve" approved="yes">
+        <source>Publish</source>
+        <target state="final">ដាក់ផ្សាយ</target>
+      </trans-unit>
+      <trans-unit id="published" xml:space="preserve" approved="yes">
+        <source>Published</source>
+        <target state="final">បានចុះផ្សាយ</target>
+      </trans-unit>
       </body>
   </file>
 </xliff>

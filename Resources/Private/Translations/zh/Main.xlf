@@ -596,6 +596,14 @@
         <source>Select target workspace</source>
         <target state="translated">选择目标工作区</target>
       </trans-unit>
+      <trans-unit id="publish" xml:space="preserve">
+        <source>Publish</source>
+        <target state="translated">发布</target>
+      </trans-unit>
+      <trans-unit id="published" xml:space="preserve">
+        <source>Published</source>
+        <target state="translated">已发布</target>
+      </trans-unit>
       </body>
   </file>
 </xliff>

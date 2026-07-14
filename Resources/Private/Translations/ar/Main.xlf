@@ -566,6 +566,14 @@
         <source>Select target workspace</source>
         <target state="translated">حدد مساحة العمل المستهدفة</target>
       </trans-unit>
+      <trans-unit id="publish" xml:space="preserve">
+        <source>Publish</source>
+        <target state="translated">انشر</target>
+      </trans-unit>
+      <trans-unit id="published" xml:space="preserve">
+        <source>Published</source>
+        <target state="translated">تم النشر</target>
+      </trans-unit>
       </body>
   </file>
 </xliff>

@@ -306,6 +306,14 @@
         <source>Select target workspace</source>
         <target state="needs-translation">Select target workspace</target>
       </trans-unit>
+      <trans-unit id="publish" xml:space="preserve">
+        <source>Publish</source>
+        <target state="translated">Ilathala</target>
+      </trans-unit>
+      <trans-unit id="published" xml:space="preserve">
+        <source>Published</source>
+        <target state="needs-translation">Published</target>
+      </trans-unit>
       </body>
   </file>
 </xliff>

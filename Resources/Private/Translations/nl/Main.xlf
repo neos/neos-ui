@@ -853,6 +853,14 @@ Om te wisselen naar een andere worksapce , zul je eerst je wijzingen moeten publ
         <source>Select target workspace</source>
         <target state="translated">Selecteer doel workspace</target>
       </trans-unit>
+      <trans-unit id="publish" xml:space="preserve" approved="yes">
+        <source>Publish</source>
+        <target state="final">Publiceren</target>
+      </trans-unit>
+      <trans-unit id="published" xml:space="preserve" approved="yes">
+        <source>Published</source>
+        <target state="final">Gepubliceerd</target>
+      </trans-unit>
       </body>
   </file>
 </xliff>

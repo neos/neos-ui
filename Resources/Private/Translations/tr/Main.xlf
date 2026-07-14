@@ -569,6 +569,14 @@
         <source>Select target workspace</source>
         <target state="translated">Hedef çalışma alanı seçin</target>
       </trans-unit>
+      <trans-unit id="publish" xml:space="preserve">
+        <source>Publish</source>
+        <target state="translated">Yayımla</target>
+      </trans-unit>
+      <trans-unit id="published" xml:space="preserve">
+        <source>Published</source>
+        <target state="translated">Yayımlandı</target>
+      </trans-unit>
       </body>
   </file>
 </xliff>

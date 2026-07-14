@@ -1,13 +1,15 @@
 .dropDown {
     max-width: 320px;
     width: auto;
+    margin-right: 1px;
 }
 
 .dropDown__header {
     background-color: transparent;
+    border-radius: 0;
 
     &:hover {
-        color: var(--colors-PrimaryBlue);
+        background-color: var(--colors-PrimaryBlueHover);
     }
 }
 

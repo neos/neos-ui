@@ -1,5 +1,4 @@
 .wrapper {
-    display: inline-block;
     position: relative;
     vertical-align: top;
 }
@@ -13,10 +12,11 @@
     border: 0;
     background-color: var(--colors-ContrastDarker);
     text-align: right;
-
-    &:hover {
-        color: var(--colors-PrimaryBlue);
-    }
+    border-radius: 0;
+    user-select: none;
+}
+.dropDown__btn--isPreviewMode {
+    background-color: var(--colors-PrimaryBlue);
 }
 .dropDown__btnIcon {
     margin-right: .5em;
@@ -26,12 +26,8 @@
     border-radius: 4px;
     margin-right: 4px;
     padding-inline: 5px;
-}
-.dropDown__modeBadge--isPreviewMode svg {
-    color: var(--colors-PrimaryBlue);
-}
-.dropDown__currentEditMode {
-    @media(max-width: 1024px) {
+
+    @media (max-width: 1200px) {
         display: none;
     }
 }
@@ -40,7 +36,6 @@
     position: relative;
     min-width: 160px;
     padding: 2px !important;
-    margin-top: -2px;
     background: var(--colors-ContrastDarker);
     box-shadow: 0 5px 5px rgba(0, 0, 0, .2);
 
@@ -49,7 +44,6 @@
         min-width: 240px;
         top: 40px;
         left: 0;
-        margin-top: 0;
     }
 }
 .dropDown__item {

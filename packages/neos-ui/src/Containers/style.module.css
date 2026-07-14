@@ -8,7 +8,7 @@
     grid-template-areas: 'primaryToolbar primaryToolbar primaryToolbar'
         'leftSideBarHeader secondaryToolbar rightSidebar'
         'leftSidebar content rightSidebar';
-    grid-template-rows: 41px 41px 1fr;
+    grid-template-rows: 41px 40px 1fr;
     grid-template-columns: min-content 1fr min-content;
 }
 
@@ -51,7 +51,7 @@
     grid-template-areas: 'primaryToolbar primaryToolbar primaryToolbar'
         'leftSideBarHeader secondaryToolbar secondaryToolbar'
         'leftSidebar content rightSidebar';
-    grid-template-rows: 0 41px 1fr;
+    grid-template-rows: 0 40px 1fr;
     grid-template-columns: 0 1fr auto;
 }
 

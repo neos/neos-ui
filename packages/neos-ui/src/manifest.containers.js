@@ -1,4 +1,5 @@
 import manifest from '@neos-project/neos-ui-extensibility';
+import {getFullPackageFrontendConfiguration} from '@neos-project/neos-ui-configuration';
 
 import App from './Containers/App';
 
@@ -64,7 +65,11 @@ manifest('main.containers', {}, globalRegistry => {
     containerRegistry.set('PrimaryToolbar', PrimaryToolbar);
     containerRegistry.set('PrimaryToolbar/Left/MenuToggler', MenuToggler);
     containerRegistry.set('PrimaryToolbar/Left/Brand', Brand);
-    containerRegistry.set('PrimaryToolbar/Right/KeyboardShortcutButton', KeyboardShortcutButton);
+
+    if (getFullPackageFrontendConfiguration().enableLegacyKeyboardShortcuts === true) {
+        containerRegistry.set('PrimaryToolbar/Right/KeyboardShortcutButton', KeyboardShortcutButton);
+    }
+
     containerRegistry.set('PrimaryToolbar/Right/DimensionSwitcher', DimensionSwitcher);
     containerRegistry.set('PrimaryToolbar/Right/WorkspaceSelector', WorkspaceSelector);
     containerRegistry.set('PrimaryToolbar/Right/WorkspaceSync', WorkspaceSync);

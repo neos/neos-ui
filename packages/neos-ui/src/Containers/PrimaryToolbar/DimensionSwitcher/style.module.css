@@ -95,10 +95,13 @@
     display: flex;
     align-items: center;
     align-self: start;
+    margin-right: 1px;
 
     .dimensionSwitcherDropDown {
         background: unset;
         min-width: fit-content;
+        border-radius: 0;
+        padding-left: 10px;
     }
 
     .dimensionSwitcherDropDown:hover {
@@ -108,6 +111,5 @@
     .dimensionSwitcherDropDown div[role='button'] {
         padding: 5px 0;
         user-select: none;
-        border-radius: 0;
     }
 }

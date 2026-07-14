@@ -45,3 +45,7 @@
     /* including padding */
     max-width: calc(255px + (var(--spacing-Full) * 2));
 }
+
+.searchContainer {
+    border-bottom: 1px solid var(--colors-ContrastDark);
+}

@@ -9,7 +9,7 @@ import {PublishingMode} from '@neos-project/neos-ui-redux-store/src/CR/Publishin
 import {Node, Workspace, WorkspaceName} from '@neos-project/neos-ui-contentrepository-model';
 import {DropDown} from './Components/DropDown';
 import style from './style.module.css';
-import {List, ListItem} from '@neos-project/neos-ui-shared-components';
+import {List, ListItem, Search} from '@neos-project/neos-ui-shared-components';
 
 const POPOVER_ID = 'workspace-selector';
 
@@ -42,6 +42,9 @@ type WorkspaceSelectorProps = {
     isWorkspaceReadOnly: boolean
 }
 
+const makeSearchWorkspace = (searchValue: string) => (workspace: Workspace) => searchValue !== '' ? workspace.title.toLowerCase().includes(searchValue.toLowerCase()) : true;
+const makeSortWorkspace = () => (a: Workspace, b: Workspace) => a.title.localeCompare(b.title);
+
 const WorkspaceSelector: React.FC<WorkspaceSelectorProps> = ({
     allowedWorkspaces,
     baseWorkspace,
@@ -51,6 +54,8 @@ const WorkspaceSelector: React.FC<WorkspaceSelectorProps> = ({
     publishableNodes,
     isWorkspaceReadOnly
 }) => {
+    const [searchValue, setSearchValue] = React.useState('');
+
     const hasUnpublishedNodes = publishableNodes?.length > 0;
     const changingWorkspaceAllowed = !isSaving && !isPublishing && !hasUnpublishedNodes;
 
@@ -64,15 +69,18 @@ const WorkspaceSelector: React.FC<WorkspaceSelectorProps> = ({
 
     const rootWorkspaces: Workspace[] = useMemo(() => Object.values(allowedWorkspaces)
         .filter(workspace => workspace.name === 'live')
-        .sort((a, b) => a.title.localeCompare(b.title)), [allowedWorkspaces]);
+        .filter(makeSearchWorkspace(searchValue))
+        .sort(makeSortWorkspace()), [allowedWorkspaces, searchValue]);
 
     const readonlyWorkspaces: Workspace[] = useMemo(() => Object.values(allowedWorkspaces)
         .filter(workspace => workspace.readonly)
-        .sort((a, b) => a.title.localeCompare(b.title)), [allowedWorkspaces]);
+        .filter(makeSearchWorkspace(searchValue))
+        .sort(makeSortWorkspace()), [allowedWorkspaces, searchValue]);
 
     const regularWorkspaces: Workspace[] = useMemo(() => Object.values(allowedWorkspaces)
         .filter(workspace => workspace.name !== 'live' && !workspace.readonly)
-        .sort((a, b) => a.title.localeCompare(b.title)), [allowedWorkspaces]);
+        .filter(makeSearchWorkspace(searchValue))
+        .sort(makeSortWorkspace()), [allowedWorkspaces, searchValue]);
 
     const dropDownButtonStyles = mergeClassNames({
         [style.dropDownButton]: true,
@@ -97,21 +105,29 @@ const WorkspaceSelector: React.FC<WorkspaceSelectorProps> = ({
         dropDownClassName={style.dropDownContents}
         dropDownIconClassName={style.dropDownIcon}
     >
-        <List icon="globe" label={translate('Neos.Neos.Ui:Main:publicWorkspaceGroupLabel', 'Public')}>
-            {rootWorkspaces.map(workspace => (
-                <ListItem key={workspace.name}>
-                    <Button
-                        disabled={workspace.name === baseWorkspace}
-                        onClick={createChangeBaseWorkspace(workspace.name)}
-                        style={workspace.name === baseWorkspace ? 'brand' : undefined}
-                        className={style.labelEllipsis}
-                        popovertarget={POPOVER_ID}
-                    >
-                        {workspace.title}
-                    </Button>
-                </ListItem>
-            ))}
-        </List>
+        {Object.keys(allowedWorkspaces).length >= 10 ? (
+            <div className={style.searchContainer}>
+                <Search initialValue={searchValue} onChange={setSearchValue} />
+            </div>
+        ) : ''}
+
+        {rootWorkspaces.length > 0 ? (
+            <List icon="globe" label={translate('Neos.Neos.Ui:Main:publicWorkspaceGroupLabel', 'Public')}>
+                {rootWorkspaces.map(workspace => (
+                    <ListItem key={workspace.name}>
+                        <Button
+                            disabled={workspace.name === baseWorkspace}
+                            onClick={createChangeBaseWorkspace(workspace.name)}
+                            style={workspace.name === baseWorkspace ? 'brand' : undefined}
+                            className={style.labelEllipsis}
+                            popovertarget={POPOVER_ID}
+                        >
+                            {workspace.title}
+                        </Button>
+                    </ListItem>
+                ))}
+            </List>
+        ) : ''}
 
         {regularWorkspaces.length > 0 ? (
             <List icon="layer-group" label={translate('Neos.Neos.Ui:Main:internalWorkspaceGroupLabel', 'Internal')}>

@@ -1,8 +1,22 @@
 const closeAllOpenPopovers = () => {
-    // FIXME possibly respect popover="manual" and keep it open?
-    for (const popover of document.querySelectorAll('[popover]:popover-open')) {
+    for (const elementWithPopover of document.querySelectorAll('[popover]:popover-open')) {
+        /**
+         * Handling of all states {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/popover}
+         */
         // @ts-ignore update typescript?
-        popover.togglePopover();
+        const popoverAttribute = elementWithPopover.popover;
+
+        if (popoverAttribute === 'manual') {
+            continue;
+        }
+
+        if (popoverAttribute === 'auto') {
+            // @ts-ignore update typescript?
+            elementWithPopover.togglePopover();
+            continue;
+        }
+
+        console.warn(`Support for popover="${popoverAttribute}" is not implemented, skipping element`, elementWithPopover);
     }
 };
 

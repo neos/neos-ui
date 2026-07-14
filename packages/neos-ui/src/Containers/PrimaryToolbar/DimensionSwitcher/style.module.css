@@ -101,8 +101,13 @@
         min-width: fit-content;
     }
 
+    .dimensionSwitcherDropDown:hover {
+        background: var(--colors-PrimaryBlueHover);
+    }
+
     .dimensionSwitcherDropDown div[role='button'] {
         padding: 5px 0;
         user-select: none;
+        border-radius: 0;
     }
 }

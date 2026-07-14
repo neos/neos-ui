@@ -15,6 +15,11 @@
     border-radius: 0;
     user-select: none;
 }
+
+.dropDown__btn:hover {
+    background-color: var(--colors-PrimaryBlueHover);
+}
+
 .dropDown__btn--isPreviewMode {
     background-color: var(--colors-PrimaryBlue);
 }

@@ -10,7 +10,7 @@ import {actions, selectors} from '@neos-project/neos-ui-redux-store/src';
 import memoize from 'lodash.memoize';
 import {Icon, DropDown, Button} from '@neos-project/react-ui-components';
 import {getConfiguration} from '@neos-project/neos-ui-configuration';
-import {List, ListItem} from '../../../SharedComponents';
+import {List, ListItem} from '@neos-project/neos-ui-shared-components';
 
 @connect(state => ({
     editPreviewMode: selectors.UI.EditPreviewMode.currentEditPreviewMode(state)

@@ -9,7 +9,7 @@ import {PublishingMode} from '@neos-project/neos-ui-redux-store/src/CR/Publishin
 import {Node, Workspace, WorkspaceName} from '@neos-project/neos-ui-contentrepository-model';
 import {DropDown} from './Components/DropDown';
 import style from './style.module.css';
-import {List, ListItem} from '../../../SharedComponents';
+import {List, ListItem} from '@neos-project/neos-ui-shared-components';
 
 const POPOVER_ID = 'workspace-selector';
 

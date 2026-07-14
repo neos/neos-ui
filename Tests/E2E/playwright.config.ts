@@ -21,7 +21,7 @@ const sharedBrowserConfiguration = {
 export default defineConfig({
     testDir,
     fullyParallel: false,
-    workers: '50%',
+    workers: process.env.CI ? 1 : '50%',
     retries: process.env.CI ? 1 : 0,
     timeout: 60_000,
     expect: {

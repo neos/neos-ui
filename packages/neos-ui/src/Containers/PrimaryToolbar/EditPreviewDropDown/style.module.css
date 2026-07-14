@@ -10,7 +10,7 @@
     position: relative;
     height: var(--spacing-GoldenUnit);
     border: 0;
-    background-color: var(--colors-ContrastDarker);
+    background-color: transparent;
     text-align: right;
     border-radius: 0;
     user-select: none;

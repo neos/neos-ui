@@ -17,14 +17,18 @@ namespace Neos\TestNodeTypes\Application\RemoveAllUsers;
 use Neos\Flow\Annotations as Flow;
 
 #[Flow\Proxy(false)]
-final class RemoveAllUsersCommand
+final readonly class RemoveAllUsersCommand
 {
     public function __construct(
+        public string $prefix
     ) {
     }
 
+    /** @param array<int|string,mixed> $array */
     public static function fromArray(array $array): self
     {
-        return new self();
+        return new self(
+            prefix: $array['prefix'],
+        );
     }
 }

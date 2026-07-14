@@ -33,7 +33,7 @@ final class RemoveAllUsersCommandHandler
         /** @var User $user */
         foreach ($this->userService->getUsers() as $user) {
             foreach ($user->getAccounts() as $account) {
-                if (str_starts_with($account->getAccountIdentifier(), 'test-')) {
+                if (str_starts_with($account->getAccountIdentifier(), $command->prefix)) {
                     $this->context->withoutAuthorizationChecks(
                         fn () => $this->userService->deleteUser($user)
                     );

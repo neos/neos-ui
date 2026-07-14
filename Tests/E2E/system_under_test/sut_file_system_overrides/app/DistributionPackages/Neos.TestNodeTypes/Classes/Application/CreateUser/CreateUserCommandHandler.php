@@ -26,10 +26,10 @@ final class CreateUserCommandHandler
     public function handle(CreateUserCommand $command): void
     {
         $this->userService->createUser(
-            username: sprintf('test-%s', $command->name),
+            username: $command->name,
             password: $command->password,
-            firstName: sprintf('First%s', ucfirst($command->name)),
-            lastName: sprintf('Last%s', ucfirst($command->name)),
+            firstName: 'Editor',
+            lastName: 'McEditworth',
             roleIdentifiers: $command->roles
         );
     }

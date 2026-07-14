@@ -93,8 +93,8 @@ jobs:
         if: ${{ always() }}
         working-directory: Tests/E2E
         run: |
-          mkdir /neos
-          docker compose -f system_under_test/docker-compose.yaml cp neos:/app/Data/Logs /neos/Logs
+          mkdir /home/runner/work/neos
+          docker compose -f system_under_test/docker-compose.yaml cp neos:/app/Data/Logs /home/runner/work/neos/Logs
 
       # Upload the self-contained Playwright report (with screenshots and videos) for debugging.
       - name: Upload Playwright report and Neos logs
@@ -104,5 +104,5 @@ jobs:
           name: playwright-report
           path: |
             Tests/E2E/playwright-report/
-            /neos/Logs/
+            /home/runner/work/neos/Logs
           retention-days: 10

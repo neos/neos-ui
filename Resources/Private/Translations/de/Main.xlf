@@ -620,6 +620,18 @@
         <source>Cannot change target workspace while there are unpublished changes</source>
         <target>Der Zielarbeitsbereich kann nicht geändert werden, solange unveröffentlichte Änderungen vorliegen</target>
       </trans-unit>
+      <trans-unit id="publicWorkspaceGroupLabel" xml:space="preserve">
+          <source>Public</source>
+          <target>Öffentlich</target>
+      </trans-unit>
+      <trans-unit id="internalWorkspaceGroupLabel" xml:space="preserve">
+          <source>Internal</source>
+          <target>Intern</target>
+      </trans-unit>
+      <trans-unit id="readOnlyWorkspaceGroupLabel" xml:space="preserve">
+          <source>Read-only</source>
+          <target>Nur-Lesen</target>
+      </trans-unit>
       <trans-unit id="propertyScope.node" xml:space="preserve">
         <source>Changes to this property scope will affect only the current variant.</source>
         <target state="translated">Änderungen an dieser Eigenschaft wirken sich nur auf die aktuelle Variante aus.</target>

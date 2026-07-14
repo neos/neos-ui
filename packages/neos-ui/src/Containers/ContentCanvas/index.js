@@ -8,6 +8,7 @@ import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 
 import Frame from '@neos-project/react-ui-components/src/Frame/';
+import {popoverAutoCloseFromIframe} from '@neos-project/neos-ui-shared-components';
 
 import style from './style.module.css';
 import {getConfiguration} from '@neos-project/neos-ui-configuration';
@@ -164,6 +165,8 @@ export default class ContentCanvas extends PureComponent {
         this.skipNextLoaderStatusUpdate = true;
         iframeDocument.__isInitialized = true;
         stopLoading();
+        // FIXME dispose ALL added event-listeners on the ContentCanvas, see also below.
+        popoverAutoCloseFromIframe(iframeDocument);
     }
 
     handleFrameAccess = event => {

@@ -1,0 +1,11 @@
+{
+  "name": "@neos-project/neos-ui-shared-components",
+  "version": "",
+  "description": "Internally shared components of the Neos UI, allowed to access the translate() function - not exposed like react-ui-components",
+  "private": true,
+  "main": "./src/index.ts",
+  "license": "GNU GPLv3",
+  "dependencies": {
+    "@neos-project/neos-ui-i18n": "workspace:*"
+  }
+}

@@ -13,9 +13,9 @@ import debounce from 'lodash.debounce';
 import {usePromise} from '@neos-project/framework-promise-react';
 import {Icon, Tree as NeosTree} from '@neos-project/react-ui-components';
 import {NestedError} from '@neos-project/neos-ui-error';
+import {Search} from '@neos-project/neos-ui-shared-components';
 
 import {TreeNode} from './TreeNode';
-import {Search} from './Search';
 import {SelectNodeTypeFilter} from './SelectNodeTypeFilter';
 import {getTree} from '../infrastructure/http';
 import style from './style.module.css';

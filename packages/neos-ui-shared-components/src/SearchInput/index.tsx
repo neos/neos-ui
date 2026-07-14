@@ -7,11 +7,11 @@ import {translate} from '@neos-project/neos-ui-i18n';
 
 interface Props {
     value: string
+    id?: string
     onChange: (value: string) => void
     onClear: () => void
 }
 
-// currently a duplicate of neos-ui/src/Containers/LeftSideBar/NodeTreeSearchBar/NodeTreeSearchInput
 export const SearchInput: React.FC<Props> = props => {
     const latestValue = React.useRef(props.value);
 
@@ -24,7 +24,7 @@ export const SearchInput: React.FC<Props> = props => {
     }, [props.value])
 
     return (
-        <div className={styles.searchInputContainer}>
+        <div id={props.id} className={styles.searchInputContainer}>
             <Icon className={styles.searchIcon} icon="search"/>
             <TextInput
                 className={styles.textInput}
@@ -35,6 +35,7 @@ export const SearchInput: React.FC<Props> = props => {
             />
             {props.value && (
                 <IconButton
+                    id={props.id ? `${props.id}-btn-reset` : undefined}
                     className={styles.clearIcon}
                     icon="times"
                     onClick={props.onClear}

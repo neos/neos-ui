@@ -45,11 +45,6 @@ class SelectBox_HeaderWithSearchInput extends PureComponent {
         this.props.onSearchTermChange('');
     }
 
-    onClick = event => {
-        // Prevent the click event from propagating to the parent SelectBox, which would cause the dropdown to toggle.
-        event.stopPropagation();
-    }
-
     render() {
         const {
             searchTerm,
@@ -76,7 +71,6 @@ class SelectBox_HeaderWithSearchInput extends PureComponent {
                     containerClassName={theme.selectBoxHeaderWithSearchInput__inputContainer}
                     className={theme.selectBoxHeaderWithSearchInput__input}
                     value={searchTerm}
-                    onClick={this.onClick}
                     onChange={onSearchTermChange}
                     onKeyDown={onKeyDown}
                     placeholder={placeholder}

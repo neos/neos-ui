@@ -79,7 +79,7 @@ export default class PublishDropDown extends PureComponent {
         const workspaceModuleUri = neos?.routes?.core?.modules?.workspace;
         const canPublishLocally = !isSaving && !isPublishing && publishableNodesInDocument && (publishableNodesInDocument.length > 0);
         const canPublishGlobally = !isSaving && !isPublishing && publishableNodes && (publishableNodes.length > 0);
-        const mainButton = this.getTranslatedMainButton();
+        const publishButtonLabel = this.getPublishButtonLabel();
         const dropDownBtnClassName = mergeClassNames({
             [style.dropDown__btn]: true,
             [style['dropDown__item--canPublish']]: canPublishGlobally,
@@ -96,7 +96,7 @@ export default class PublishDropDown extends PureComponent {
                     isHighlighted={canPublishLocally || isSaving || isPublishing}
                     onClick={this.handlePublishClick}
                     >
-                    {mainButton} {isWorkspaceReadOnly ? (<Icon icon="lock"/>) : ''}
+                    {publishButtonLabel} {isWorkspaceReadOnly ? (<Icon icon="lock"/>) : ''}
                     {publishableNodesInDocumentCount > 0 && <Badge className={style.badge} label={String(publishableNodesInDocumentCount)}/>}
                 </PublishButton>
 
@@ -180,7 +180,7 @@ export default class PublishDropDown extends PureComponent {
         );
     }
 
-    getTranslatedMainButton() {
+    getPublishButtonLabel() {
         const {publishableNodesInDocument} = this.props;
         const canPublishLocally = publishableNodesInDocument && (publishableNodesInDocument.length > 0);
 

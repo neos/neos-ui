@@ -558,6 +558,10 @@
         <source>Workspaces</source>
         <target state="needs-translation">Workspaces</target>
       </trans-unit>
+      <trans-unit id="workspaceContainsUnpublishedChanges" xml:space="preserve">
+        <source>Your personal workspace currently contains unpublished changes. In order to switch to a different target workspace you need to either publish or discard pending changes first.</source>
+        <target state="needs-translation">Your personal workspace currently contains unpublished changes. In order to switch to a different target workspace you need to either publish or discard pending changes first.</target>
+      </trans-unit>
       </body>
   </file>
 </xliff>

@@ -558,6 +558,10 @@
         <source>Workspaces</source>
         <target state="translated">Aree Lavoro (Workspaces)</target>
       </trans-unit>
+      <trans-unit id="workspaceContainsUnpublishedChanges" xml:space="preserve">
+        <source>Your personal workspace currently contains unpublished changes. In order to switch to a different target workspace you need to either publish or discard pending changes first.</source>
+        <target state="translated">Il tuo spazio di lavoro personale attualmente contiene modifiche non pubblicate. Per passare a un'area di lavoro di destinazione diversa è necessario pubblicare o annullare le modifiche in sospeso prima.</target>
+      </trans-unit>
       </body>
   </file>
 </xliff>

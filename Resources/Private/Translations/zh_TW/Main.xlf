@@ -558,6 +558,10 @@
         <source>Workspaces</source>
         <target state="translated">工作區</target>
       </trans-unit>
+      <trans-unit id="workspaceContainsUnpublishedChanges" xml:space="preserve">
+        <source>Your personal workspace currently contains unpublished changes. In order to switch to a different target workspace you need to either publish or discard pending changes first.</source>
+        <target state="translated">你的個人工作區目前包含未發布的變更，為了切換至不同的目標工作區，你需要先發布或放棄這些變更。</target>
+      </trans-unit>
       </body>
   </file>
 </xliff>

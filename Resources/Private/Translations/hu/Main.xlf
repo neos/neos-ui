@@ -558,6 +558,10 @@
         <source>Workspaces</source>
         <target state="translated">Munkaterület</target>
       </trans-unit>
+      <trans-unit id="workspaceContainsUnpublishedChanges" xml:space="preserve">
+        <source>Your personal workspace currently contains unpublished changes. In order to switch to a different target workspace you need to either publish or discard pending changes first.</source>
+        <target state="translated">A jelenlegi munkaterület nem publikált módosításokat tartalmaz. Csak akkor tud munkaterületet váltani ha publikálja vagy elveti a módosításokat.</target>
+      </trans-unit>
       </body>
   </file>
 </xliff>

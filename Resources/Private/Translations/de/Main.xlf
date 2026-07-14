@@ -612,10 +612,6 @@
         <source>Published</source>
         <target state="final">Veröffentlicht</target>
       </trans-unit>
-      <trans-unit id="workspaceSelectorTitle" xml:space="preserve">
-        <source>Select target workspace</source>
-        <target>Zielarbeitsbereich auswählen</target>
-      </trans-unit>
       <trans-unit id="publicWorkspaceGroupLabel" xml:space="preserve">
           <source>Public</source>
           <target>Öffentlich</target>
@@ -947,6 +943,10 @@
       <trans-unit id="workspaceContainsUnpublishedChanges" xml:space="preserve" approved="yes">
         <source>Your personal workspace currently contains unpublished changes. In order to switch to a different target workspace you need to either publish or discard pending changes first.</source>
         <target state="final">Ihr persönlicher Arbeitsbereich enthält derzeit unveröffentlichte Änderungen. Um zu einem anderen Ziel-Arbeitsbereich zu wechseln, müssen Sie die Inhalte zunächst entweder veröffentlichen oder verwerfen.</target>
+      </trans-unit>
+      <trans-unit id="selectTargetWorkspace" xml:space="preserve" approved="yes">
+        <source>Select target workspace</source>
+        <target state="final">Zielarbeitsbereich auswählen</target>
       </trans-unit>
       </body>
   </file>

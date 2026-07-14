@@ -816,6 +816,10 @@
         <source>Content Tree</source>
         <target state="translated">Árbol de contenidos</target>
       </trans-unit>
+      <trans-unit id="selectTargetWorkspace" xml:space="preserve">
+        <source>Select target workspace</source>
+        <target state="translated">Seleccionar espacio de trabajo de destino</target>
+      </trans-unit>
       </body>
   </file>
 </xliff>

@@ -592,6 +592,10 @@
         <source>Your personal workspace currently contains unpublished changes. In order to switch to a different target workspace you need to either publish or discard pending changes first.</source>
         <target state="translated">你个人的工作区目前包含未发布的更改。为了切换到不同的目标工作区您需要发布或首先放弃待定的更改。</target>
       </trans-unit>
+      <trans-unit id="selectTargetWorkspace" xml:space="preserve">
+        <source>Select target workspace</source>
+        <target state="translated">选择目标工作区</target>
+      </trans-unit>
       </body>
   </file>
 </xliff>

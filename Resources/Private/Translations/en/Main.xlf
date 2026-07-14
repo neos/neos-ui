@@ -407,9 +407,9 @@
             <trans-unit id="published" xml:space="preserve">
                 <source>Published</source>
             </trans-unit>
-            <trans-unit id="workspaceSelectorTitle" xml:space="preserve">
-                <source>Select target workspace</source>
-            </trans-unit>
+            <trans-unit id="selectTargetWorkspace" xml:space="preserve">
+				<source>Select target workspace</source>
+			</trans-unit>
             <trans-unit id="propertyScope.node" xml:space="preserve">
                 <source>Changes to this property will affect only the current variant.</source>
             </trans-unit>

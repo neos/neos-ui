@@ -562,6 +562,10 @@
         <source>Your personal workspace currently contains unpublished changes. In order to switch to a different target workspace you need to either publish or discard pending changes first.</source>
         <target state="translated">A jelenlegi munkaterület nem publikált módosításokat tartalmaz. Csak akkor tud munkaterületet váltani ha publikálja vagy elveti a módosításokat.</target>
       </trans-unit>
+      <trans-unit id="selectTargetWorkspace" xml:space="preserve">
+        <source>Select target workspace</source>
+        <target state="translated">Munkaterület választása</target>
+      </trans-unit>
       </body>
   </file>
 </xliff>

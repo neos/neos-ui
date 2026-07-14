@@ -562,6 +562,10 @@
         <source>Your personal workspace currently contains unpublished changes. In order to switch to a different target workspace you need to either publish or discard pending changes first.</source>
         <target state="translated">Din personliga arbetsyta innehåller för närvarande opublicerade ändringar. För att växla till en annan arbetsyta måste du antingen publicera eller ignorera opublicerade ändringar först.</target>
       </trans-unit>
+      <trans-unit id="selectTargetWorkspace" xml:space="preserve">
+        <source>Select target workspace</source>
+        <target state="translated">Välj arbetsyta</target>
+      </trans-unit>
       </body>
   </file>
 </xliff>

@@ -651,6 +651,10 @@
         <source>Your personal workspace currently contains unpublished changes. In order to switch to a different target workspace you need to either publish or discard pending changes first.</source>
         <target state="final">Jūsu personīgā darba virsma satur nepublicētas izmaiņas. Lai pārslēgtos uz citu vietu darba virsmā, jums nepieciešams vispirms publicēt vai atcelt veiktās izmaiņas.</target>
       </trans-unit>
+      <trans-unit id="selectTargetWorkspace" xml:space="preserve" approved="yes">
+        <source>Select target workspace</source>
+        <target state="final">Izvēlēties darba virsmu</target>
+      </trans-unit>
       </body>
   </file>
 </xliff>

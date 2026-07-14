@@ -766,6 +766,10 @@
         <source>Content Tree</source>
         <target state="translated">Sisältöpuu</target>
       </trans-unit>
+      <trans-unit id="selectTargetWorkspace" xml:space="preserve" approved="yes">
+        <source>Select target workspace</source>
+        <target state="final">Valitse kohdetyötila</target>
+      </trans-unit>
       </body>
   </file>
 </xliff>

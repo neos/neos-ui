@@ -592,6 +592,10 @@
         <source>Your personal workspace currently contains unpublished changes. In order to switch to a different target workspace you need to either publish or discard pending changes first.</source>
         <target state="final">Ваша личная рабочай область в настоящее время содержит неопубликованные изменения. Чтобы переключиться на другое целевое рабоче пространство необходимо сначала опубликовать или отменить неопубликованные изменения.</target>
       </trans-unit>
+      <trans-unit id="selectTargetWorkspace" xml:space="preserve" approved="yes">
+        <source>Select target workspace</source>
+        <target state="final">Выбрать рабочую область</target>
+      </trans-unit>
       </body>
   </file>
 </xliff>

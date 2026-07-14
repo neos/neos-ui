@@ -849,6 +849,10 @@ Om te wisselen naar een andere worksapce , zul je eerst je wijzingen moeten publ
         <source>Content Tree</source>
         <target state="translated">Contentboom</target>
       </trans-unit>
+      <trans-unit id="selectTargetWorkspace" xml:space="preserve">
+        <source>Select target workspace</source>
+        <target state="translated">Selecteer doel workspace</target>
+      </trans-unit>
       </body>
   </file>
 </xliff>

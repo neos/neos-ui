@@ -503,9 +503,7 @@
         <target state="translated">Cambiado el espacio de trabajo en base a "{workspace}".</target>
       </trans-unit>
       <trans-unit id="workspaceContainsUnpublishedChanges" xml:space="preserve">
-        <source>Your personal workspace currently contains unpublished changes.
-                In order to switch to a different target workspace you need to either publish or discard pending changes first.
-                </source>
+        <source>Your personal workspace currently contains unpublished changes. In order to switch to a different target workspace you need to either publish or discard pending changes first.</source>
         <target state="translated">Su espacio de trabajo personal contiene actualmente cambios sin publicar.
                 Para cambiar a un espacio de trabajo de destino diferente, primero debe publicar o descartar los cambios pendientes.
                 </target>

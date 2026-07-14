@@ -453,9 +453,7 @@
         <target state="translated">Copiar o tipo de nó para a área de transferência</target>
       </trans-unit>
       <trans-unit id="workspaceContainsUnpublishedChanges" xml:space="preserve">
-        <source>Your personal workspace currently contains unpublished changes.
-                In order to switch to a different target workspace you need to either publish or discard pending changes first.
-                </source>
+        <source>Your personal workspace currently contains unpublished changes. In order to switch to a different target workspace you need to either publish or discard pending changes first.</source>
         <target state="translated">A sua Área de Trabalho contém alterações não publicadas.
                 De modo a definir uma nova Área de Trabalho deverá publicar ou descartar as alterações pendentes.
                 </target>

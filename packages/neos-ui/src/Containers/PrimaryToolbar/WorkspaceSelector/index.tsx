@@ -91,7 +91,7 @@ const WorkspaceSelector: React.FC<WorkspaceSelectorProps> = ({
 
     const title = changingWorkspaceAllowed ?
         translate('Neos.Neos.Ui:Main:workspaceSelectorTitle', 'Select target workspace') :
-        translate('Neos.Neos.Ui:Main:workspaceSelectorTitleDisabled', 'Cannot change target workspace while there are unpublished changes');
+        translate('Neos.Neos.Ui:Main:workspaceContainsUnpublishedChanges', 'Your personal workspace currently contains unpublished changes. In order to switch to a different target workspace you need to either publish or discard pending changes first.');
 
     return <DropDown
         id={POPOVER_ID}

@@ -616,10 +616,6 @@
         <source>Select target workspace</source>
         <target>Zielarbeitsbereich auswählen</target>
       </trans-unit>
-      <trans-unit id="workspaceSelectorTitleDisabled" xml:space="preserve">
-        <source>Cannot change target workspace while there are unpublished changes</source>
-        <target>Der Zielarbeitsbereich kann nicht geändert werden, solange unveröffentlichte Änderungen vorliegen</target>
-      </trans-unit>
       <trans-unit id="publicWorkspaceGroupLabel" xml:space="preserve">
           <source>Public</source>
           <target>Öffentlich</target>

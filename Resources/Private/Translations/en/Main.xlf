@@ -410,9 +410,6 @@
             <trans-unit id="workspaceSelectorTitle" xml:space="preserve">
                 <source>Select target workspace</source>
             </trans-unit>
-            <trans-unit id="workspaceSelectorTitleDisabled" xml:space="preserve">
-                <source>Cannot change target workspace while there are unpublished changes</source>
-            </trans-unit>
             <trans-unit id="propertyScope.node" xml:space="preserve">
                 <source>Changes to this property will affect only the current variant.</source>
             </trans-unit>

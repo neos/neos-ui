@@ -5,19 +5,13 @@
     margin: 0;
     padding: 2px;
     border: 0;
-}
-
-@supports (position-anchor: --neos-Workspace-Selector-anchor) {
-    /* TODO legacy support for non anchor CSS? */
-    .dropDownContents {
-        position-anchor: --neos-Workspace-Selector-anchor;
-        right: anchor(right);
-        top: anchor(bottom);
-    }
+    position-anchor: --neos-Workspace-Selector-anchor;
+    right: anchor(right);
+    top: anchor(bottom);
 }
 
 .dropDownButton {
-    /* TODO Dynamic name!!! */
+    /* FIXME To make this component reusable, the name must be dynamic!!! */
     anchor-name: --neos-Workspace-Selector-anchor;
 
     /* because of inline block item */

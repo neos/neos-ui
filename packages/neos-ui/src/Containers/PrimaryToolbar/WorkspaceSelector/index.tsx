@@ -93,8 +93,6 @@ const WorkspaceSelector: React.FC<WorkspaceSelectorProps> = ({
         translate('Neos.Neos.Ui:Main:workspaceSelectorTitle', 'Select target workspace') :
         translate('Neos.Neos.Ui:Main:workspaceSelectorTitleDisabled', 'Cannot change target workspace while there are unpublished changes');
 
-    // todo add title attributes to workspace things
-
     return <DropDown
         id={POPOVER_ID}
         enabled={changingWorkspaceAllowed}

@@ -1,7 +1,10 @@
 
+.listItem + .listItem {
+    border-top: 1px solid var(--colors-ContrastDarker);
+}
+
 .listItem {
     height: var(--spacing-GoldenUnit);
-    border-top: 1px solid var(--colors-ContrastDarker);
     background: var(--colors-ContrastDarkest);
     margin: 0;
 

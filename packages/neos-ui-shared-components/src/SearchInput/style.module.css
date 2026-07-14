@@ -15,9 +15,11 @@
 
 .textInput {
     padding-left: 42px;
+    border-radius: 0;
+    background: transparent;
 
     &:focus {
-        background: #3f3f3f;
+        background: var(--colors-ContrastDark);
         color: #fff;
     }
 }

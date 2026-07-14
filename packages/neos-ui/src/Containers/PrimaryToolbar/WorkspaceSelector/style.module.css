@@ -47,5 +47,6 @@
 }
 
 .searchContainer {
-    border-bottom: 1px solid var(--colors-ContrastDark);
+    background: var(--colors-ContrastDark);
+    margin-bottom: 2px;
 }

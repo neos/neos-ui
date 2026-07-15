@@ -11,8 +11,8 @@ const {Given, When, Then} = createBdd();
 
 Given(
     "A user with username {string}, password {string} and role {string} exists",
-    async ({}, username: string, password: string, role: string) => {
-        await createUser(createUniqueUserName(username), password, [role]);
+    async ({request}, username: string, password: string, role: string) => {
+        await createUser(request, createUniqueUserName(username), password, [role]);
     },
 );
 

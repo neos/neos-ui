@@ -1,14 +1,15 @@
+import {APIRequestContext} from "@playwright/test";
 
-export async function createUser(name: string, password: string, roles: string[]): Promise<void> {
-    const response = await fetch('http://onedimension.localhost:8081/test/create-user', {
+export async function createUser(request: APIRequestContext, name: string, password: string, roles: string[]): Promise<void> {
+    const response = await request.fetch('/test/create-user', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({name, password, roles})
+        data: {name, password, roles}
     });
     const json = await response.json();
     if (!('success' in json) || !json.success) {
-        throw new Error('User could not be created.');
+        throw new Error(`Use could not be created. Got status ${response.status()}`);
     }
 }

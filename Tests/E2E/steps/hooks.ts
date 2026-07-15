@@ -4,7 +4,7 @@ import {getUniqueUserNamePrefix} from "../helpers/user";
 
 const {AfterScenario} = createBdd();
 
-AfterScenario(async ({}) => {
+AfterScenario(async ({request}) => {
     // Removes unique users of this worker and all their workspaces and content
-    await removeAllUsers(getUniqueUserNamePrefix());
+    await removeAllUsers(request, getUniqueUserNamePrefix());
 });

@@ -1,10 +1,8 @@
 #!/bin/bash
 set -eou pipefail
 
+composer config repositories.package '{ "type": "path", "url": "/neos-ui", "options": { "symlink": false } }'
 composer install
-
-rm -rf Packages/Application/Neos.Neos.Ui
-ln -s /neos-ui /app/Packages/Application/Neos.Neos.Ui
 
 ./flow flow:cache:flush
 ./flow flow:cache:warmup

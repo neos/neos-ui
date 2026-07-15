@@ -12,21 +12,21 @@
 
 declare(strict_types=1);
 
-namespace Neos\TestNodeTypes\Application\WriteAdditionalSettings\Controller;
+namespace Neos\TestNodeTypes\Application\RemoveAllUsers\Controller;
 
 use GuzzleHttp\Psr7\Response;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Log\ThrowableStorageInterface;
 use Neos\Flow\Mvc\Controller\ActionController;
-use Neos\TestNodeTypes\Application\WriteAdditionalSettings\WriteAdditionalSettingsCommand;
-use Neos\TestNodeTypes\Application\WriteAdditionalSettings\WriteAdditionalSettingsCommandHandler;
+use Neos\TestNodeTypes\Application\RemoveAllUsers\RemoveAllUsersCommand;
+use Neos\TestNodeTypes\Application\RemoveAllUsers\RemoveAllUsersCommandHandler;
 use Psr\Http\Message\ResponseInterface;
 
 #[Flow\Scope("singleton")]
-final class WriteAdditionalSettingsController extends ActionController
+final class RemoveAllUsersController extends ActionController
 {
     #[Flow\Inject]
-    protected WriteAdditionalSettingsCommandHandler $commandHandler;
+    protected RemoveAllUsersCommandHandler $commandHandler;
 
     /**
      * Cant be named here $throwableStorage see https://github.com/neos/flow-development-collection/issues/2928
@@ -34,11 +34,11 @@ final class WriteAdditionalSettingsController extends ActionController
     #[Flow\Inject]
     protected ThrowableStorageInterface $throwableStorage2;
 
-    #[Flow\Route('test/write-additional-settings')]
+    #[Flow\Route('test/remove-all-users')]
     public function handleAction(): ResponseInterface
     {
         try {
-            $command = WriteAdditionalSettingsCommand::fromArray($this->request->getArguments());
+            $command = RemoveAllUsersCommand::fromArray($this->request->getArguments());
             $this->commandHandler->handle($command);
             return new Response(status: 200, headers: ['Content-Type' => 'application/json'], body: json_encode(
                 ['success' => true],

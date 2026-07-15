@@ -11,8 +11,8 @@ Feature: Extensibility plugin API
 
     Scenario: Test plugin loads and exposes UI internals correctly
         Then the test plugin manifest should have been invoked 1 time
-        And the test plugin global registry access should report "global registry type object name SynchronousMetaRegistry"
-        And the test plugin legacy global registry access should report "global registry type object name SynchronousMetaRegistry"
+        And the test plugin global registry access should report "global registry type object { get: function, set: function }"
+        And the test plugin legacy global registry access should report "global registry type object { get: function, set: function }"
         And the test plugin's own registry should yield "some value from my registry"
         And the test plugin's own legacy registry should yield "some value from my legacy registry"
         And the test plugin configuration access should report "loadingDepth type number"

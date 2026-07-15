@@ -1,7 +1,9 @@
 import {expect} from "@playwright/test";
 import {createBdd} from "playwright-bdd";
 import {NeosContentPage, NeosLoginPage} from "../helpers/pages";
-import {createUser, logout} from "../helpers/system";
+import {createUserFactory} from "../helpers/test-api";
+import {logout} from "../helpers/system";
+import {createUniqueUserName} from "../helpers/user";
 
 const {Given, When, Then} = createBdd();
 
@@ -9,8 +11,10 @@ const {Given, When, Then} = createBdd();
 
 Given(
     "A user with username {string}, password {string} and role {string} exists",
-    async ({}, username: string, password: string, role: string) => {
-        createUser(username, password, [role]);
+    async ({request, $testInfo}, username: string, password: string, role: string) => {
+        const createUser = createUserFactory(request, $testInfo);
+
+        await createUser(createUniqueUserName(username), password, [role]);
     },
 );
 

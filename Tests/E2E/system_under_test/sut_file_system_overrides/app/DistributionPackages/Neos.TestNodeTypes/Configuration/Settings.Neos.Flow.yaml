@@ -2,5 +2,9 @@ Neos:
   Flow:
     mvc:
       routes:
-        'Neos.TestNodeTypes':
+        'Neos.TestNodeTypes:TestApi':
           position: 'before Neos.Neos'
+          providerFactory: Neos\Flow\Mvc\Routing\AttributeRoutesProviderFactory
+          providerOptions:
+            classNames:
+              - Neos\TestNodeTypes\Application\*\Controller\*Controller

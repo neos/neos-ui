@@ -29,12 +29,15 @@ export default defineConfig({
     },
     forbidOnly: Boolean(process.env.CI),
     reporter: process.env.CI
-        ? [['html', {open: 'never'}], ['json', {outputFile: 'playwright-report/results.json'}]]
+        ? [['html', {open: 'never'}], process.env.RUNNER_DEBUG ? ['list'] : ['dot'], ['json', {outputFile: 'playwright-report/results.json'}]]
         : [['html', {open: 'on-failure'}], ['list']],
     use: {
         baseURL: "http://onedimension.localhost:8081",
         actionTimeout: 10_000,
-        trace: 'on-first-retry',
+        trace: process.env.RUNNER_DEBUG
+            // more expensive, and thus only collected in debug mode
+            ? 'retain-on-failure-and-retries'
+            : 'on-first-retry',
         screenshot: 'only-on-failure',
         video: 'on-first-retry'
     },

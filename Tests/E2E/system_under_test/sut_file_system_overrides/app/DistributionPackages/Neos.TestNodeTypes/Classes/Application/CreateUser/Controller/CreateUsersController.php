@@ -16,6 +16,7 @@ namespace Neos\TestNodeTypes\Application\CreateUser\Controller;
 
 use GuzzleHttp\Psr7\Response;
 use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Log\ThrowableStorageInterface;
 use Neos\Flow\Mvc\Controller\ActionController;
 use Neos\TestNodeTypes\Application\CreateUser\CreateUserCommand;
 use Neos\TestNodeTypes\Application\CreateUser\CreateUserCommandHandler;
@@ -26,6 +27,12 @@ final class CreateUsersController extends ActionController
 {
     #[Flow\Inject]
     protected CreateUserCommandHandler $commandHandler;
+
+    /**
+     * Cant be named here $throwableStorage see https://github.com/neos/flow-development-collection/issues/2928
+     */
+    #[Flow\Inject]
+    protected ThrowableStorageInterface $throwableStorage2;
 
     #[Flow\Route('test/create-user')]
     public function handleAction(): ResponseInterface
@@ -47,6 +54,7 @@ final class CreateUsersController extends ActionController
                 JSON_THROW_ON_ERROR
             ));
         } catch (\Exception $e) {
+            $this->throwableStorage2->logThrowable($e);
             return new Response(status: 500, headers: ['Content-Type' => 'application/json'], body: json_encode(
                 ['error' => [
                     'type' => $e::class,

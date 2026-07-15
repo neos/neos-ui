@@ -16,7 +16,7 @@ export function createUserFactory(request: APIRequestContext, testInfo: TestInfo
         try {
             const json = await response.json();
             if (!('success' in json) || !json.success) {
-                throw new Error(`User could not be created. Got status ${response.status()}`);
+                throw new Error(`User could not be created. Got [${response.status()}] ${JSON.stringify(json.error)}`);
             }
         } catch (e) {
             logger.logResponse(`error-response create-user ${name} (${response.status()})`, response);

@@ -16,6 +16,7 @@ namespace Neos\TestNodeTypes\Application\RemoveAdditionalSettings\Controller;
 
 use GuzzleHttp\Psr7\Response;
 use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Log\ThrowableStorageInterface;
 use Neos\Flow\Mvc\Controller\ActionController;
 use Neos\TestNodeTypes\Application\RemoveAdditionalSettings\RemoveAdditionalSettingsCommand;
 use Neos\TestNodeTypes\Application\RemoveAdditionalSettings\RemoveAdditionalSettingsCommandHandler;
@@ -26,6 +27,12 @@ final class RemoveAdditionalSettingsController extends ActionController
 {
     #[Flow\Inject]
     protected RemoveAdditionalSettingsCommandHandler $commandHandler;
+
+    /**
+     * Cant be named here $throwableStorage see https://github.com/neos/flow-development-collection/issues/2928
+     */
+    #[Flow\Inject]
+    protected ThrowableStorageInterface $throwableStorage2;
 
     #[Flow\Route('test/remove-additional-settings')]
     public function handleAction(): ResponseInterface
@@ -47,7 +54,8 @@ final class RemoveAdditionalSettingsController extends ActionController
                 JSON_THROW_ON_ERROR
             ));
         } catch (\Exception $e) {
-            return new Response(status: 500, headers: ['Content-Type' => 'application/json'], body:                 json_encode(
+            $this->throwableStorage2->logThrowable($e);
+            return new Response(status: 500, headers: ['Content-Type' => 'application/json'], body: json_encode(
                 ['error' => [
                     'type' => $e::class,
                     'code' => $e->getCode(),

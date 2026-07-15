@@ -16,7 +16,7 @@ export function removeAllUsersFactory(request: APIRequestContext, testInfo: Test
         try {
             const json = await response.json();
             if (!('success' in json) || !json.success) {
-                throw new Error(`User could not be removed. Got status ${response.status()}`);
+                throw new Error(`User could not be removed. Got status ${response.status()} ${JSON.stringify(json.error)}`);
             }
         } catch (e) {
             logger.logResponse(`error-response remove-all-users ${prefix} (${response.status()})`, response);

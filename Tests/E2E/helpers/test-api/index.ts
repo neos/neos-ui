@@ -1,2 +1,2 @@
-export {createUser} from './createUser';
-export {removeAllUsers} from './removeAllUsers';
+export {createUserFactory} from './createUser';
+export {removeAllUsersFactory} from './removeAllUsers';

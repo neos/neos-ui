@@ -92,7 +92,6 @@ export default class PublishDropDown extends PureComponent {
             <div id="neos-PublishDropDown" className={style.wrapper}>
                 <AbstractButton
                     id="neos-PublishDropDown-Publish"
-                    className={style.publishBtn}
                     isEnabled={!isWorkspaceReadOnly && (canPublishLocally)}
                     isHighlighted={canPublishLocally || isSaving || isPublishing}
                     onClick={this.handlePublishClick}

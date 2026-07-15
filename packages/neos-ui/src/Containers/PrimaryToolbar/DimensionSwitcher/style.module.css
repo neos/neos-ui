@@ -1,13 +1,16 @@
 .dropDown {
     max-width: 320px;
     width: auto;
+    margin-right: 1px;
+    user-select: none;
 }
 
 .dropDown__header {
     background-color: transparent;
+    border-radius: 0;
 
     &:hover {
-        color: var(--colors-PrimaryBlue);
+        background-color: var(--colors-PrimaryBlueHover);
     }
 }
 
@@ -95,13 +98,21 @@
     display: flex;
     align-items: center;
     align-self: start;
+    margin-right: 1px;
 
     .dimensionSwitcherDropDown {
         background: unset;
         min-width: fit-content;
+        border-radius: 0;
+        padding-left: 10px;
+    }
+
+    .dimensionSwitcherDropDown:hover {
+        background: var(--colors-PrimaryBlueHover);
     }
 
     .dimensionSwitcherDropDown div[role='button'] {
         padding: 5px 0;
+        user-select: none;
     }
 }

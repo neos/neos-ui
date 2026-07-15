@@ -19,7 +19,7 @@
 }
 
 a.secondaryToolbar__buttonLink:hover {
-    background: var(--colors-PrimaryBlue);
+    background: var(--colors-PrimaryBlueHover);
 }
 
 .secondaryToolbar__buttonLink--isDisabled {

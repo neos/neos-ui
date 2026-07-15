@@ -13,7 +13,7 @@ export const globalConfigurationAccess = `loadingDepth type ${typeof getConfigur
 
 export let legacyConfigurationAccess: string | undefined;
 
-export const globalGlobalRegistryAccess = `global registry type ${typeof getGlobalRegistry()} name ${getGlobalRegistry().constructor.name}`;
+export const globalGlobalRegistryAccess = `global registry type ${typeof getGlobalRegistry()} { get: ${typeof getGlobalRegistry().get}, set: ${typeof getGlobalRegistry().set} }`;
 
 export let legacyGlobalRegistryAccess: string | undefined;
 
@@ -29,7 +29,7 @@ export const ckeditorObjectsAndFunctionsViaLegacyExport = Object.entries(LegacyC
 
 manifest('@neos-project/neos-ui-test-plugin', {}, (globalRegistry, {frontendConfiguration, configuration}) => {
     manifestInvocations++;
-    legacyGlobalRegistryAccess = `global registry type ${typeof globalRegistry} name ${globalRegistry.constructor.name}`;
+    legacyGlobalRegistryAccess = `global registry type ${typeof globalRegistry} { get: ${typeof globalRegistry.get}, set: ${typeof globalRegistry.set} }`;
 
     legacyFrontendConfigurationAccess = frontendConfiguration['@neos-project/neos-ui-test-plugin'];
     legacyConfigurationAccess = `loadingDepth type ${typeof configuration.nodeTree.loadingDepth}`;

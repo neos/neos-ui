@@ -3,7 +3,6 @@ E2E_DIR = $(CURDIR)
 
 .SILENT:
 .PHONY: setup setup-sut setup-test \
-	generate-bdd-files \
 	test test-ui \
 	start-sut log-sut enter-sut sut-down
 
@@ -24,25 +23,19 @@ setup-test:
 	if [ -s "$$NVM_DIR" ]; then \
 		. "$$NVM_DIR/nvm.sh" && echo "${GREEN}Found nvm on system -> using it to install nodejs!${RESET}" && nvm install; \
 	fi && \
-	npm install && npx playwright install --with-deps && \
-	echo "" && echo "${GREEN}generate BDD files from feature files${RESET}" && npm run generate-tests
+	npm install && npx playwright install --with-deps
 
-# generate BDD files from feature files
-generate-bdd-files:
-	echo "${GREEN}generate BDD files from feature files${RESET}"; \
-	cd $(E2E_DIR) && npm run generate-tests
+## Start SUT containers in the background.
+start-sut:
+	docker compose -f $(NEOS_COMPOSE) up -d --build
 
-## Run all E2E tests (playwright auto-starts SUT, tears it down afterwards).
+## Run all E2E tests
 test:
 	cd $(E2E_DIR) && npm run test
 
-## Open the Playwright interactive UI. Requires the SUT to be running — start it first with `make start-sut`.
+## Open the Playwright interactive UI.
 test-ui:
-	cd $(E2E_DIR) && REUSE_EXISTING_SUT=1 npm run test -- --ui
-
-## Start SUT containers in the background (skips test run). Handy for debugging and testing manually during development.
-start-sut:
-	docker compose -f $(NEOS_COMPOSE) up -d --build
+	cd $(E2E_DIR) && npm run test -- --ui
 
 ## Follow logs of the running SUT.
 log-sut:

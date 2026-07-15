@@ -3,8 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "generate-tests": "FLOW_CONTEXT=Production/E2E-SUT npx bddgen",
-    "test": "npm run generate-tests && FLOW_CONTEXT=Production/E2E-SUT npx playwright test"
+    "generate-tests": "npx bddgen",
+    "test": "npm run generate-tests && npx playwright test"
   },
   "devDependencies": {
     "@types/node": "^25.5.0",

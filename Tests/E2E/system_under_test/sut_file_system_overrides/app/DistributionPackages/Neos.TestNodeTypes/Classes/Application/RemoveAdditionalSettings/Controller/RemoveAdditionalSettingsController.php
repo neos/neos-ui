@@ -16,22 +16,29 @@ namespace Neos\TestNodeTypes\Application\RemoveAdditionalSettings\Controller;
 
 use GuzzleHttp\Psr7\Response;
 use Neos\Flow\Annotations as Flow;
-use Neos\Flow\Mvc\ActionRequest;
-use Neos\Flow\Mvc\Controller\ControllerInterface;
+use Neos\Flow\Log\ThrowableStorageInterface;
+use Neos\Flow\Mvc\Controller\ActionController;
 use Neos\TestNodeTypes\Application\RemoveAdditionalSettings\RemoveAdditionalSettingsCommand;
 use Neos\TestNodeTypes\Application\RemoveAdditionalSettings\RemoveAdditionalSettingsCommandHandler;
 use Psr\Http\Message\ResponseInterface;
 
 #[Flow\Scope("singleton")]
-final class RemoveAdditionalSettingsController implements ControllerInterface
+final class RemoveAdditionalSettingsController extends ActionController
 {
     #[Flow\Inject]
     protected RemoveAdditionalSettingsCommandHandler $commandHandler;
 
-    public function processRequest(ActionRequest $request): ResponseInterface
+    /**
+     * Cant be named here $throwableStorage see https://github.com/neos/flow-development-collection/issues/2928
+     */
+    #[Flow\Inject]
+    protected ThrowableStorageInterface $throwableStorage2;
+
+    #[Flow\Route('test/remove-additional-settings')]
+    public function handleAction(): ResponseInterface
     {
         try {
-            $command = RemoveAdditionalSettingsCommand::fromArray($request->getArguments());
+            $command = RemoveAdditionalSettingsCommand::fromArray($this->request->getArguments());
             $this->commandHandler->handle($command);
             return new Response(status: 200, headers: ['Content-Type' => 'application/json'], body: json_encode(
                 ['success' => true],
@@ -47,7 +54,8 @@ final class RemoveAdditionalSettingsController implements ControllerInterface
                 JSON_THROW_ON_ERROR
             ));
         } catch (\Exception $e) {
-            return new Response(status: 500, headers: ['Content-Type' => 'application/json'], body:                 json_encode(
+            $this->throwableStorage2->logThrowable($e);
+            return new Response(status: 500, headers: ['Content-Type' => 'application/json'], body: json_encode(
                 ['error' => [
                     'type' => $e::class,
                     'code' => $e->getCode(),

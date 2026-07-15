@@ -31,11 +31,11 @@ esbuild.build(options).then(result => {
             // code from this very plugin
             continue;
         }
-        if (inputPath.startsWith('../../../../../../../../packages/neos-ui-extensibility/dist/')) {
+        if (inputPath.includes('/packages/neos-ui-extensibility/dist/')) {
             // the extensibility accessors to stubs
             continue;
         }
-        if (inputPath === '../../../../../../../../packages/neos-ui-extensibility/plugin-api.js') {
+        if (inputPath.endsWith('/packages/neos-ui-extensibility/plugin-api.js')) {
             // the extensibility api
             continue;
         }

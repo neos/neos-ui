@@ -1,15 +1,12 @@
 import {createBdd} from "playwright-bdd";
-import {logout, removeAllUsers} from "../helpers/system";
+import {removeAllUsersFactory} from "../helpers/test-api";
+import {getUniqueUserNamePrefix} from "../helpers/user";
 
 const {AfterScenario} = createBdd();
 
-// cleanup for each scenario
-AfterScenario(async ({page}) => {
-    await logout(page);
+AfterScenario(async ({request, $testInfo}) => {
+    const removeAllUsers = removeAllUsersFactory(request, $testInfo);
 
-    try {
-        removeAllUsers();
-    } catch (err) {
-        console.warn('[AfterScenario] removeAllUsers failed — next scenario may see leftover users:', err);
-    }
+    // Removes unique users of this worker and all their workspaces and content
+    await removeAllUsers(getUniqueUserNamePrefix());
 });

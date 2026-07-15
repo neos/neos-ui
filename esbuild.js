@@ -4,15 +4,10 @@ const {cssModules} = require('./cssModules');
 const esbuild = require('esbuild');
 
 const isProduction = process.argv.includes('--production');
-const isE2ETesting = process.argv.includes('--e2e-testing');
 const isWatch = process.argv.includes('--watch');
 const isAnalyze = process.argv.includes('--analyze');
 
 const NEOS_UI_VERSION = process.env.NEOS_UI_VERSION ?? (isProduction ? 'production-build' : 'dev')
-
-if (isE2ETesting) {
-    console.log('Building for E2E testing');
-}
 
 /** @type {import("esbuild").BuildOptions} */
 const options = {
@@ -27,7 +22,6 @@ const options = {
     target: 'es2020',
     color: true,
     bundle: true,
-    keepNames: isE2ETesting, // for react magic selectors,
     metafile: isAnalyze,
     legalComments: "linked",
     loader: {

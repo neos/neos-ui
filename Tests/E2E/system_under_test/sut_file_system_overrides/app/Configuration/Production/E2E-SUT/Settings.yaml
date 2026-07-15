@@ -11,10 +11,6 @@ Neos:
         dbname: '%env:DB_NEOS_DATABASE%'
     cache:
       applicationIdentifier: 'app'
-    reflection:
-      ignoredTags:
-        template: true
-        psalm: true
   Neos:
     Ui:
       frontendDevelopmentMode: true

@@ -14,17 +14,17 @@
     "prefer-stable": true,
     "require": {
       "neos/flow-development-collection": "9.2.x-dev as 9.2",
-
       "neos/neos-development-collection": "9.2.x-dev as 9.2",
 
-      "neos/neos-ui": "9.2.x-dev as 9.2",
-      "neos/neos-ui-compiled": "9.2.x-dev as 9.2",
-
+      "neos/neos-ui": "@dev",
       "neos/test-onedimension": "@dev",
       "neos/test-twodimensions": "@dev",
       "neos/test-nodetypes": "@dev",
 
       "cweagans/composer-patches": "^1.7.3"
+    },
+    "replace": {
+      "neos/neos-ui-compiled": "*"
     },
     "extra": {
       "patches": {

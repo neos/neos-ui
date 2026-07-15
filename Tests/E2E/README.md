@@ -34,8 +34,7 @@ The first SUT boot takes a few minutes (composer install, migrations, content im
 cached image and named volume for composer cache.
 
 Pass Playwright flags through `npm run test`: `npm run test -- --grep "Login"`,
-`npm run test -- --project=chromium`. During development, keep the SUT running and use
-`REUSE_EXISTING_SUT=1 npm run test` to skip the boot on every run.
+`npm run test -- --project=chromium`.
 
 ## Container management
 

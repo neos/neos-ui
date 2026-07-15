@@ -325,7 +325,7 @@ export default class SelectBox extends PureComponent {
         this.props.onValueChange('');
     }
 
-    handleToggleExpanded = () => {
+    handleToggleExpanded = (e) => {
         // Return early if disabled
         if (this.props.disabled) {
             return;
@@ -334,7 +334,8 @@ export default class SelectBox extends PureComponent {
         let isExpanded;
         if (this.props.displaySearchBox) {
             // Force expanded dropdown unless has showDropDownToggle (e.g. for nodetypes filter in the PageTree)
-            isExpanded = this.props.showDropDownToggle ? !this.state.isExpanded : true;
+            const targetWasSearchInput = e.target.tagName === 'INPUT';
+            isExpanded = this.props.showDropDownToggle ? targetWasSearchInput || !this.state.isExpanded : true;
         } else {
             // If simple SelectBox, just toggle it
             isExpanded = !this.state.isExpanded;

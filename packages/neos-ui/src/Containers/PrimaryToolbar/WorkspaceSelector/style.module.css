@@ -52,6 +52,7 @@
 }
 
 .workspaceListsContainer {
+    /* FIXME, once browsers have a way to determine the maximum available space in that direction */
     max-height: calc(100vh - 40px - 40px - 2px);
-    overflow-y: scroll;
+    overflow-y: auto;
 }

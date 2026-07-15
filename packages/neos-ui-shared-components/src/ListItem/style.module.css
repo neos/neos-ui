@@ -1,6 +1,7 @@
 
 .listItem + .listItem {
     border-top: 1px solid var(--colors-ContrastDarker);
+    box-sizing: content-box;
 }
 
 .listItem {

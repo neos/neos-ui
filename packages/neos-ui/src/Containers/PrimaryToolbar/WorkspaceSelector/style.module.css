@@ -50,3 +50,8 @@
     background: var(--colors-ContrastDark);
     margin-bottom: 2px;
 }
+
+.workspaceListsContainer {
+    max-height: calc(100vh - 40px - 40px - 2px);
+    overflow-y: scroll;
+}

@@ -109,59 +109,61 @@ const WorkspaceSelector: React.FC<WorkspaceSelectorProps> = ({
             </div>
         ) : ''}
 
-        {rootWorkspaces.length > 0 ? (
-            <List icon="globe" label={translate('Neos.Neos.Ui:Main:publicWorkspaceGroupLabel', 'Public')}>
-                {rootWorkspaces.map(workspace => (
-                    <ListItem key={workspace.name}>
-                        <Button
-                            disabled={workspace.name === baseWorkspace}
-                            onClick={createChangeBaseWorkspace(workspace.name)}
-                            style={workspace.name === baseWorkspace ? 'brand' : undefined}
-                            className={style.labelEllipsis}
-                            popovertarget={POPOVER_ID}
-                        >
-                            {workspace.title}
-                        </Button>
-                    </ListItem>
-                ))}
-            </List>
-        ) : ''}
+        <div className={style.workspaceListsContainer}>
+            {rootWorkspaces.length > 0 ? (
+                <List icon="globe" label={translate('Neos.Neos.Ui:Main:publicWorkspaceGroupLabel', 'Public')}>
+                    {rootWorkspaces.map(workspace => (
+                        <ListItem key={workspace.name}>
+                            <Button
+                                disabled={workspace.name === baseWorkspace}
+                                onClick={createChangeBaseWorkspace(workspace.name)}
+                                style={workspace.name === baseWorkspace ? 'brand' : undefined}
+                                className={style.labelEllipsis}
+                                popovertarget={POPOVER_ID}
+                            >
+                                {workspace.title}
+                            </Button>
+                        </ListItem>
+                    ))}
+                </List>
+            ) : ''}
 
-        {regularWorkspaces.length > 0 ? (
-            <List icon="layer-group" label={translate('Neos.Neos.Ui:Main:internalWorkspaceGroupLabel', 'Internal')}>
-                {regularWorkspaces.map(workspace => (
-                    <ListItem key={workspace.name}>
-                        <Button
-                            disabled={workspace.name === baseWorkspace}
-                            onClick={createChangeBaseWorkspace(workspace.name)}
-                            style={workspace.name === baseWorkspace ? 'brand' : undefined}
-                            className={style.labelEllipsis}
-                            popovertarget={POPOVER_ID}
-                        >
-                            {workspace.title}
-                        </Button>
-                    </ListItem>
-                ))}
-            </List>
-        ) : ''}
+            {regularWorkspaces.length > 0 ? (
+                <List icon="layer-group" label={translate('Neos.Neos.Ui:Main:internalWorkspaceGroupLabel', 'Internal')}>
+                    {regularWorkspaces.map(workspace => (
+                        <ListItem key={workspace.name}>
+                            <Button
+                                disabled={workspace.name === baseWorkspace}
+                                onClick={createChangeBaseWorkspace(workspace.name)}
+                                style={workspace.name === baseWorkspace ? 'brand' : undefined}
+                                className={style.labelEllipsis}
+                                popovertarget={POPOVER_ID}
+                            >
+                                {workspace.title}
+                            </Button>
+                        </ListItem>
+                    ))}
+                </List>
+            ) : ''}
 
-        {readonlyWorkspaces.length > 0 ? (
-            <List icon="eye" label={translate('Neos.Neos.Ui:Main:readOnlyWorkspaceGroupLabel', 'Read-only')}>
-                {readonlyWorkspaces.map(workspace => (
-                    <ListItem key={workspace.name}>
-                        <Button
-                            disabled={workspace.name === baseWorkspace}
-                            onClick={createChangeBaseWorkspace(workspace.name)}
-                            style={workspace.name === baseWorkspace ? 'brand' : undefined}
-                            className={style.labelEllipsis}
-                            popovertarget={POPOVER_ID}
-                        >
-                            {workspace.title}
-                        </Button>
-                    </ListItem>
-                ))}
-            </List>
-        ) : ''}
+            {readonlyWorkspaces.length > 0 ? (
+                <List icon="eye" label={translate('Neos.Neos.Ui:Main:readOnlyWorkspaceGroupLabel', 'Read-only')}>
+                    {readonlyWorkspaces.map(workspace => (
+                        <ListItem key={workspace.name}>
+                            <Button
+                                disabled={workspace.name === baseWorkspace}
+                                onClick={createChangeBaseWorkspace(workspace.name)}
+                                style={workspace.name === baseWorkspace ? 'brand' : undefined}
+                                className={style.labelEllipsis}
+                                popovertarget={POPOVER_ID}
+                            >
+                                {workspace.title}
+                            </Button>
+                        </ListItem>
+                    ))}
+                </List>
+            ) : ''}
+        </div>
     </DropDown>
 }
 

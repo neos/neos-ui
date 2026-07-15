@@ -68,7 +68,7 @@ const WorkspaceSelector: React.FC<WorkspaceSelectorProps> = ({
     }, [changeBaseWorkspaceAction, baseWorkspace]);
 
     const rootWorkspaces: Workspace[] = useMemo(() => Object.values(allowedWorkspaces)
-        .filter(workspace => workspace.name === 'live')
+        .filter(workspace => workspace.name === 'live' && !workspace.readonly)
         .filter(makeSearchWorkspace(searchValue))
         .sort(makeSortWorkspace()), [allowedWorkspaces, searchValue]);
 

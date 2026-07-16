@@ -78,15 +78,19 @@ class WorkspaceHelper implements ProtectedContextAwareInterface
         $personalWorkspacePermissions = $this->contentRepositoryAuthorizationService->getWorkspacePermissions($contentRepositoryId, $personalWorkspace->workspaceName, $this->securityContext->getRoles(), $currentUser->getId());
         $publishableNodes = $this->uiWorkspaceService->getPublishableNodeInfo($personalWorkspace->workspaceName, $contentRepository->id);
         $allowedTargetWorkspaces = $this->getAllowedTargetWorkspaces($contentRepository);
-        $baseWorkspace = $personalWorkspace->baseWorkspaceName ? $allowedTargetWorkspaces[$personalWorkspace->baseWorkspaceName->value] : null;
+
+        if ($personalWorkspace->isRootWorkspace()) {
+            throw new \RuntimeException(sprintf('A personal workspace is never root. Got %s', $personalWorkspace->workspaceName->value), 1784133602);
+        }
+
+        $baseWorkspacePermissions = $this->contentRepositoryAuthorizationService->getWorkspacePermissions($contentRepositoryId, $personalWorkspace->baseWorkspaceName, $this->securityContext->getRoles(), $currentUser->getId());
 
         return [
             'name' => $personalWorkspace->workspaceName->value,
             'totalNumberOfChanges' => count($publishableNodes),
             'publishableNodes' => $publishableNodes,
-            'baseWorkspace' => $personalWorkspace->baseWorkspaceName?->value,
-            'readOnly' => !$baseWorkspace
-                || $baseWorkspace['readonly']
+            'baseWorkspace' => $personalWorkspace->baseWorkspaceName->value,
+            'readOnly' => !$baseWorkspacePermissions->write
                 || !$personalWorkspacePermissions->write,
             'status' => $personalWorkspace->status->value,
             'allowedTargetWorkspaces' => $allowedTargetWorkspaces,

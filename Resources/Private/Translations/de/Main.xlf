@@ -612,13 +612,17 @@
         <source>Published</source>
         <target state="final">Veröffentlicht</target>
       </trans-unit>
-      <trans-unit id="workspaceSelectorTitle" xml:space="preserve">
-        <source>Select target workspace</source>
-        <target>Zielarbeitsbereich auswählen</target>
+      <trans-unit id="publicWorkspaceGroupLabel" xml:space="preserve">
+          <source>Public</source>
+          <target>Öffentlich</target>
       </trans-unit>
-      <trans-unit id="workspaceSelectorTitleDisabled" xml:space="preserve">
-        <source>Cannot change target workspace while there are unpublished changes</source>
-        <target>Der Zielarbeitsbereich kann nicht geändert werden, solange unveröffentlichte Änderungen vorliegen</target>
+      <trans-unit id="internalWorkspaceGroupLabel" xml:space="preserve">
+          <source>Internal</source>
+          <target>Intern</target>
+      </trans-unit>
+      <trans-unit id="readOnlyWorkspaceGroupLabel" xml:space="preserve">
+          <source>Read-only</source>
+          <target>Nur-Lesen</target>
       </trans-unit>
       <trans-unit id="propertyScope.node" xml:space="preserve">
         <source>Changes to this property scope will affect only the current variant.</source>
@@ -935,6 +939,14 @@
       <trans-unit id="contentTree" xml:space="preserve">
         <source>Content Tree</source>
         <target state="translated">Inhaltsbaum</target>
+      </trans-unit>
+      <trans-unit id="workspaceContainsUnpublishedChanges" xml:space="preserve" approved="yes">
+        <source>Your personal workspace currently contains unpublished changes. In order to switch to a different target workspace you need to either publish or discard pending changes first.</source>
+        <target state="final">Ihr persönlicher Arbeitsbereich enthält derzeit unveröffentlichte Änderungen. Um zu einem anderen Ziel-Arbeitsbereich zu wechseln, müssen Sie die Inhalte zunächst entweder veröffentlichen oder verwerfen.</target>
+      </trans-unit>
+      <trans-unit id="selectTargetWorkspace" xml:space="preserve" approved="yes">
+        <source>Select target workspace</source>
+        <target state="final">Zielarbeitsbereich auswählen</target>
       </trans-unit>
       </body>
   </file>

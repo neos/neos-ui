@@ -503,9 +503,7 @@
         <target state="translated">Cambiado el espacio de trabajo en base a "{workspace}".</target>
       </trans-unit>
       <trans-unit id="workspaceContainsUnpublishedChanges" xml:space="preserve">
-        <source>Your personal workspace currently contains unpublished changes.
-                In order to switch to a different target workspace you need to either publish or discard pending changes first.
-                </source>
+        <source>Your personal workspace currently contains unpublished changes. In order to switch to a different target workspace you need to either publish or discard pending changes first.</source>
         <target state="translated">Su espacio de trabajo personal contiene actualmente cambios sin publicar.
                 Para cambiar a un espacio de trabajo de destino diferente, primero debe publicar o descartar los cambios pendientes.
                 </target>
@@ -817,6 +815,18 @@
       <trans-unit id="contentTree" xml:space="preserve">
         <source>Content Tree</source>
         <target state="translated">Árbol de contenidos</target>
+      </trans-unit>
+      <trans-unit id="selectTargetWorkspace" xml:space="preserve">
+        <source>Select target workspace</source>
+        <target state="translated">Seleccionar espacio de trabajo de destino</target>
+      </trans-unit>
+      <trans-unit id="publish" xml:space="preserve">
+        <source>Publish</source>
+        <target state="translated">Publicar</target>
+      </trans-unit>
+      <trans-unit id="published" xml:space="preserve">
+        <source>Published</source>
+        <target state="translated">Publicado</target>
       </trans-unit>
       </body>
   </file>

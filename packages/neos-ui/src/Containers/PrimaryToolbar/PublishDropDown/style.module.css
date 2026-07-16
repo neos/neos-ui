@@ -76,9 +76,12 @@ for further information see https://github.com/neos/neos-ui/pull/3211
     top: 20px;
 }
 
+.dropDown__item + .dropDown__item {
+    border-top: 1px solid var(--colors-ContrastDarker);
+}
+
 .dropDown__item {
     position: relative;
-    border-top: 1px solid var(--colors-ContrastDarker);
     background: var(--colors-ContrastDarkest);
 
     &:hover {

@@ -588,6 +588,22 @@
         <source>Workspaces</source>
         <target state="translated">Arbeidsområder</target>
       </trans-unit>
+      <trans-unit id="workspaceContainsUnpublishedChanges" xml:space="preserve">
+        <source>Your personal workspace currently contains unpublished changes. In order to switch to a different target workspace you need to either publish or discard pending changes first.</source>
+        <target state="translated">Det personlige arbeidsområde inneholder upubliserte endringer. For å bytte til et annet arbeidsområde må du enten publisere eller forkaste ventende endringer først.</target>
+      </trans-unit>
+      <trans-unit id="selectTargetWorkspace" xml:space="preserve">
+        <source>Select target workspace</source>
+        <target state="translated">Velg et arbeidsområde</target>
+      </trans-unit>
+      <trans-unit id="publish" xml:space="preserve">
+        <source>Publish</source>
+        <target state="translated">Publiser</target>
+      </trans-unit>
+      <trans-unit id="published" xml:space="preserve">
+        <source>Published</source>
+        <target state="translated">Publisert</target>
+      </trans-unit>
       </body>
   </file>
 </xliff>

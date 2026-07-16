@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
 import style from './style.module.css';
 
-export default class AbstractButton extends PureComponent {
+export class AbstractButton extends PureComponent {
     static propTypes = {
         isEnabled: PropTypes.bool,
-        isHighlighted: PropTypes.bool,
         className: PropTypes.string,
         label: PropTypes.string,
         children: PropTypes.node.isRequired,
@@ -16,7 +15,6 @@ export default class AbstractButton extends PureComponent {
     render() {
         const {
             isEnabled,
-            isHighlighted,
             className,
             ...directProps
         } = this.props;
@@ -24,7 +22,6 @@ export default class AbstractButton extends PureComponent {
             [style.btn]: true,
             [style['btn--disabled']]: !isEnabled,
             [style['btn--notAllowed']]: !isEnabled,
-            [style['btn--highlighted']]: isHighlighted,
             [className]: className && className.length
         });
         const attributes = {

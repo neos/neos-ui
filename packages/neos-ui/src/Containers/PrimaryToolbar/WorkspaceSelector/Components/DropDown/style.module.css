@@ -1,0 +1,36 @@
+
+.dropDownContents {
+    inset: auto;
+    background: var(--colors-ContrastNeutral);
+    margin: 0;
+    padding: 2px;
+    border: 0;
+    position-anchor: --neos-Workspace-Selector-anchor;
+    right: anchor(right);
+    top: anchor(bottom);
+}
+
+.dropDownButton {
+    /* FIXME To make this component reusable, the name must be dynamic!!! */
+    anchor-name: --neos-Workspace-Selector-anchor;
+
+    /* because of inline block item */
+    display: flex;
+    align-items: center;
+}
+
+.dropDownButton:focus {
+    outline: none;
+}
+
+.dropDownContents:popover-open + .dropDownButton .dropDownOpenerIcon {
+    transform: rotateX(180deg);
+}
+
+.labelEllipsis {
+    display: inline-block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 255px;
+}

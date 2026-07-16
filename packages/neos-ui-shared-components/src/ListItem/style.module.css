@@ -1,0 +1,29 @@
+
+.listItem + .listItem {
+    border-top: 1px solid var(--colors-ContrastDarker);
+    box-sizing: content-box;
+}
+
+.listItem {
+    height: var(--spacing-GoldenUnit);
+    background: var(--colors-ContrastDarkest);
+    margin: 0;
+
+    &:hover {
+        background: var(--colors-PrimaryBlue);
+    }
+
+    > a,
+    & button {
+        display: block;
+        width: 100%;
+        border: 0;
+        padding: 0 var(--spacing-Full);
+        background: 0;
+        color: #FFF;
+        cursor: pointer;
+        text-decoration: none;
+        line-height: var(--spacing-GoldenUnit);
+        text-align: left;
+    }
+}

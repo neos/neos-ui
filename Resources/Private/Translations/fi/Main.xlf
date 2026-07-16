@@ -293,9 +293,7 @@
         </trans-unit>
       </group>
       <trans-unit id="workspaceContainsUnpublishedChanges" xml:space="preserve">
-        <source>Your personal workspace currently contains unpublished changes.
-                In order to switch to a different target workspace you need to either publish or discard pending changes first.
-                </source>
+        <source>Your personal workspace currently contains unpublished changes. In order to switch to a different target workspace you need to either publish or discard pending changes first.</source>
         <target state="translated">Henkilökohtainen työtilasi sisältää tällä hetkellä julkaisemattomia muutoksia.
                 Jos haluat vaihtaa toiseen kohdetyötilaan, sinun on ensin joko julkaistava tai hylättävä odottavat muutokset.
                 </target>
@@ -767,6 +765,18 @@
       <trans-unit id="contentTree" xml:space="preserve">
         <source>Content Tree</source>
         <target state="translated">Sisältöpuu</target>
+      </trans-unit>
+      <trans-unit id="selectTargetWorkspace" xml:space="preserve" approved="yes">
+        <source>Select target workspace</source>
+        <target state="final">Valitse kohdetyötila</target>
+      </trans-unit>
+      <trans-unit id="publish" xml:space="preserve" approved="yes">
+        <source>Publish</source>
+        <target state="final">Julkaise</target>
+      </trans-unit>
+      <trans-unit id="published" xml:space="preserve" approved="yes">
+        <source>Published</source>
+        <target state="final">Julkaistu</target>
       </trans-unit>
       </body>
   </file>

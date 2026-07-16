@@ -633,6 +633,22 @@
         <source>Workspaces</source>
         <target state="final">Arbejdsrum</target>
       </trans-unit>
+      <trans-unit id="workspaceContainsUnpublishedChanges" xml:space="preserve" approved="yes">
+        <source>Your personal workspace currently contains unpublished changes. In order to switch to a different target workspace you need to either publish or discard pending changes first.</source>
+        <target state="final">Din personlige arbejdsrum indeholder ændringer, som ikke er publiceret. For at du kan skifte til et andet arbejdsrum, skal ændringerne enten publiceres eller kasseres.</target>
+      </trans-unit>
+      <trans-unit id="selectTargetWorkspace" xml:space="preserve" approved="yes">
+        <source>Select target workspace</source>
+        <target state="final">Vælg destinations arbejdsrum</target>
+      </trans-unit>
+      <trans-unit id="publish" xml:space="preserve" approved="yes">
+        <source>Publish</source>
+        <target state="final">Publicér</target>
+      </trans-unit>
+      <trans-unit id="published" xml:space="preserve" approved="yes">
+        <source>Published</source>
+        <target state="final">Publiceret</target>
+      </trans-unit>
       </body>
   </file>
 </xliff>

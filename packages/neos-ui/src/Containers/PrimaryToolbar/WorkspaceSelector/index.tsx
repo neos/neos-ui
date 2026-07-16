@@ -1,21 +1,23 @@
-import React, {useState, useMemo, useCallback} from 'react';
+import React, {useMemo} from 'react';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 
 import {translate} from '@neos-project/neos-ui-i18n';
 import {actions, GlobalState, selectors} from '@neos-project/neos-ui-redux-store';
-import {searchOptions} from '@neos-project/neos-ui-editors/src/Editors/SelectBox/selectBoxHelpers.js';
-import {SelectBox} from '@neos-project/react-ui-components';
+import {Button, Icon} from '@neos-project/react-ui-components';
 import {PublishingMode} from '@neos-project/neos-ui-redux-store/src/CR/Publishing';
 import {Node, Workspace, WorkspaceName} from '@neos-project/neos-ui-contentrepository-model';
+import {DropDown} from './Components/DropDown';
+import style from './style.module.css';
+import {List, ListItem, Search} from '@neos-project/neos-ui-shared-components';
+
+const POPOVER_ID = 'workspace-selector';
 
 const {
     publishableNodesSelector,
     baseWorkspaceSelector,
     allowedTargetWorkspacesSelector
 } = selectors.CR.Workspaces;
-
-import style from './style.module.css';
 
 const withReduxState = connect((state: GlobalState) => ({
     isSaving: state?.ui?.remote?.isSaving,
@@ -40,82 +42,129 @@ type WorkspaceSelectorProps = {
     isWorkspaceReadOnly: boolean
 }
 
+const makeSearchWorkspace = (searchValue: string) => (workspace: Workspace) => searchValue !== '' ? workspace.title.toLowerCase().includes(searchValue.toLowerCase()) : true;
+const makeSortWorkspace = () => (a: Workspace, b: Workspace) => a.title.localeCompare(b.title);
+
 const WorkspaceSelector: React.FC<WorkspaceSelectorProps> = ({
-                                                                 allowedWorkspaces,
-                                                                 baseWorkspace,
-                                                                 changeBaseWorkspaceAction,
-                                                                 isSaving,
-                                                                 isPublishing,
-                                                                 publishableNodes,
-                                                                 isWorkspaceReadOnly
-                                                             }) => {
-    const [filterTerm, setFilterTerm] = useState('');
+    allowedWorkspaces,
+    baseWorkspace,
+    changeBaseWorkspaceAction,
+    isSaving,
+    isPublishing,
+    publishableNodes,
+    isWorkspaceReadOnly
+}) => {
+    const [searchValue, setSearchValue] = React.useState('');
 
     const hasUnpublishedNodes = publishableNodes?.length > 0;
     const changingWorkspaceAllowed = !isSaving && !isPublishing && !hasUnpublishedNodes;
 
-    const publicWorkspaceGroupLabel = translate('Neos.Neos.Ui:Main:publicWorkspaceGroupLabel', 'Public');
-    const internalWorkspaceGroupLabel = translate('Neos.Neos.Ui:Main:internalWorkspaceGroupLabel', 'Internal');
-    const readOnlyWorkspaceGroupLabel = translate('Neos.Neos.Ui:Main:readOnlyWorkspaceGroupLabel', 'Read-only');
+    const baseWorkspaceTitle = allowedWorkspaces[baseWorkspace]?.title ?? baseWorkspace;
 
-    const workspacesOptions = useMemo(() => Object.keys(allowedWorkspaces).map((workspaceName) => {
-        const workspace = allowedWorkspaces[workspaceName];
-        if (!workspace) {
-            return {
-                label: workspaceName,
-                value: workspaceName,
-                group: '',
-                icon: 'x-mark'
-            };
-        }
-        const group = workspace.readonly ? readOnlyWorkspaceGroupLabel : workspace.name === 'live' ? publicWorkspaceGroupLabel : internalWorkspaceGroupLabel;
-        return {
-            label: workspace.title,
-            value: workspace.name,
-            group,
-            icon: workspace.readonly ? 'eye' : ''
-        };
-    }).sort((a, b) => {
-        return a.label.localeCompare(b.label);
-    }), [allowedWorkspaces]);
-
-    const onWorkspaceSelect = useCallback((workspaceName: string) => {
+    const createChangeBaseWorkspace = React.useCallback((workspaceName) => () => {
         if (workspaceName !== baseWorkspace) {
             changeBaseWorkspaceAction(workspaceName);
         }
-    }, [baseWorkspace, changeBaseWorkspaceAction]);
-    const anyWorkspacesAvailable = Object.keys(allowedWorkspaces).length > 1;
+    }, [changeBaseWorkspaceAction, baseWorkspace]);
 
-    const classNames = mergeClassNames({
-        [style.workspaceSelector]: true,
-        [style['workspaceSelector--isDirty']]: hasUnpublishedNodes,
-        [style['workspaceSelector--isReadOnly']]: isWorkspaceReadOnly
+    const rootWorkspaces: Workspace[] = useMemo(() => Object.values(allowedWorkspaces)
+        .filter(workspace => workspace.name === 'live' && !workspace.readonly)
+        .filter(makeSearchWorkspace(searchValue))
+        .sort(makeSortWorkspace()), [allowedWorkspaces, searchValue]);
+
+    const readonlyWorkspaces: Workspace[] = useMemo(() => Object.values(allowedWorkspaces)
+        .filter(workspace => workspace.readonly)
+        .filter(makeSearchWorkspace(searchValue))
+        .sort(makeSortWorkspace()), [allowedWorkspaces, searchValue]);
+
+    const regularWorkspaces: Workspace[] = useMemo(() => Object.values(allowedWorkspaces)
+        .filter(workspace => workspace.name !== 'live' && !workspace.readonly)
+        .filter(makeSearchWorkspace(searchValue))
+        .sort(makeSortWorkspace()), [allowedWorkspaces, searchValue]);
+
+    const dropDownButtonStyles = mergeClassNames({
+        [style.dropDownButton]: true,
+        [style['dropDownButton--isDirty']]: hasUnpublishedNodes || isSaving,
+        [style['dropDownButton--isReadOnly']]: isWorkspaceReadOnly,
+        [style['dropDownButton--disabled']]: !changingWorkspaceAllowed
     });
 
     const title = changingWorkspaceAllowed ?
-        translate('Neos.Neos.Ui:Main:workspaceSelectorTitle', 'Select target workspace') :
-        translate('Neos.Neos.Ui:Main:workspaceSelectorTitleDisabled', 'Cannot change target workspace while there are unpublished changes');
+        translate('Neos.Neos.Ui:Main:selectTargetWorkspace', 'Select target workspace') :
+        translate('Neos.Neos.Ui:Main:workspaceContainsUnpublishedChanges', 'Your personal workspace currently contains unpublished changes. In order to switch to a different target workspace you need to either publish or discard pending changes first.');
 
-    return (<div className={classNames} title={title}>
-        {anyWorkspacesAvailable ? (
-            <SelectBox
-                placeholder={translate('Neos.Neos.Ui:Main:filter', 'Filter')}
-                placeholderIcon={'filter'}
-                displaySearchBox
-                searchTerm={filterTerm}
-                onSearchTermChange={setFilterTerm}
-                threshold={0}
-                noMatchesFoundLabel={translate('Neos.Neos.Ui:Main:noMatchesFound')}
-                searchBoxLeftToTypeLabel={translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
-                options={searchOptions(filterTerm, workspacesOptions)}
-                value={baseWorkspace}
-                onValueChange={onWorkspaceSelect}
-                disabled={!changingWorkspaceAllowed}
-                headerIcon="layer-group"
-                theme={style}
-            />
+    return <DropDown
+        id={POPOVER_ID}
+        enabled={changingWorkspaceAllowed}
+        buttonTitle={title}
+        buttonIcon={<Icon icon="layer-group" padded="right" />}
+        buttonLabel={baseWorkspaceTitle}
+        buttonClassName={dropDownButtonStyles}
+        dropDownClassName={style.dropDownContents}
+        dropDownIconClassName={style.dropDownIcon}
+    >
+        {Object.keys(allowedWorkspaces).length >= 10 ? (
+            <div className={style.searchContainer}>
+                <Search initialValue={searchValue} onChange={setSearchValue} />
+            </div>
         ) : ''}
-    </div>);
+
+        <div className={style.workspaceListsContainer}>
+            {rootWorkspaces.length > 0 ? (
+                <List icon="globe" label={translate('Neos.Neos.Ui:Main:publicWorkspaceGroupLabel', 'Public')}>
+                    {rootWorkspaces.map(workspace => (
+                        <ListItem key={workspace.name}>
+                            <Button
+                                disabled={workspace.name === baseWorkspace}
+                                onClick={createChangeBaseWorkspace(workspace.name)}
+                                style={workspace.name === baseWorkspace ? 'brand' : undefined}
+                                className={style.labelEllipsis}
+                                popovertarget={POPOVER_ID}
+                            >
+                                {workspace.title}
+                            </Button>
+                        </ListItem>
+                    ))}
+                </List>
+            ) : ''}
+
+            {regularWorkspaces.length > 0 ? (
+                <List icon="layer-group" label={translate('Neos.Neos.Ui:Main:internalWorkspaceGroupLabel', 'Internal')}>
+                    {regularWorkspaces.map(workspace => (
+                        <ListItem key={workspace.name}>
+                            <Button
+                                disabled={workspace.name === baseWorkspace}
+                                onClick={createChangeBaseWorkspace(workspace.name)}
+                                style={workspace.name === baseWorkspace ? 'brand' : undefined}
+                                className={style.labelEllipsis}
+                                popovertarget={POPOVER_ID}
+                            >
+                                {workspace.title}
+                            </Button>
+                        </ListItem>
+                    ))}
+                </List>
+            ) : ''}
+
+            {readonlyWorkspaces.length > 0 ? (
+                <List icon="eye" label={translate('Neos.Neos.Ui:Main:readOnlyWorkspaceGroupLabel', 'Read-only')}>
+                    {readonlyWorkspaces.map(workspace => (
+                        <ListItem key={workspace.name}>
+                            <Button
+                                disabled={workspace.name === baseWorkspace}
+                                onClick={createChangeBaseWorkspace(workspace.name)}
+                                style={workspace.name === baseWorkspace ? 'brand' : undefined}
+                                className={style.labelEllipsis}
+                                popovertarget={POPOVER_ID}
+                            >
+                                {workspace.title}
+                            </Button>
+                        </ListItem>
+                    ))}
+                </List>
+            ) : ''}
+        </div>
+    </DropDown>
 }
 
 export default withReduxState(WorkspaceSelector as any);

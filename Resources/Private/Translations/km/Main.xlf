@@ -588,6 +588,22 @@
         <source>Workspaces</source>
         <target state="final">លំហរការងារ</target>
       </trans-unit>
+      <trans-unit id="workspaceContainsUnpublishedChanges" xml:space="preserve" approved="yes">
+        <source>Your personal workspace currently contains unpublished changes. In order to switch to a different target workspace you need to either publish or discard pending changes first.</source>
+        <target state="final">តំបន់ការរបស់អ្នកពេលនេះ មិនទាន់បានដាក់ផ្សាយ ការផ្លាស់ផ្ដូរទេ។ ដើម្បីធ្វើការផ្លាស់ផ្ដូរទៅកាន់តំបន់ការងារផ្សេង អ្នកត្រូវតែ ដាក់ផ្សាយ ឬ​ បេាះបង់ចោលការងារដែលបានផ្លាស់ផ្ដូរជាដំបូង</target>
+      </trans-unit>
+      <trans-unit id="selectTargetWorkspace" xml:space="preserve" approved="yes">
+        <source>Select target workspace</source>
+        <target state="final">ជ្រើសតំបន់ការងារគោលដៅ</target>
+      </trans-unit>
+      <trans-unit id="publish" xml:space="preserve" approved="yes">
+        <source>Publish</source>
+        <target state="final">ដាក់ផ្សាយ</target>
+      </trans-unit>
+      <trans-unit id="published" xml:space="preserve" approved="yes">
+        <source>Published</source>
+        <target state="final">បានចុះផ្សាយ</target>
+      </trans-unit>
       </body>
   </file>
 </xliff>

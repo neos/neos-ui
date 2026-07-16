@@ -315,9 +315,7 @@
                 <source>Switched base workspace to "{workspace}".</source>
             </trans-unit>
             <trans-unit id="workspaceContainsUnpublishedChanges" xml:space="preserve">
-                <source>Your personal workspace currently contains unpublished changes.
-                In order to switch to a different target workspace you need to either publish or discard pending changes first.
-                </source>
+                <source>Your personal workspace currently contains unpublished changes. In order to switch to a different target workspace you need to either publish or discard pending changes first.</source>
             </trans-unit>
             <trans-unit id="publicWorkspaceGroupLabel" xml:space="preserve">
                 <source>Public</source>
@@ -409,12 +407,9 @@
             <trans-unit id="published" xml:space="preserve">
                 <source>Published</source>
             </trans-unit>
-            <trans-unit id="workspaceSelectorTitle" xml:space="preserve">
-                <source>Select target workspace</source>
-            </trans-unit>
-            <trans-unit id="workspaceSelectorTitleDisabled" xml:space="preserve">
-                <source>Cannot change target workspace while there are unpublished changes</source>
-            </trans-unit>
+            <trans-unit id="selectTargetWorkspace" xml:space="preserve">
+				<source>Select target workspace</source>
+			</trans-unit>
             <trans-unit id="propertyScope.node" xml:space="preserve">
                 <source>Changes to this property will affect only the current variant.</source>
             </trans-unit>

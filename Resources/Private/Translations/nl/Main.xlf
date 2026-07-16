@@ -472,9 +472,7 @@
         <target state="translated">De node kon niet worden gepubliceerd. Waarschijnlijk door een ontbrekende parent node. Controleer of de parent node is gepubliceerd.</target>
       </trans-unit>
       <trans-unit id="workspaceContainsUnpublishedChanges" xml:space="preserve">
-        <source>Your personal workspace currently contains unpublished changes.
-                In order to switch to a different target workspace you need to either publish or discard pending changes first.
-                </source>
+        <source>Your personal workspace currently contains unpublished changes. In order to switch to a different target workspace you need to either publish or discard pending changes first.</source>
         <target state="translated">Je persoonlijke workspace bevat niet gepubliceerde wijzigingen.
 Om te wisselen naar een andere worksapce , zul je eerst je wijzingen moeten publiceren of ongedaan moeten maken.
                 </target>
@@ -850,6 +848,18 @@ Om te wisselen naar een andere worksapce , zul je eerst je wijzingen moeten publ
       <trans-unit id="contentTree" xml:space="preserve">
         <source>Content Tree</source>
         <target state="translated">Contentboom</target>
+      </trans-unit>
+      <trans-unit id="selectTargetWorkspace" xml:space="preserve">
+        <source>Select target workspace</source>
+        <target state="translated">Selecteer doel workspace</target>
+      </trans-unit>
+      <trans-unit id="publish" xml:space="preserve" approved="yes">
+        <source>Publish</source>
+        <target state="final">Publiceren</target>
+      </trans-unit>
+      <trans-unit id="published" xml:space="preserve" approved="yes">
+        <source>Published</source>
+        <target state="final">Gepubliceerd</target>
       </trans-unit>
       </body>
   </file>

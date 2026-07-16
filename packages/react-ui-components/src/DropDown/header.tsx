@@ -25,6 +25,11 @@ export interface ShallowDropDownHeaderProps {
     readonly className?: string;
 
     /**
+     * An optional `title` to attach to the wrapper.
+     */
+    readonly title?: string;
+
+    /**
      * Icon to use if the dropdown is opened
      */
     readonly iconIsOpen: string;
@@ -100,6 +105,7 @@ class ShallowDropDownHeader extends PureComponent<ShallowDropDownHeaderProps> {
         const {
             id,
             className,
+            title,
             children,
             theme,
             isOpen,
@@ -122,6 +128,7 @@ class ShallowDropDownHeader extends PureComponent<ShallowDropDownHeaderProps> {
         return (
             <div
                 id={id}
+                title={title}
                 role="button"
                 onClick={disabled ? undefined : toggleDropDown}
                 ref={this.handleReferenceHandler}

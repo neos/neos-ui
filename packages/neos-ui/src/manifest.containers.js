@@ -74,9 +74,9 @@ manifest('main.containers', {}, globalRegistry => {
     containerRegistry.set('SecondaryToolbar/LoadingIndicator', LoadingIndicator);
     containerRegistry.set('SecondaryToolbar/Left/Breadcrumb', Breadcrumb);
     containerRegistry.set('SecondaryToolbar/Right/InlineEditorToolbar', InlineEditorToolbar);
+    containerRegistry.set('SecondaryToolbar/Right/EditPreviewDropDown', EditPreviewDropDown);
     containerRegistry.set('SecondaryToolbar/Right/PreviewButton', PreviewButton);
     containerRegistry.set('SecondaryToolbar/Right/FullScreenButton', FullScreenButton);
-    containerRegistry.set('SecondaryToolbar/Right/EditPreviewDropDown', EditPreviewDropDown);
 
     containerRegistry.set('Drawer', Drawer);
     containerRegistry.set('Drawer/Bottom/UserDropDown', UserDropDown);

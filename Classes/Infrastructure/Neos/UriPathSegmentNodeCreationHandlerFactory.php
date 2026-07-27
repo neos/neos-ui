@@ -36,7 +36,7 @@ final class UriPathSegmentNodeCreationHandlerFactory implements NodeCreationHand
 
     public function build(ContentRepository $contentRepository): NodeCreationHandlerInterface
     {
-        return new class($contentRepository->getNodeTypeManager(), $this->transliterationService) implements NodeCreationHandlerInterface {
+        return new class ($contentRepository->getNodeTypeManager(), $this->transliterationService) implements NodeCreationHandlerInterface {
             public function __construct(
                 private readonly NodeTypeManager $nodeTypeManager,
                 private readonly TransliterationService $transliterationService

@@ -170,7 +170,7 @@ class NodePropertyConversionService
 
         return null;
     }
-    
+
     /**
      * Convert raw value to integer
      *

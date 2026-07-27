@@ -31,12 +31,11 @@ use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
  */
 class WorkspaceService
 {
+    use NodeTypeWithFallbackProvider;
     private const NODE_HAS_BEEN_CREATED = 0b0001;
     private const NODE_HAS_BEEN_CHANGED = 0b0010;
     private const NODE_HAS_BEEN_MOVED = 0b0100;
     private const NODE_HAS_BEEN_DELETED = 0b1000;
-
-    use NodeTypeWithFallbackProvider;
 
     #[Flow\Inject]
     protected ContentRepositoryRegistry $contentRepositoryRegistry;

@@ -64,7 +64,8 @@ class NodePropertyValidationServiceTest extends FunctionalTestCase
         $result = $this->nodePropertyValidationService->validate(
             'test',
             'Neos.Neos/Validation/StringLengthValidator',
-            ['minimum' => 1, 'maximum' => 2]);
+            ['minimum' => 1, 'maximum' => 2]
+        );
 
         Assert::assertFalse($result);
     }
@@ -77,7 +78,8 @@ class NodePropertyValidationServiceTest extends FunctionalTestCase
         $result = $this->nodePropertyValidationService->validate(
             'test',
             'My.Own/Validation/StringLengthValidator',
-            ['minimum' => 1, 'maximum' => 255]);
+            ['minimum' => 1, 'maximum' => 255]
+        );
 
         Assert::assertTrue($result);
     }

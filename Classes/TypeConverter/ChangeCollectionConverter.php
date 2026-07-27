@@ -152,8 +152,11 @@ class ChangeCollectionConverter
                         $changeClass,
                         ObjectAccess::buildSetterMethodName($propertyName)
                     );
-                    $methodParameter = current($methodParameters);
-                    $targetType = $methodParameter['type'];
+                    $methodParameter = current($methodParameters) ?: null;
+                    $targetType = $methodParameter['type'] ?? null;
+                    if ($targetType === null) {
+                        throw new \RuntimeException(sprintf('Could not determine type of method for property %s of %s ', $propertyName, $changeClass), 1785148396);
+                    }
 
                     // Fixme: The type conversion runs depending on the target node property type inside Property::class
                     // This is why we are not allowed to modify the value in any way.

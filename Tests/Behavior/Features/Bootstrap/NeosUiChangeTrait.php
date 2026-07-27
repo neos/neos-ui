@@ -3,8 +3,6 @@
 declare(strict_types=1);
 
 use Behat\Gherkin\Node\PyStringNode;
-use GuzzleHttp\Psr7\Message;
-use GuzzleHttp\Psr7\Utils;
 use Neos\Flow\Security\Context;
 use Neos\Neos\Ui\Domain\Model\FeedbackCollection;
 use PHPUnit\Framework\Assert;

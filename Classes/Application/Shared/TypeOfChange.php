@@ -17,7 +17,7 @@ namespace Neos\Neos\Ui\Application\Shared;
 /**
  * @internal for communication within the Neos UI only
  */
-enum TypeOfChange : int implements \JsonSerializable
+enum TypeOfChange: int implements \JsonSerializable
 {
     case NODE_HAS_BEEN_CREATED = 0b0001;
     case NODE_HAS_BEEN_CHANGED = 0b0010;

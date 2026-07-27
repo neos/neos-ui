@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace Neos\Neos\Ui\View;
 
-use Neos\Flow\Mvc\View\AbstractView;
 use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Mvc\View\AbstractView;
 
 /**
  * @internal

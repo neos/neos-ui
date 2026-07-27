@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace Neos\TestNodeTypes\Application\WriteAdditionalSettings;
 
-use DirectoryIterator;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Cache\CacheManager;
 use Neos\Flow\Configuration\Source\YamlSource;

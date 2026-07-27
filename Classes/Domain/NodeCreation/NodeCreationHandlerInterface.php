@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Neos\Ui\Domain\NodeCreation;
 
 /*
@@ -11,8 +12,6 @@ namespace Neos\Neos\Ui\Domain\NodeCreation;
  * source code.
  */
 
-use Neos\ContentRepository\Core\Factory\ContentRepositoryServiceFactoryInterface;
-use Neos\ContentRepository\Core\Factory\ContentRepositoryServiceInterface;
 
 /**
  * Contract to hook into the process before the node creation command is handled by the content repository

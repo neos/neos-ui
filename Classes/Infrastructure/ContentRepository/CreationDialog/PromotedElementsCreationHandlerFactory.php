@@ -25,7 +25,7 @@ final class PromotedElementsCreationHandlerFactory implements NodeCreationHandle
 {
     public function build(ContentRepository $contentRepository): NodeCreationHandlerInterface
     {
-        return new class($contentRepository->getNodeTypeManager()) implements NodeCreationHandlerInterface {
+        return new class ($contentRepository->getNodeTypeManager()) implements NodeCreationHandlerInterface {
             public function __construct(
                 private readonly NodeTypeManager $nodeTypeManager
             ) {

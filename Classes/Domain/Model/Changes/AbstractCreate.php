@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 /*
@@ -22,12 +24,12 @@ use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateId;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeName;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
-use Neos\Neos\Ui\Domain\NodeCreation\NodeCreationHandlerFactoryInterface;
-use Neos\Neos\Ui\Domain\Service\NodePropertyConversionService;
-use Neos\Neos\Ui\Exception\InvalidNodeCreationHandlerException;
 use Neos\Neos\Ui\Domain\NodeCreation\NodeCreationCommands;
 use Neos\Neos\Ui\Domain\NodeCreation\NodeCreationElements;
+use Neos\Neos\Ui\Domain\NodeCreation\NodeCreationHandlerFactoryInterface;
 use Neos\Neos\Ui\Domain\NodeCreation\NodeCreationHandlerInterface;
+use Neos\Neos\Ui\Domain\Service\NodePropertyConversionService;
+use Neos\Neos\Ui\Exception\InvalidNodeCreationHandlerException;
 use Neos\Utility\PositionalArraySorter;
 
 /**

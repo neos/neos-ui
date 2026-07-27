@@ -17,7 +17,7 @@ namespace Neos\Neos\Ui\Application\Shared;
 /**
  * @internal for communication within the Neos UI only
  */
-enum ReasonForConflict : int implements \JsonSerializable
+enum ReasonForConflict: int implements \JsonSerializable
 {
     case NODE_HAS_BEEN_DELETED = 0;
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\TestNodeTypes\DataSources;
 
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;

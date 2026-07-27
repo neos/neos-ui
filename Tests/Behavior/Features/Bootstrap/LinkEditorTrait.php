@@ -42,7 +42,7 @@ trait LinkEditorTrait
         $browser = $this->getObject(Browser::class);
         $engine = $this->getObject(InternalRequestEngine::class);
         // we must avoid $securityContext->clearContext() being called as this would overrule the active "withoutAuthorizationChecks"
-        ObjectAccess::setProperty($engine, 'securityContext', new class {
+        ObjectAccess::setProperty($engine, 'securityContext', new class () {
             public function clearContext(): void
             {
             }

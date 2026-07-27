@@ -24,10 +24,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - php-version: '8.2'
-            neos-version: '9.1'
-          - php-version: '8.3'
-            neos-version: '9.1'
+          - php-version: '8.4'
+            neos-version: '9.2'
+          - php-version: '8.5'
+            neos-version: '9.2'
 
     services:
       mariadb:

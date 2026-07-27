@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Neos\Ui\Tests\Unit;
 
 use Neos\ContentRepository\Core\NodeType\NodeType;

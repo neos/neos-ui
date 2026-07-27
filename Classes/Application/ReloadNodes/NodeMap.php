@@ -59,6 +59,6 @@ final readonly class NodeMap implements \JsonSerializable
             $result[$item->getNodeAddressAsString()] = $item;
         }
 
-        return $result ? $result : new \stdClass;
+        return $result ? $result : new \stdClass();
     }
 }

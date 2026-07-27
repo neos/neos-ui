@@ -10,12 +10,17 @@
     "neos/neos-ui-compiled": "self.version"
   },
   "scripts": {
+    "lint:php-cs-fixer": "../../../bin/php-cs-fixer check -v",
     "lint:phpstan": "../../../bin/phpstan analyse",
     "lint": [
       "@lint:phpstan"
     ],
     "test:behat-cli": "../../../bin/behat -f progress --strict --no-interaction",
-    "test:behavioral": "@test:behat-cli -c Tests/Behavior/behat.yml.dist -vvv"
+    "test:behavioral": "@test:behat-cli -c Tests/Behavior/behat.yml.dist -vvv",
+    "fix:php-cs-fixer": "../../../bin/php-cs-fixer fix",
+    "fix": [
+      "@fix:php-cs-fixer"
+    ]
   },
   "autoload": {
     "psr-4": {

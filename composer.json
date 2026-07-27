@@ -13,6 +13,7 @@
     "lint:php-cs-fixer": "../../../bin/php-cs-fixer check -v",
     "lint:phpstan": "../../../bin/phpstan analyse",
     "lint": [
+      "@lint:php-cs-fixer",
       "@lint:phpstan"
     ],
     "test:behat-cli": "../../../bin/behat -f progress --strict --no-interaction",

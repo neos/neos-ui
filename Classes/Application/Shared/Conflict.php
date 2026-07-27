@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace Neos\Neos\Ui\Application\Shared;
 
-use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateId;
 use Neos\Flow\Annotations as Flow;
 
 /**

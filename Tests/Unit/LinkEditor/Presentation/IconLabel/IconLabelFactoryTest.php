@@ -16,10 +16,10 @@ namespace Neos\Neos\Ui\Tests\Unit\LinkEditor\Presentation\IconLabel;
 
 use Neos\ContentRepository\Core\NodeType\NodeType;
 use Neos\ContentRepository\Core\NodeType\NodeTypeName;
-use PHPUnit\Framework\Assert;
-use PHPUnit\Framework\TestCase;
 use Neos\Neos\Ui\LinkEditor\Presentation\IconLabel\IconLabel;
 use Neos\Neos\Ui\LinkEditor\Presentation\IconLabel\IconLabelFactory;
+use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\TestCase;
 
 final class IconLabelFactoryTest extends TestCase
 {

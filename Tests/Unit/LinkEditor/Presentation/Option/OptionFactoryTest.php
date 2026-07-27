@@ -16,13 +16,12 @@ namespace Neos\Neos\Ui\Tests\Unit\LinkEditor\Presentation\Option;
 
 use Neos\ContentRepository\Core\NodeType\NodeType;
 use Neos\ContentRepository\Core\NodeType\NodeTypeName;
-use Neos\Flow\Tests\UnitTestCase;
-use PHPUnit\Framework\Assert;
-use PHPUnit\Framework\TestCase;
 use Neos\Neos\Ui\LinkEditor\Presentation\IconLabel\IconLabel;
 use Neos\Neos\Ui\LinkEditor\Presentation\IconLabel\IconLabelFactory;
 use Neos\Neos\Ui\LinkEditor\Presentation\Option\Option;
 use Neos\Neos\Ui\LinkEditor\Presentation\Option\OptionFactory;
+use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\TestCase;
 
 final class OptionFactoryTest extends TestCase
 {

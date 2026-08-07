@@ -14,9 +14,7 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  * source code.
  */
 
-use Neos\ContentRepository\Core\DimensionSpace\Exception\DimensionSpacePointNotFound;
 use Neos\ContentRepository\Core\Feature\SubtreeTagging\Command\TagSubtree;
-use Neos\ContentRepository\Core\SharedModel\Exception\ContentStreamDoesNotExistYet;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeVariantSelectionStrategy;
 use Neos\Neos\Domain\SubtreeTagging\NeosSubtreeTag;
 use Neos\Neos\Ui\Domain\Model\AbstractChange;
@@ -43,9 +41,6 @@ class Remove extends AbstractChange
 
     /**
      * Applies this change
-     *
-     * @throws ContentStreamDoesNotExistYet
-     * @throws DimensionSpacePointNotFound
      */
     public function apply(): void
     {

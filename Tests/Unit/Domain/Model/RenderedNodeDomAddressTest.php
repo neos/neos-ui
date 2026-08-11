@@ -36,7 +36,7 @@ final class RenderedNodeDomAddressTest extends UnitTestCase
     /**
      * @return array
      */
-    public function fusionPathsForRenderingProvider(): array
+    public static function fusionPathsForRenderingProvider(): array
     {
         return [
             '(Simple) Content Element via first-level ContentCase' => [

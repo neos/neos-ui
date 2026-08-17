@@ -12,7 +12,7 @@ namespace Neos\Neos\Ui\Tests\Functional\Service;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Tests\FunctionalTestCase;
 use Neos\Flow\Validation\Validator\NotEmptyValidator;
 use Neos\Neos\Ui\Service\NodePropertyValidationService;
@@ -37,27 +37,21 @@ class NodePropertyValidationServiceTest extends FunctionalTestCase
         $this->inject($this->nodePropertyValidationService, 'logger', $logger);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveValidator(): void
     {
         $validator = $this->nodePropertyValidationService->_call('resolveValidator', 'Neos.Neos/Validation/NotEmptyValidator', []);
         Assert::assertInstanceOf(NotEmptyValidator::class, $validator);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveCustomValidatorReturnsNull(): void
     {
         $validator = $this->nodePropertyValidationService->_call('resolveValidator', 'My.Own/Validation/NotEmptyValidator', []);
         Assert::assertNull($validator);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validate(): void
     {
         $result = $this->nodePropertyValidationService->validate(
@@ -68,9 +62,7 @@ class NodePropertyValidationServiceTest extends FunctionalTestCase
         Assert::assertFalse($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function ifNoBackendValidatorCanBeFoundValidationReturnsTrue(): void
     {
         $result = $this->nodePropertyValidationService->validate(

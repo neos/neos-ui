@@ -23,6 +23,8 @@ use Neos\Neos\Ui\LinkEditor\Presentation\Option\OptionFactory;
 use Neos\Neos\Ui\LinkEditor\Presentation\Option\Options;
 use Neos\Neos\Ui\LinkEditor\Presentation\Option\OptionsFactory;
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 final class OptionsFactoryTest extends TestCase
@@ -110,10 +112,10 @@ final class OptionsFactoryTest extends TestCase
     }
 
     /**
-     * @dataProvider forNodeTreePresetsSamples
-     * @test
      * @param array<mixed> $nodeTreePresets
      */
+    #[DataProvider('forNodeTreePresetsSamples')]
+    #[Test]
     public function createsOptionsForNodeTreePresets(
         array $nodeTreePresets,
         Options $expectedOptions,
@@ -215,10 +217,10 @@ final class OptionsFactoryTest extends TestCase
     }
 
     /**
-     * @dataProvider forNodeTypesSamples
-     * @test
      * @param NodeType[] $nodeTypes
      */
+    #[DataProvider('forNodeTypesSamples')]
+    #[Test]
     public function createsOptionsForNodeTypes(
         array $nodeTypes,
         Options $expectedOptions,

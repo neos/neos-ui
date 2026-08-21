@@ -21,6 +21,8 @@ use Neos\Neos\Ui\LinkEditor\Presentation\IconLabel\IconLabelFactory;
 use Neos\Neos\Ui\LinkEditor\Presentation\Option\Option;
 use Neos\Neos\Ui\LinkEditor\Presentation\Option\OptionFactory;
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 final class OptionFactoryTest extends TestCase
@@ -84,10 +86,10 @@ final class OptionFactoryTest extends TestCase
     }
 
     /**
-     * @dataProvider forNodeTreePresetSamples
-     * @test
      * @param array<mixed> $nodeTreePreset
      */
+    #[DataProvider('forNodeTreePresetSamples')]
+    #[Test]
     public function createsOptionsForNodeTreePresets(
         array $nodeTreePreset,
         Option $expectedOption,
@@ -143,10 +145,8 @@ final class OptionFactoryTest extends TestCase
             ];
     }
 
-    /**
-     * @dataProvider forNodeTypeSamples
-     * @test
-     */
+    #[DataProvider('forNodeTypeSamples')]
+    #[Test]
     public function createsOptionsForNodeTypes(
         NodeType $nodeType,
         Option $expectedOption,

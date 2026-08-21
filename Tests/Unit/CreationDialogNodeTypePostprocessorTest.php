@@ -10,7 +10,7 @@ use Symfony\Component\Yaml\Yaml;
 
 class CreationDialogNodeTypePostprocessorTest extends UnitTestCase
 {
-    public function examples(): iterable
+    public static function examples(): iterable
     {
         yield 'multiple references' => [
             'nodeTypeDefinition' => <<<'YAML'

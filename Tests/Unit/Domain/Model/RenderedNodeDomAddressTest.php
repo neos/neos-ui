@@ -12,7 +12,8 @@ namespace Neos\Neos\Ui\Tests\Unit\Domain\Model;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Tests\UnitTestCase;
 use Neos\Neos\Ui\Domain\Model\RenderedNodeDomAddress;
 
@@ -35,7 +36,7 @@ final class RenderedNodeDomAddressTest extends UnitTestCase
     /**
      * @return array
      */
-    public function fusionPathsForRenderingProvider(): array
+    public static function fusionPathsForRenderingProvider(): array
     {
         return [
             '(Simple) Content Element via first-level ContentCase' => [
@@ -61,10 +62,8 @@ final class RenderedNodeDomAddressTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider fusionPathsForRenderingProvider
-     * @test
-     */
+    #[DataProvider('fusionPathsForRenderingProvider')]
+    #[Test]
     public function providesCorrectFusionPathForContentRendering(string $fusionPath, string $fusionPathForRendering): void
     {
         $renderedNodeDomAddress = $this->createRenderedNodeDomAddress('/some/node@live', $fusionPath);

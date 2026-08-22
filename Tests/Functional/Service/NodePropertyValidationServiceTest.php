@@ -13,11 +13,11 @@ namespace Neos\Neos\Ui\Tests\Functional\Service;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Tests\FunctionalTestCase;
 use Neos\Flow\Validation\Validator\NotEmptyValidator;
 use Neos\Neos\Ui\Service\NodePropertyValidationService;
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\LoggerInterface;
 
 class NodePropertyValidationServiceTest extends FunctionalTestCase

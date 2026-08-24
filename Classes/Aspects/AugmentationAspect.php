@@ -22,6 +22,7 @@ use Neos\Fusion\Service\HtmlAugmenter;
 use Neos\Neos\Domain\Service\ContentContext;
 use Neos\Neos\Ui\Domain\Service\UserLocaleService;
 use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
+use Neos\Neos\Ui\Service\NodePolicyService;
 
 /**
  * - Serialize all nodes related to the currently rendered document
@@ -60,6 +61,12 @@ class AugmentationAspect
      * @var ?\Neos\Flow\Mvc\Controller\ControllerContext
      */
     protected $controllerContext = null;
+
+    /**
+     * @Flow\Inject
+     * @var NodePolicyService
+     */
+    protected $nodePolicyService;
 
     /**
      * @Flow\Before("method(Neos\Neos\Fusion\ContentElementWrappingImplementation->evaluate())")
@@ -145,7 +152,7 @@ class AugmentationAspect
             return $content;
         }
 
-        if ($this->nodeAuthorizationService->isGrantedToEditNode($node) === false) {
+        if ($this->nodePolicyService->canReadProperties($node) === false) {
             return $content;
         }
 

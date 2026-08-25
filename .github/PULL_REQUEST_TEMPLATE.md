@@ -1,7 +1,7 @@
 <!--
 Thanks for your contribution, we appreciate it!
 
-ATTENTION: ALL NEW FEATURE PRs SHOULD TARGET THE MASTER BRANCH (bugfixes go to the least maintained branch)
+ATTENTION: ALL NEW FEATURE PRs SHOULD TARGET THE CURRENT BRANCH (bugfixes go to the least maintained branch)
 -->
 
 

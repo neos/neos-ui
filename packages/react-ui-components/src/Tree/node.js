@@ -205,7 +205,10 @@ export class Header extends PureComponent {
                 href: directLink,
                 target: '_blank',
                 rel: 'noopener noreferrer',
-                onClick: (event) => event.preventDefault()
+                onClick: (event) => {
+                    history.pushState({}, '', directLink);
+                    return event.preventDefault();
+                }
             };
         }
 

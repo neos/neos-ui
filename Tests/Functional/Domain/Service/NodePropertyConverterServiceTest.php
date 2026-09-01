@@ -10,15 +10,14 @@ use Neos\Flow\Tests\FunctionalTestCase;
 use Neos\Media\Domain\Model\ImageInterface;
 use Neos\Neos\Domain\Model\Domain;
 use Neos\Neos\Ui\Domain\Service\NodePropertyConverterService;
+use PHPUnit\Framework\Attributes\Test;
 
 /**
  * Functional test case which tests the node property converter
  */
 class NodePropertyConverterServiceTest extends FunctionalTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function anArrayOfArrayIsReturnedAsIs()
     {
         $this->markTestSkipped('Has to be converted into behat test.');
@@ -56,9 +55,7 @@ class NodePropertyConverterServiceTest extends FunctionalTestCase
         self::assertEquals($expected, $actual);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function arrayOfObjectsWithToStringMethodIsReturnedAsIsUnlessTypeConverterIsProvided()
     {
         $this->markTestSkipped('Has to be converted into behat test.');
@@ -102,9 +99,7 @@ class NodePropertyConverterServiceTest extends FunctionalTestCase
         self::assertEquals($expected, $actual);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function arrayOfStringsHasToProvideTypeConverterToBeConvertedToArrayOfStrings()
     {
         $this->markTestSkipped('Has to be converted into behat test.');
@@ -142,9 +137,7 @@ class NodePropertyConverterServiceTest extends FunctionalTestCase
         self::assertEquals($expected, $actual);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function complexTypesWithGivenTypeConverterAreConvertedByTypeConverter()
     {
         $this->markTestSkipped('Has to be converted into behat test.');
@@ -186,9 +179,7 @@ class NodePropertyConverterServiceTest extends FunctionalTestCase
         self::assertEquals($expected, $actual);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function jsonSerializedAbleTypesAreDirectlySerialized()
     {
         $this->markTestSkipped('Has to be converted into behat test.');

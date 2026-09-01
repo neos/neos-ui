@@ -6,6 +6,8 @@ use Neos\ContentRepository\Core\NodeType\NodeTypeName;
 use Neos\Flow\Tests\UnitTestCase;
 use Neos\Neos\NodeTypePostprocessor\DefaultPropertyEditorPostprocessor;
 use Neos\Neos\Ui\Infrastructure\ContentRepository\CreationDialog\CreationDialogNodeTypePostprocessor;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Yaml\Yaml;
 
 class CreationDialogNodeTypePostprocessorTest extends UnitTestCase
@@ -47,10 +49,8 @@ class CreationDialogNodeTypePostprocessorTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider examples
-     */
+    #[Test]
+    #[DataProvider('examples')]
     public function processExamples(string $nodeTypeDefinition, string $expectedCreationDialog)
     {
         $configuration = array_merge([
@@ -74,9 +74,8 @@ class CreationDialogNodeTypePostprocessorTest extends UnitTestCase
 
     /**
      * promoted elements (showInCreationDialog: true)
-     *
-     * @test
      */
+    #[Test]
     public function processCopiesInspectorConfigurationToCreationDialogElements(): void
     {
         $configuration = [
@@ -128,9 +127,7 @@ class CreationDialogNodeTypePostprocessorTest extends UnitTestCase
         self::assertSame($expectedElements, $result['ui']['creationDialog']['elements']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processDoesNotCreateEmptyCreationDialogs(): void
     {
         $configuration = [
@@ -154,9 +151,8 @@ class CreationDialogNodeTypePostprocessorTest extends UnitTestCase
 
     /**
      * promoted elements (showInCreationDialog: true)
-     *
-     * @test
      */
+    #[Test]
     public function processRespectsDataTypeDefaultConfiguration(): void
     {
         $configuration = [
@@ -201,9 +197,8 @@ class CreationDialogNodeTypePostprocessorTest extends UnitTestCase
 
     /**
      * promoted elements (showInCreationDialog: true)
-     *
-     * @test
      */
+    #[Test]
     public function processRespectsEditorDefaultConfiguration(): void
     {
         $configuration = [
@@ -256,9 +251,8 @@ class CreationDialogNodeTypePostprocessorTest extends UnitTestCase
 
     /**
      * default editor
-     *
-     * @test
      */
+    #[Test]
     public function processConvertsCreationDialogConfiguration(): void
     {
         $configuration = [
@@ -446,9 +440,7 @@ class CreationDialogNodeTypePostprocessorTest extends UnitTestCase
         self::assertSame($expectedResult, $this->processConfigurationLegacyOnlyOnce($configuration, $dataTypesDefaultConfiguration, $editorDefaultConfiguration));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processDoesNotThrowExceptionIfNoCreationDialogEditorCanBeResolved(): void
     {
         $configuration = [

@@ -1,4 +1,4 @@
-import {put, select, takeEvery} from 'redux-saga/effects';
+import {all, call, put, select, takeEvery} from 'redux-saga/effects';
 
 import {actions, actionTypes, selectors} from '@neos-project/neos-ui-redux-store';
 import {requestIdleCallback} from '@neos-project/utils-helpers';
@@ -40,6 +40,18 @@ const eventPath = event => {
     return path;
 };
 
+//
+// Load the node data for the given nodes.
+//
+const loadNodeData = (q, nodeContextPaths) =>
+    nodeContextPaths.length > 0 ? q(nodeContextPaths).get() : [];
+
+//
+// Load the policies for the given nodes, telling us what the user is allowed to do with them.
+//
+const loadNodePolicies = (endpoints, nodeContextPaths) =>
+    nodeContextPaths.length > 0 ? endpoints.getAdditionalNodeMetadata(nodeContextPaths) : {};
+
 export default ({globalRegistry, store}) => function * initializeGuestFrame() {
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
     const inlineEditorRegistry = globalRegistry.get('inlineEditors');
@@ -62,22 +74,36 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
     }
 
     // Load all nodedata for nodes in the guest frame and filter duplicates
-    const {q} = yield backend.get();
+    const {q, endpoints} = yield backend.get();
     const nodeContextPathsInGuestFrame = findAllNodesInGuestFrame().map(node => node.getAttribute('data-__neos-node-contextpath'));
 
     // Filter nodes that are already present in the redux store and duplicates
     const nodesByContextPath = store.getState().cr.nodes.byContextPath;
-    const notFullyLoadedNodeContextPaths = [...new Set(nodeContextPathsInGuestFrame)].filter((contextPath) => {
+    const uniqueNodeContextPathsInGuestFrame = [...new Set(nodeContextPathsInGuestFrame)];
+    const notFullyLoadedNodeContextPaths = uniqueNodeContextPathsInGuestFrame.filter((contextPath) => {
         const node = nodesByContextPath[contextPath];
         const nodeIsLoaded = node !== undefined && node.isFullyLoaded;
         return !nodeIsLoaded;
     });
 
-    // Load remaining list of not fully loaded nodes from the backend if there are any
-    const fullyLoadedNodesFromContent = notFullyLoadedNodeContextPaths.length > 0 ? (yield q(notFullyLoadedNodeContextPaths).get()).reduce((nodes, node) => {
+    // The node policies tell us whether the user may edit a node at all. They are usually fetched
+    // lazily (see the CR/Policies saga), which is too late for us: The inline editors are created
+    // right after this saga merged the node data, so we would create editors before knowing whether
+    // the user is allowed to change the content. We therefore load them together with the node data.
+    const nodeContextPathsWithoutPolicy = uniqueNodeContextPathsInGuestFrame.filter(
+        contextPath => !nodesByContextPath[contextPath]?.policy
+    );
+
+    // Load remaining list of not fully loaded nodes and the missing policies from the backend if there are any
+    const [nodesFromContent, additionalNodeMetadata] = yield all([
+        call(loadNodeData, q, notFullyLoadedNodeContextPaths),
+        call(loadNodePolicies, endpoints, nodeContextPathsWithoutPolicy)
+    ]);
+
+    const fullyLoadedNodesFromContent = nodesFromContent.reduce((nodes, node) => {
         nodes[node.contextPath] = node;
         return nodes;
-    }, {}) : {};
+    }, {});
 
     const nodes = Object.assign(
         {},
@@ -86,6 +112,12 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
             [documentInformation.metaData.documentNode]: documentInformation.metaData.documentNodeSerialization
         }
     );
+
+    // Merge the freshly loaded policies into the node data, so that they are part of the same store
+    // update. This also keeps the CR/Policies saga from requesting them a second time.
+    Object.entries(additionalNodeMetadata || {}).forEach(([contextPath, metadata]) => {
+        nodes[contextPath] = Object.assign({}, nodes[contextPath], metadata);
+    });
 
     // Merge new nodes into the store
     yield put(actions.CR.Nodes.merge(nodes));

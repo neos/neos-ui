@@ -18,6 +18,8 @@ use Neos\ContentRepository\Core\NodeType\NodeType;
 use Neos\ContentRepository\Core\NodeType\NodeTypeName;
 use Neos\Flow\Tests\UnitTestCase;
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Neos\Neos\Ui\LinkEditor\Presentation\IconLabel\IconLabel;
 use Neos\Neos\Ui\LinkEditor\Presentation\IconLabel\IconLabelFactory;
@@ -85,10 +87,10 @@ final class OptionFactoryTest extends TestCase
     }
 
     /**
-     * @dataProvider forNodeTreePresetSamples
-     * @test
      * @param array<mixed> $nodeTreePreset
      */
+    #[Test]
+    #[DataProvider('forNodeTreePresetSamples')]
     public function createsOptionsForNodeTreePresets(
         array $nodeTreePreset,
         Option $expectedOption,
@@ -144,10 +146,8 @@ final class OptionFactoryTest extends TestCase
             ];
     }
 
-    /**
-     * @dataProvider forNodeTypeSamples
-     * @test
-     */
+    #[Test]
+    #[DataProvider('forNodeTypeSamples')]
     public function createsOptionsForNodeTypes(
         NodeType $nodeType,
         Option $expectedOption,

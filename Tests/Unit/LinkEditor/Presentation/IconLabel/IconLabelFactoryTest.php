@@ -17,6 +17,8 @@ namespace Neos\Neos\Ui\Tests\Unit\LinkEditor\Presentation\IconLabel;
 use Neos\ContentRepository\Core\NodeType\NodeType;
 use Neos\ContentRepository\Core\NodeType\NodeTypeName;
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Neos\Neos\Ui\LinkEditor\Presentation\IconLabel\IconLabel;
 use Neos\Neos\Ui\LinkEditor\Presentation\IconLabel\IconLabelFactory;
@@ -78,10 +80,10 @@ final class IconLabelFactoryTest extends TestCase
     }
 
     /**
-     * @dataProvider forNodeTreePresetSamples
-     * @test
      * @param array<mixed> $nodeTreePreset
      */
+    #[Test]
+    #[DataProvider('forNodeTreePresetSamples')]
     public function createsIconLabelsForNodeTreePresets(
         array $nodeTreePreset,
         IconLabel $expectedIconLabel,
@@ -168,10 +170,8 @@ final class IconLabelFactoryTest extends TestCase
             ];
     }
 
-    /**
-     * @dataProvider forNodeTypeSamples
-     * @test
-     */
+    #[Test]
+    #[DataProvider('forNodeTypeSamples')]
     public function createsIconLabelsForNodeTypes(
         NodeType $nodeType,
         IconLabel $expectedIconLabel,

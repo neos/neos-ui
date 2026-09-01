@@ -75,7 +75,6 @@ class CreationDialogNodeTypePostprocessorTest extends UnitTestCase
 
     /**
      * promoted elements (showInCreationDialog: true)
-     *
      */
     #[Test]
     public function processCopiesInspectorConfigurationToCreationDialogElements(): void
@@ -153,7 +152,6 @@ class CreationDialogNodeTypePostprocessorTest extends UnitTestCase
 
     /**
      * promoted elements (showInCreationDialog: true)
-     *
      */
     #[Test]
     public function processRespectsDataTypeDefaultConfiguration(): void
@@ -200,7 +198,6 @@ class CreationDialogNodeTypePostprocessorTest extends UnitTestCase
 
     /**
      * promoted elements (showInCreationDialog: true)
-     *
      */
     #[Test]
     public function processRespectsEditorDefaultConfiguration(): void
@@ -255,7 +252,6 @@ class CreationDialogNodeTypePostprocessorTest extends UnitTestCase
 
     /**
      * default editor
-     *
      */
     #[Test]
     public function processConvertsCreationDialogConfiguration(): void

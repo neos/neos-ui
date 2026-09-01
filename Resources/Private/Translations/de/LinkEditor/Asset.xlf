@@ -19,6 +19,10 @@
         <source>Loading ...</source>
         <target state="needs-translation" state-qualifier="leveraged-mt">Laden ...</target>
       </trans-unit>
+      <trans-unit id="anchor.validation.leadingOrTrailingSpace" xml:space="preserve" approved="no">
+        <source>Anchor contains leading or trailing empty space</source>
+        <target state="translated">Der Anker enthält führende oder folgende Leerzeichen</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

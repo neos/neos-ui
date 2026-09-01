@@ -23,6 +23,30 @@
         <source>Format options</source>
         <target state="needs-translation" state-qualifier="leveraged-mt">Formatierungsoptionen</target>
       </trans-unit>
+      <trans-unit id="href.validation.javascriptSchema" xml:space="preserve" approved="no">
+        <source>Javascript links are unsafe</source>
+        <target state="translated">Javascript-Links sind unsicher</target>
+      </trans-unit>
+      <trans-unit id="href.validation.nodeSchema" xml:space="preserve" approved="no">
+        <source>Document links should be handled in the document tab</source>
+        <target state="translated">Dokument-Links sollten im Tab Dokument behandelt werden</target>
+      </trans-unit>
+      <trans-unit id="href.validation.assetSchema" xml:space="preserve" approved="no">
+        <source>Asset links should be handled in the asset tab</source>
+        <target state="translated">Asset-Links sollten im Tab Assets behandelt werden</target>
+      </trans-unit>
+      <trans-unit id="href.validation.telSchema" xml:space="preserve" approved="no">
+        <source>Telephone links should be handled in the phone tab</source>
+        <target state="translated">Telefon-Links sollten im Tab Telefon behandelt werden</target>
+      </trans-unit>
+      <trans-unit id="href.validation.mailtoSchema" xml:space="preserve" approved="no">
+        <source>Mail to links should be handled in the mail to tab</source>
+        <target state="translated">E-Mail-Links sollten im Tab E-Mail behandelt werden</target>
+      </trans-unit>
+      <trans-unit id="href.validation.leadingOrTrailingSpace" xml:space="preserve" approved="no">
+        <source>Link starts or ends with trailing empty space</source>
+        <target state="translated">Link beginnt oder endet mit Leerzeichen</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

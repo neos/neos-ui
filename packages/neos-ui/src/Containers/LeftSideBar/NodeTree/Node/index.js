@@ -1,16 +1,15 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-
+import moment from 'moment';
+import hashSum from 'hash-sum';
 import flowright from 'lodash.flowright';
+
 import {Tree, Icon} from '@neos-project/react-ui-components';
 import {stripTags, decodeHtml} from '@neos-project/utils-helpers';
-
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {isNodeCollapsed} from '@neos-project/neos-ui-redux-store/src/CR/Nodes/helpers';
 import {neos} from '@neos-project/neos-ui-decorators';
-
-import hashSum from 'hash-sum';
 import {urlWithParams} from '@neos-project/utils-helpers/src/urlWithParams';
 import {getConfiguration} from '@neos-project/neos-ui-configuration';
 
@@ -173,7 +172,13 @@ export default class Node extends PureComponent {
         const hasTimeableNodeVisibility = node?.properties?._hasTimeableNodeVisibility;
 
         if (hasTimeableNodeVisibility) {
-            const circleColor = isDisabled ? 'error' : 'primaryBlue';
+            const {enableAfterDateTime, disableAfterDateTime} = node.properties;
+
+            let isCurrentlyHidden = isDisabled
+                || (enableAfterDateTime && moment(enableAfterDateTime).isAfter(moment()))
+                || (disableAfterDateTime && moment(disableAfterDateTime).isBefore(moment()));
+
+            const circleColor = isDisabled || isCurrentlyHidden ? 'error' : 'primaryBlue';
 
             return (
                 <span className="fa-layers fa-fw">

@@ -26,6 +26,10 @@
     color: var(--colors-PrimaryBlue);
 }
 
+.icon--color-contrastDark {
+    color: var(--colors-ContrastDark);
+}
+
 .icon--huge {
     & svg {
         height: 3em;

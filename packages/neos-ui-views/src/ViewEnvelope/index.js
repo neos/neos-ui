@@ -25,9 +25,7 @@ export default class ViewEnvelope extends PureComponent {
 
     getViewDefinition() {
         const {view, viewRegistry} = this.props;
-        // Support legacy view definitions
-        const viewName = view.replace('Content/Inspector/Views', 'Neos.Neos/Inspector/Views');
-        return viewRegistry.get(viewName);
+        return viewRegistry.get(view);
     }
 
     renderViewComponent() {

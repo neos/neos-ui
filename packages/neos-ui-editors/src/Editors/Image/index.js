@@ -299,7 +299,9 @@ export default class ImageEditor extends Component {
     isCroppable = () => {
         const {image} = this.state;
         const mediaType = image?.mediaType;
-        return this.isFeatureEnabled('crop') && image && !mediaType.includes('svg');
+        let hasDimensions = image?.originalDimensions?.width && image?.originalDimensions?.height;
+
+        return this.isFeatureEnabled('crop') && image && (!mediaType?.includes('svg') || hasDimensions);
     }
 
     render() {

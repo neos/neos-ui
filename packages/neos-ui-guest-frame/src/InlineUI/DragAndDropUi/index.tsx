@@ -9,7 +9,6 @@ import {FusionPath, InsertPosition, Node, NodeContextPath} from '@neos-project/n
 import {
     closestContextPathInGuestFrame,
     closestNodeInGuestFrame,
-    findNodeInGuestFrame,
     getGuestFrameDocument
     // @ts-ignore
 } from '@neos-project/neos-ui-guest-frame/src/dom';
@@ -225,13 +224,6 @@ const DragAndDropUi: React.FC<DragAndDropUiProps & InjectedDragAndDropUiProps> =
             targetNodeContextPath,
             insertPosition
         );
-
-        // Remove the original node from the DOM
-        // TODO: Verify that the move was successful before removing the node
-        const movedNode = findNodeInGuestFrame(draggedNodeContextPath, draggedNodeFusionPath);
-        if (movedNode) {
-            movedNode.remove();
-        }
     }, []);
 
     const handleDragEnd = useCallback(() => {

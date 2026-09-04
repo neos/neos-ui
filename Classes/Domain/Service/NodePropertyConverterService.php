@@ -192,13 +192,13 @@ class NodePropertyConverterService
      *
      * @param mixed $propertyValue the deserialized node property value
      * @param string $dataType the property type from the node type schema
-     * @return \JsonSerializable|int|float|string|bool|null|array<mixed>
+     * @return \JsonSerializable|\BackedEnum|int|float|string|bool|null|array<mixed>
      * @throws PropertyException
      */
     protected function convertValue($propertyValue, $dataType)
     {
         if ($propertyValue instanceof \BackedEnum) {
-            return $propertyValue->value;
+            return $propertyValue;
         }
         if ($propertyValue instanceof \JsonSerializable && DenormalizingObjectConverter::isDenormalizable($propertyValue::class)) {
             /**

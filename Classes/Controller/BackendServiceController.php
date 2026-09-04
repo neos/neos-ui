@@ -14,6 +14,7 @@ namespace Neos\Neos\Ui\Controller;
  * source code.
  */
 
+use GuzzleHttp\Psr7\Response;
 use Neos\ContentRepository\Core\DimensionSpace\DimensionSpacePoint;
 use Neos\ContentRepository\Core\Feature\WorkspaceRebase\Dto\RebaseErrorHandlingStrategy;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindAncestorNodesFilter;
@@ -28,7 +29,6 @@ use Neos\Flow\Log\ThrowableStorageInterface;
 use Neos\Flow\Mvc\ActionRequest;
 use Neos\Flow\Mvc\ActionResponse;
 use Neos\Flow\Mvc\Controller\ActionController;
-use Neos\Flow\Mvc\View\JsonView;
 use Neos\Flow\Property\PropertyMapper;
 use Neos\Flow\Security\Context;
 use Neos\Neos\Domain\Service\WorkspacePublishingService;
@@ -61,6 +61,7 @@ use Neos\Neos\Ui\Fusion\Helper\WorkspaceHelper;
 use Neos\Neos\Ui\Service\NodeClipboard;
 use Neos\Neos\Ui\TypeConverter\ChangeCollectionConverter;
 use Neos\Neos\Utility\NodeUriPathSegmentGenerator;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * @internal
@@ -73,11 +74,6 @@ class BackendServiceController extends ActionController
      * @var array<int,string>
      */
     protected $supportedMediaTypes = ['application/json'];
-
-    /**
-     * @var string
-     */
-    protected $defaultViewObjectName = JsonView::class;
 
     /**
      * @Flow\Inject
@@ -197,7 +193,7 @@ class BackendServiceController extends ActionController
      * Apply a set of changes to the system
      * @phpstan-param list<array<string,mixed>> $changes
      */
-    public function changeAction(array $changes): void
+    public function changeAction(array $changes): ResponseInterface
     {
         $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
 
@@ -219,7 +215,7 @@ class BackendServiceController extends ActionController
             $this->feedbackCollection->add($error);
         }
 
-        $this->view->assign('value', $this->feedbackCollection);
+        return $this->createJsonResponse($this->feedbackCollection);
     }
 
     /**
@@ -227,7 +223,7 @@ class BackendServiceController extends ActionController
      *
      * @phpstan-param array{workspaceName:string,siteId:string,preferredDimensionSpacePoint?:array<string,string[]>} $command
      */
-    public function publishChangesInSiteAction(array $command): void
+    public function publishChangesInSiteAction(array $command): ResponseInterface
     {
         try {
             /** @todo send from UI */
@@ -241,10 +237,10 @@ class BackendServiceController extends ActionController
             $result = $this->publishChangesInSiteCommandHandler
                 ->handle($command);
 
-            $this->view->assign('value', $result);
+            return $this->createJsonResponse($result);
         } catch (\Exception $e) {
             $this->throwableStorage2->logThrowable($e);
-            $this->view->assign('value', [
+            return $this->createJsonResponse([
                 'error' => [
                     'class' => $e::class,
                     'code' => $e->getCode(),
@@ -260,7 +256,7 @@ class BackendServiceController extends ActionController
      *
      * @phpstan-param array{workspaceName:string,documentId:string,preferredDimensionSpacePoint?:array<string,string[]>} $command
      */
-    public function publishChangesInDocumentAction(array $command): void
+    public function publishChangesInDocumentAction(array $command): ResponseInterface
     {
         try {
             /** @todo send from UI */
@@ -274,10 +270,10 @@ class BackendServiceController extends ActionController
             $result = $this->publishChangesInDocumentCommandHandler
                 ->handle($command);
 
-            $this->view->assign('value', $result);
+            return $this->createJsonResponse($result);
         } catch (\Exception $e) {
             $this->throwableStorage2->logThrowable($e);
-            $this->view->assign('value', [
+            return $this->createJsonResponse([
                 'error' => [
                     'class' => $e::class,
                     'code' => $e->getCode(),
@@ -293,7 +289,7 @@ class BackendServiceController extends ActionController
      *
      * @phpstan-param array<string,string> $command
      */
-    public function discardAllChangesAction(array $command): void
+    public function discardAllChangesAction(array $command): ResponseInterface
     {
         try {
             /** @todo send from UI */
@@ -306,14 +302,14 @@ class BackendServiceController extends ActionController
                 $command->workspaceName
             );
 
-            $this->view->assign('value', [
+            return $this->createJsonResponse([
                 'success' => [
                     'numberOfAffectedChanges' => $discardingResult->numberOfDiscardedChanges
                 ]
             ]);
         } catch (\Exception $e) {
             $this->throwableStorage2->logThrowable($e);
-            $this->view->assign('value', [
+            return $this->createJsonResponse([
                 'error' => [
                     'class' => $e::class,
                     'code' => $e->getCode(),
@@ -329,7 +325,7 @@ class BackendServiceController extends ActionController
      *
      * @phpstan-param array<string,string> $command
      */
-    public function discardChangesInSiteAction(array $command): void
+    public function discardChangesInSiteAction(array $command): ResponseInterface
     {
         try {
             /** @todo send from UI */
@@ -346,14 +342,14 @@ class BackendServiceController extends ActionController
                 $command->siteId
             );
 
-            $this->view->assign('value', [
+            return $this->createJsonResponse([
                 'success' => [
                     'numberOfAffectedChanges' => $discardingResult->numberOfDiscardedChanges
                 ]
             ]);
         } catch (\Exception $e) {
             $this->throwableStorage2->logThrowable($e);
-            $this->view->assign('value', [
+            return $this->createJsonResponse([
                 'error' => [
                     'class' => $e::class,
                     'code' => $e->getCode(),
@@ -369,7 +365,7 @@ class BackendServiceController extends ActionController
      *
      * @phpstan-param array<string,string> $command
      */
-    public function discardChangesInDocumentAction(array $command): void
+    public function discardChangesInDocumentAction(array $command): ResponseInterface
     {
         try {
             /** @todo send from UI */
@@ -386,14 +382,14 @@ class BackendServiceController extends ActionController
                 $command->documentId
             );
 
-            $this->view->assign('value', [
+            return $this->createJsonResponse([
                 'success' => [
                     'numberOfAffectedChanges' => $discardingResult->numberOfDiscardedChanges
                 ]
             ]);
         } catch (\Exception $e) {
             $this->throwableStorage2->logThrowable($e);
-            $this->view->assign('value', [
+            return $this->createJsonResponse([
                 'error' => [
                     'class' => $e::class,
                     'code' => $e->getCode(),
@@ -412,7 +408,7 @@ class BackendServiceController extends ActionController
      * @return void
      * @throws \Exception
      */
-    public function changeBaseWorkspaceAction(string $targetWorkspaceName, string $documentNode): void
+    public function changeBaseWorkspaceAction(string $targetWorkspaceName, string $documentNode): ResponseInterface
     {
         $documentNodeAddress = NodeAddress::fromJsonString($documentNode);
 
@@ -421,8 +417,7 @@ class BackendServiceController extends ActionController
             $error = new Error();
             $error->setMessage('No authenticated account');
             $this->feedbackCollection->add($error);
-            $this->view->assign('value', $this->feedbackCollection);
-            return;
+            return $this->createJsonResponse($this->feedbackCollection);
         }
         $userWorkspace = $this->workspaceService->getPersonalWorkspaceForUser($documentNodeAddress->contentRepositoryId, $user->getId());
 
@@ -444,16 +439,14 @@ class BackendServiceController extends ActionController
             );
 
             $this->feedbackCollection->add($error);
-            $this->view->assign('value', $this->feedbackCollection);
-            return;
+            return $this->createJsonResponse($this->feedbackCollection);
         } catch (\Exception $e) {
             $this->throwableStorage2->logThrowable($e);
             $error = new Error();
             $error->setMessage($e->getMessage());
 
             $this->feedbackCollection->add($error);
-            $this->view->assign('value', $this->feedbackCollection);
-            return;
+            return $this->createJsonResponse($this->feedbackCollection);
         }
 
         $success = new Success();
@@ -506,7 +499,7 @@ class BackendServiceController extends ActionController
             $this->feedbackCollection->add($redirect);
         }
 
-        $this->view->assign('value', $this->feedbackCollection);
+        return $this->createJsonResponse($this->feedbackCollection);
     }
 
 
@@ -518,7 +511,7 @@ class BackendServiceController extends ActionController
      * @throws \Neos\Flow\Property\Exception
      * @throws \Neos\Flow\Security\Exception
      */
-    public function copyNodesAction(array $nodes): void
+    public function copyNodesAction(array $nodes): ResponseInterface
     {
         /** @var array<int,NodeAddress> $nodeAddresses */
         $nodeAddresses = array_map(
@@ -545,7 +538,7 @@ class BackendServiceController extends ActionController
      * @throws \Neos\Flow\Property\Exception
      * @throws \Neos\Flow\Security\Exception
      */
-    public function cutNodesAction(array $nodes): void
+    public function cutNodesAction(array $nodes): ResponseInterface
     {
         /** @var array<int,NodeAddress> $nodeAddresses */
         $nodeAddresses = array_map(
@@ -556,17 +549,17 @@ class BackendServiceController extends ActionController
         $this->clipboard->cutNodes($nodeAddresses);
     }
 
-    public function getWorkspaceInfoAction(): void
+    public function getWorkspaceInfoAction(): ResponseInterface
     {
         $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
         $personalWorkspaceInfo = (new WorkspaceHelper())->getPersonalWorkspace($contentRepositoryId);
-        $this->view->assign('value', $personalWorkspaceInfo);
+        return $this->createJsonResponse($personalWorkspaceInfo);
     }
 
     /**
      * @throws \Neos\Flow\Mvc\Exception\NoSuchArgumentException
      */
-    public function initializeGetAdditionalNodeMetadataAction(): void
+    public function initializeGetAdditionalNodeMetadataAction(): ResponseInterface
     {
         $this->arguments->getArgument('nodes')
             ->getPropertyMappingConfiguration()->allowAllProperties();
@@ -576,7 +569,7 @@ class BackendServiceController extends ActionController
      * Fetches all the node information that can be lazy-loaded
      * @phpstan-param list<string> $nodes
      */
-    public function getAdditionalNodeMetadataAction(array $nodes): void
+    public function getAdditionalNodeMetadataAction(array $nodes): ResponseInterface
     {
         $result = [];
         foreach ($nodes as $nodeAddressString) {
@@ -607,7 +600,7 @@ class BackendServiceController extends ActionController
             }
         }
 
-        $this->view->assign('value', $result);
+        return $this->createJsonResponse($result);
     }
 
     /**
@@ -669,7 +662,7 @@ class BackendServiceController extends ActionController
      *
      * @throws \Neos\Neos\Exception
      */
-    public function generateUriPathSegmentAction(string $contextNode, string $text): void
+    public function generateUriPathSegmentAction(string $contextNode, string $text): ResponseInterface
     {
         $contextNodeAddress = NodeAddress::fromJsonString($contextNode);
         $contentRepository = $this->contentRepositoryRegistry->get($contextNodeAddress->contentRepositoryId);
@@ -680,7 +673,7 @@ class BackendServiceController extends ActionController
         $contextNode = $subgraph->findNodeById($contextNodeAddress->aggregateId);
 
         $slug = $this->nodeUriPathSegmentGenerator->generateUriPathSegment($contextNode, $text);
-        $this->view->assign('value', $slug);
+        return $this->createJsonResponse($slug);
     }
 
     /**
@@ -691,7 +684,7 @@ class BackendServiceController extends ActionController
      * @phpstan-param null|array<mixed> $dimensionSpacePoint
      * @return void
      */
-    public function syncWorkspaceAction(string $targetWorkspaceName, bool $force, ?array $dimensionSpacePoint): void
+    public function syncWorkspaceAction(string $targetWorkspaceName, bool $force, ?array $dimensionSpacePoint): ResponseInterface
     {
         try {
             $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
@@ -712,10 +705,10 @@ class BackendServiceController extends ActionController
 
             $result = $this->syncWorkspaceCommandHandler->handle($command);
 
-            $this->view->assign('value', $result);
+            return $this->createJsonResponse($result);
         } catch (\Exception $e) {
             $this->throwableStorage2->logThrowable($e);
-            $this->view->assign('value', [
+            return $this->createJsonResponse([
                 'error' => [
                     'class' => $e::class,
                     'code' => $e->getCode(),
@@ -730,7 +723,7 @@ class BackendServiceController extends ActionController
      * @phpstan-param array<mixed> $query
      * @return void
      */
-    public function reloadNodesAction(array $query): void
+    public function reloadNodesAction(array $query): ResponseInterface
     {
         /** @todo send from UI */
         $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
@@ -767,12 +760,12 @@ class BackendServiceController extends ActionController
 
         try {
             $result = $this->reloadNodesQueryHandler->handle($query, $this->request);
-            $this->view->assign('value', [
+            return $this->createJsonResponse([
                 'success' => $result
             ]);
         } catch (\Exception $e) {
             $this->throwableStorage2->logThrowable($e);
-            $this->view->assign('value', [
+            return $this->createJsonResponse([
                 'error' => [
                     'class' => $e::class,
                     'code' => $e->getCode(),
@@ -781,5 +774,14 @@ class BackendServiceController extends ActionController
                 ]
             ]);
         }
+    }
+
+    private function createJsonResponse(mixed $value): ResponseInterface
+    {
+        $jsonEncoded = json_encode($value, JSON_THROW_ON_ERROR);
+        return new Response(
+            headers: ['Content-Type' => 'application/json'],
+            body: $jsonEncoded
+        );
     }
 }

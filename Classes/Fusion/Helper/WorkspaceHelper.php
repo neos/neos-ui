@@ -13,10 +13,12 @@ namespace Neos\Neos\Ui\Fusion\Helper;
 
 use Neos\ContentRepository\Core\ContentRepository;
 use Neos\ContentRepository\Core\SharedModel\ContentRepository\ContentRepositoryId;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeName;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Security\Context;
+use Neos\Neos\Domain\Model\SiteNodeName;
 use Neos\Neos\Domain\Model\WorkspaceClassification;
 use Neos\Neos\Domain\Service\UserService;
 use Neos\Neos\Domain\Service\WorkspaceService;
@@ -67,7 +69,7 @@ class WorkspaceHelper implements ProtectedContextAwareInterface
     /**
      * @return array<string,mixed>
      */
-    public function getPersonalWorkspace(ContentRepositoryId $contentRepositoryId): array
+    public function getPersonalWorkspace(ContentRepositoryId $contentRepositoryId, ?NodeName $siteNodeName = null): array
     {
         $currentUser = $this->userService->getCurrentUser();
         if ($currentUser === null) {
@@ -76,7 +78,11 @@ class WorkspaceHelper implements ProtectedContextAwareInterface
         $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
         $personalWorkspace = $this->workspaceService->getPersonalWorkspaceForUser($contentRepositoryId, $currentUser->getId());
         $personalWorkspacePermissions = $this->contentRepositoryAuthorizationService->getWorkspacePermissions($contentRepositoryId, $personalWorkspace->workspaceName, $this->securityContext->getRoles(), $currentUser->getId());
-        $publishableNodes = $this->uiWorkspaceService->getPublishableNodeInfo($personalWorkspace->workspaceName, $contentRepository->id);
+        $publishableNodes = $this->uiWorkspaceService->getPublishableNodeInfo(
+            $personalWorkspace->workspaceName,
+            $contentRepository->id,
+            $siteNodeName !== null ? SiteNodeName::fromNodeName($siteNodeName) : null
+        );
         $allowedTargetWorkspaces = $this->getAllowedTargetWorkspaces($contentRepository);
         $baseWorkspace = $personalWorkspace->baseWorkspaceName ? $allowedTargetWorkspaces[$personalWorkspace->baseWorkspaceName->value] : null;
 

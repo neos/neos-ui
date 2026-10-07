@@ -22,7 +22,7 @@ class MediaDetailsScreen extends PureComponent {
         window.NeosMediaBrowserCallbacks = {
             close() {
                 // Wait for iframe to finish saving
-                iframe.contentWindow.addEventListener('unload', () => {
+                iframe.contentWindow.addEventListener('pagehide', () => {
                     onClose();
                 });
             }

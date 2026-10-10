@@ -317,7 +317,7 @@ class NodePropertyConverterService
         if (is_string($dataType)) {
             $this->setTypeConverterOptionsForType(
                 $propertyMappingConfiguration,
-                $typeConverterClassName,
+                $typeConverter::class,
                 $dataType
             );
         }
@@ -325,6 +325,9 @@ class NodePropertyConverterService
         return true;
     }
 
+    /**
+     * @param class-string<TypeConverterInterface> $typeConverterClass
+     */
     protected function setTypeConverterOptionsForType(
         PropertyMappingConfiguration $propertyMappingConfiguration,
         string $typeConverterClass,

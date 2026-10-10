@@ -13,8 +13,8 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-      "neos/flow-development-collection": "9.2.x-dev as 9.2",
-      "neos/neos-development-collection": "9.2.x-dev as 9.2",
+      "neos/flow-development-collection": "9.3.x-dev as 9.3",
+      "neos/neos-development-collection": "9.3.x-dev as 9.3",
 
       "neos/neos-ui": "@dev",
       "neos/test-onedimension": "@dev",

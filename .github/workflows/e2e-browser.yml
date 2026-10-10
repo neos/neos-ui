@@ -68,8 +68,8 @@ jobs:
         with:
           context: .
           file: Tests/E2E/system_under_test/Dockerfile
-          # SUT tag for 9.0 branch
-          tags: neos-ui-e2e-sut:9.0
+          # SUT tag for branch
+          tags: neos-ui-e2e-sut:9.3
           load: true
           cache-from: type=gha,scope=sut
           cache-to: type=gha,mode=max,scope=sut

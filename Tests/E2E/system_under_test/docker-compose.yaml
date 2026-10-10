@@ -4,7 +4,7 @@ services:
     # Stable tag so CI can pre-build the image once with buildx + GHA layer cache and `docker compose up` then
     # reuses it without rebuilding.
     # The build block below is kept as a fallback for local dev (`make setup-sut`).
-    image: neos-ui-e2e-sut:9.2
+    image: neos-ui-e2e-sut:9.3
     build:
       context: ../../../
       dockerfile: Tests/E2E/system_under_test/Dockerfile

@@ -1,27 +1,17 @@
-import {select, take, put, fork} from 'redux-saga/effects';
+import {fork, put, select, take} from 'redux-saga/effects';
 
 import {actions, actionTypes, selectors} from '@neos-project/neos-ui-redux-store';
 import backend from '@neos-project/neos-ui-backend-connector';
 
-let nodesCurrentlyProcessed = [];
-
-function * fetchAdditionalNodeMetadata(nodesWithoutAdditionalMetadata) {
-    const nodesNotProcessed = nodesWithoutAdditionalMetadata.filter(nodePath => !nodesCurrentlyProcessed.includes(nodePath));
-    if (nodesNotProcessed.length === 0) {
-        return;
-    }
-
-    nodesCurrentlyProcessed.push(...nodesWithoutAdditionalMetadata);
-
+function* fetchAdditionalNodeMetadata(nodesWithoutAdditionalMetadata) {
     const {endpoints} = backend.get();
     const additionalNodeMetadata = yield endpoints.getAdditionalNodeMetadata(nodesWithoutAdditionalMetadata);
     if (additionalNodeMetadata) {
         yield put(actions.CR.Nodes.merge(additionalNodeMetadata));
-        nodesCurrentlyProcessed = nodesCurrentlyProcessed.filter(nodePath => !nodesWithoutAdditionalMetadata.includes(nodePath));
     }
 }
 
-export function * watchNodeInformationChanges() {
+export function* watchNodeInformationChanges() {
     while (true) {
         const action = yield take([actionTypes.CR.Nodes.MERGE, actionTypes.CR.Nodes.ADD, actionTypes.CR.Nodes.SET_STATE]);
         const nodeMap = (action.type === actionTypes.CR.Nodes.SET_STATE) ? action.payload.nodes : action.payload.nodeMap;

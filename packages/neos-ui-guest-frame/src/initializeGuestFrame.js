@@ -2,7 +2,6 @@ import {put, select, takeEvery} from 'redux-saga/effects';
 import {$get} from 'plow-js';
 
 import {actions, actionTypes, selectors} from '@neos-project/neos-ui-redux-store';
-import {requestIdleCallback} from '@neos-project/utils-helpers';
 
 import initializeContentDomNode from './initializeContentDomNode';
 import registerContentNodeInteractionHandlers from './registerContentNodeInteractionHandlers';
@@ -20,7 +19,7 @@ import style from './style.module.css';
 import {SelectionModeTypes} from '@neos-project/neos-ts-interfaces';
 import backend from '@neos-project/neos-ui-backend-connector';
 
-export default ({globalRegistry, store}) => function* initializeGuestFrame() {
+export default ({globalRegistry, store}) => function * initializeGuestFrame() {
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
     const inlineEditorRegistry = globalRegistry.get('inlineEditors');
     const guestFrameWindow = getGuestFrameWindow();
@@ -98,18 +97,10 @@ export default ({globalRegistry, store}) => function* initializeGuestFrame() {
         return;
     }
 
-    // Delegated listeners on the guest frame document handle hover highlighting and node
-    // selection of content nodes
+    // Register mouse / touch / keyboard interaction event listeners and handlers
     registerContentNodeInteractionHandlers({store, guestFrameDocument: getGuestFrameDocument()});
 
-    // Nodes are initialized in batches during the browser's idle periods. We deliberately do not
-    // rely on the deadline handed to us by `requestIdleCallback`: on a busy editor frame it is
-    // regularly already expired (`timeRemaining() === 0`), which would degrade the initialization
-    // into one node per idle period. Instead, we self-time each slice and always initialize at
-    // least `minimumBatchSize` nodes, so progress does not depend on the browser's scheduling.
-    const minimumBatchSize = 25;
-    const sliceDurationInMilliseconds = 8;
-
+    // Initialize all nodes found in the guest frame
     const nodesToInitialize = findAllNodesInGuestFrame();
     const propertiesByContextPath = findAllPropertiesInGuestFrameGroupedByContextPath();
     const currentNodesByContextPath = store.getState().cr.nodes.byContextPath;
@@ -121,36 +112,12 @@ export default ({globalRegistry, store}) => function* initializeGuestFrame() {
     });
     const nodeInitializationContext = {nodes: currentNodesByContextPath, propertiesByContextPath};
 
-    let currentNodeIndex = 0;
-
-    const start = performance.now();
-    const initializeNodesInIdlePeriods = () => {
-        const initializeNodesInCurrentIdlePeriod = () => {
-            const sliceStartTime = performance.now();
-            let nodesInitializedInCurrentBatch = 0;
-            console.debug('Initializing nodes in idle period', nodesToInitialize.length);
-
-            while (currentNodeIndex < nodesToInitialize.length && (nodesInitializedInCurrentBatch < minimumBatchSize || performance.now() - sliceStartTime < sliceDurationInMilliseconds)) {
-                const node = nodesToInitialize[currentNodeIndex++];
-                nodesInitializedInCurrentBatch++;
-
-                // Only if guest frame document did not change in the meantime, we continue initializing the node
-                if (getGuestFrameDocument() === node.ownerDocument) {
-                    initializeCurrentNode(node, nodeInitializationContext);
-                    console.debug('Finished initializing node after ', performance.now() - start, 'ms');
-                }
-            }
-
-            if (currentNodeIndex < nodesToInitialize.length) {
-                // The timeout makes sure we are called back even while the editor frame stays busy.
-                requestIdleCallback(initializeNodesInCurrentIdlePeriod, {timeout: 500});
-            }
-        };
-
-        requestIdleCallback(initializeNodesInCurrentIdlePeriod, {timeout: 500});
-    };
-
-    initializeNodesInIdlePeriods();
+    nodesToInitialize.forEach(node => {
+        // Only if guest frame document did not change in the meantime, we continue initializing the node
+        if (getGuestFrameDocument() === node.ownerDocument) {
+            initializeCurrentNode(node, nodeInitializationContext);
+        }
+    });
 
     // When the contentCanvas is reloaded (e.g. from the inspector change) and focused style to it
     const focusedNode = yield select(selectors.CR.Nodes.focusedNodePathSelector);
@@ -161,7 +128,7 @@ export default ({globalRegistry, store}) => function* initializeGuestFrame() {
         yield put(actions.UI.ContentCanvas.requestScrollIntoView(true));
     }
 
-    yield takeEvery(actionTypes.CR.Nodes.FOCUS, function* (action) {
+    yield takeEvery(actionTypes.CR.Nodes.FOCUS, function * (action) {
         // Don't focus node in contentcanvas when multiselecting
         if (action.payload.selectionMode !== SelectionModeTypes.SINGLE_SELECT) {
             return;

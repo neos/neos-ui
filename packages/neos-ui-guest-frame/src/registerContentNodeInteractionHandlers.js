@@ -24,6 +24,8 @@ const eventPath = event => {
     return path;
 };
 
+const guestFramesWithRegisteredHandlers = new WeakSet();
+
 //
 // Registers the hover highlighting and the node selection of content nodes within the guest frame.
 //
@@ -31,42 +33,56 @@ const eventPath = event => {
 // instead of listeners on every single content node.
 //
 export default ({store, guestFrameDocument}) => {
-    let hoveredContentDomNode = null;
+    if (guestFramesWithRegisteredHandlers.has(guestFrameDocument)) {
+        return;
+    }
+
+    guestFramesWithRegisteredHandlers.add(guestFrameDocument);
+
+    const findHighlightedContentDomNode = () => guestFrameDocument.querySelector(`.${style.markHoveredNodeAsHovered}`);
+
+    // Resolves the content node the pointer is currently over.
+    const findContentDomNodeBelowPointer = e => {
+        const domNodeBelowPointer = guestFrameDocument.elementFromPoint(e.clientX, e.clientY);
+        return (domNodeBelowPointer || e.target).closest('[data-__neos-node-contextpath]');
+    };
 
     guestFrameDocument.addEventListener('mouseover', e => {
-        const contentDomNode = e.target.closest('[data-__neos-node-contextpath]');
+        const contentDomNode = findContentDomNodeBelowPointer(e);
 
-        if (!contentDomNode || contentDomNode === hoveredContentDomNode) {
+        if (!contentDomNode) {
             return;
         }
 
-        // Still inside the previously hovered node, for instance when moving between two of its children
-        if (hoveredContentDomNode && hoveredContentDomNode.contains(e.relatedTarget)) {
+        const highlightedContentDomNode = findHighlightedContentDomNode();
+
+        if (highlightedContentDomNode === contentDomNode) {
             return;
         }
 
-        if (hoveredContentDomNode) {
-            hoveredContentDomNode.classList.remove(style.markHoveredNodeAsHovered);
+        if (highlightedContentDomNode) {
+            highlightedContentDomNode.classList.remove(style.markHoveredNodeAsHovered);
         }
 
-        hoveredContentDomNode = contentDomNode;
-        hoveredContentDomNode.classList.add(style.markHoveredNodeAsHovered);
+        contentDomNode.classList.add(style.markHoveredNodeAsHovered);
     });
 
     guestFrameDocument.addEventListener('mouseout', e => {
-        const contentDomNode = e.target.closest('[data-__neos-node-contextpath]');
+        const highlightedContentDomNode = findHighlightedContentDomNode();
 
-        if (!contentDomNode || contentDomNode !== hoveredContentDomNode) {
+        if (!highlightedContentDomNode) {
             return;
         }
 
-        // Still inside the hovered node, for instance when moving between two of its children
-        if (e.relatedTarget && contentDomNode.contains(e.relatedTarget)) {
+        const domNodeBelowPointer = guestFrameDocument.elementFromPoint(e.clientX, e.clientY);
+
+        // The pointer is still within the highlighted node, for instance, when moving between two and
+        // its children, or when the pointer left the guest frame window altogether
+        if (!domNodeBelowPointer || highlightedContentDomNode.contains(domNodeBelowPointer)) {
             return;
         }
 
-        contentDomNode.classList.remove(style.markHoveredNodeAsHovered);
-        hoveredContentDomNode = null;
+        highlightedContentDomNode.classList.remove(style.markHoveredNodeAsHovered);
     });
 
     const focusSelectedNode = event => {

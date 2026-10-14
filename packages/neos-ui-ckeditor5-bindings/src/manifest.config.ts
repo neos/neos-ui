@@ -359,7 +359,12 @@ export default (ckEditorRegistry: SynchronousMetaRegistry<unknown>) => {
                 contentToolbar: tableItems
             },
             codeBlock: {
-                languages: [
+                languages: formatting.codeBlockLanguages || [
+                    {
+                        language: 'plaintext',
+                        label: 'Plain text',
+                        class: ''
+                    },
                     {language: 'css', label: 'CSS'},
                     {language: 'html', label: 'HTML'}
                 ]

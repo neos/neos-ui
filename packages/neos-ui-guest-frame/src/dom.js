@@ -68,6 +68,33 @@ export const findRelativePropertiesInGuestFrame = contentDomNode =>
     ));
 
 //
+// Find all DOM nodes that represent CR node properties in the guest frame, grouped by the
+// context path of the node they are editable on.
+//
+// This is a single-pass alternative to findRelativePropertiesInGuestFrame, which has to query
+// the subtree of every content node separately.
+//
+export const findAllPropertiesInGuestFrameGroupedByContextPath = () => {
+    const propertiesByContextPath = {};
+
+    findAllPropertiesInGuestFrame().forEach(propertyDomNode => {
+        const contextPath = propertyDomNode.getAttribute('data-__neos-editable-node-contextpath');
+
+        if (!contextPath) {
+            return;
+        }
+
+        if (!propertiesByContextPath[contextPath]) {
+            propertiesByContextPath[contextPath] = [];
+        }
+
+        propertiesByContextPath[contextPath].push(propertyDomNode);
+    });
+
+    return propertiesByContextPath;
+};
+
+//
 // Find a specific DOM node that represents a CR node in the guest frame
 //
 export const findNodeInGuestFrame = (contextPath, fusionPath) => fusionPath ? findInGuestFrame(

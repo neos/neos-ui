@@ -5,9 +5,11 @@ import {actions, actionTypes, selectors} from '@neos-project/neos-ui-redux-store
 import {requestIdleCallback} from '@neos-project/utils-helpers';
 
 import initializeContentDomNode from './initializeContentDomNode';
+import registerContentNodeInteractionHandlers from './registerContentNodeInteractionHandlers';
 import {
     dispatchCustomEvent,
     findAllNodesInGuestFrame,
+    findAllPropertiesInGuestFrameGroupedByContextPath,
     findInGuestFrame,
     findNodeInGuestFrame,
     getGuestFrameDocument,
@@ -18,29 +20,7 @@ import style from './style.module.css';
 import {SelectionModeTypes} from '@neos-project/neos-ts-interfaces';
 import backend from '@neos-project/neos-ui-backend-connector';
 
-//
-// Get all parent elements of the event target.
-//
-// It's not possible to use `event.composedPath()` here because
-// it doesn't work in FF with past events stored in a closure.
-//
-const eventPath = event => {
-    let element = event.target;
-    const path = [];
-
-    while (element) {
-        path.push(element);
-        if (element.tagName === 'HTML') {
-            path.push(document);
-            path.push(window);
-            return path;
-        }
-        element = element.parentElement;
-    }
-    return path;
-};
-
-export default ({globalRegistry, store}) => function * initializeGuestFrame() {
+export default ({globalRegistry, store}) => function* initializeGuestFrame() {
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
     const inlineEditorRegistry = globalRegistry.get('inlineEditors');
     const guestFrameWindow = getGuestFrameWindow();
@@ -118,60 +98,9 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
         return;
     }
 
-    const focusSelectedNode = event => {
-        const clickPath = Array.prototype.slice.call(eventPath(event));
-        const isInsideInlineUi = clickPath.some(domNode =>
-            domNode &&
-            domNode.getAttribute &&
-            domNode.getAttribute('data-__neos__inline-ui')
-        );
-        const isInsideEditableProperty = clickPath.some(domNode =>
-            domNode &&
-            domNode.getAttribute &&
-            domNode.getAttribute('data-__neos-property')
-        );
-        const selectedDomNode = clickPath.find(domNode =>
-            domNode &&
-            domNode.getAttribute &&
-            domNode.getAttribute('data-__neos-node-contextpath')
-        );
-
-        if (isInsideInlineUi) {
-            // Do nothing, everything OK!
-        } else if (selectedDomNode) {
-            const contextPath = selectedDomNode.getAttribute('data-__neos-node-contextpath');
-            const fusionPath = selectedDomNode.getAttribute('data-__neos-fusion-path');
-            const state = store.getState();
-            const focusedNodeContextPath = selectors.CR.Nodes.focusedNodePathSelector(state);
-            if (!isInsideEditableProperty) {
-                store.dispatch(actions.UI.ContentCanvas.setCurrentlyEditedPropertyName(''));
-            }
-            if (!isInsideEditableProperty || focusedNodeContextPath !== contextPath) {
-                store.dispatch(actions.CR.Nodes.focus(contextPath, fusionPath));
-            }
-        } else {
-            store.dispatch(actions.UI.ContentCanvas.setCurrentlyEditedPropertyName(''));
-            store.dispatch(actions.CR.Nodes.unFocus());
-        }
-    };
-
-    // We store the original mousedown event in order to prevent bugs like this: https://github.com/neos/neos-ui/issues/1934
-    let mouseDownEvent = null;
-    getGuestFrameDocument().addEventListener('mousedown', event => {
-        mouseDownEvent = event;
-    });
-    getGuestFrameDocument().addEventListener('mouseup', () => {
-        if (mouseDownEvent) {
-            focusSelectedNode(mouseDownEvent);
-        }
-        mouseDownEvent = null;
-    });
-
-    getGuestFrameDocument().addEventListener('keyup', e => {
-        if (e.key === 'Tab') {
-            focusSelectedNode(e);
-        }
-    });
+    // Delegated listeners on the guest frame document handle hover highlighting and node
+    // selection of content nodes
+    registerContentNodeInteractionHandlers({store, guestFrameDocument: getGuestFrameDocument()});
 
     // Nodes are initialized in batches during the browser's idle periods. We deliberately do not
     // rely on the deadline handed to us by `requestIdleCallback`: on a busy editor frame it is
@@ -182,6 +111,16 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
     const sliceDurationInMilliseconds = 8;
 
     const nodesToInitialize = findAllNodesInGuestFrame();
+    const propertiesByContextPath = findAllPropertiesInGuestFrameGroupedByContextPath();
+    const currentNodesByContextPath = store.getState().cr.nodes.byContextPath;
+    const initializeCurrentNode = initializeContentDomNode({
+        store,
+        globalRegistry,
+        nodeTypesRegistry,
+        inlineEditorRegistry
+    });
+    const nodeInitializationContext = {nodes: currentNodesByContextPath, propertiesByContextPath};
+
     let currentNodeIndex = 0;
 
     const start = performance.now();
@@ -195,16 +134,9 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
                 const node = nodesToInitialize[currentNodeIndex++];
                 nodesInitializedInCurrentBatch++;
 
-                const initializeCurrentNode = initializeContentDomNode({
-                    store,
-                    globalRegistry,
-                    nodeTypesRegistry,
-                    inlineEditorRegistry
-                });
-
                 // Only if guest frame document did not change in the meantime, we continue initializing the node
                 if (getGuestFrameDocument() === node.ownerDocument) {
-                    initializeCurrentNode(node);
+                    initializeCurrentNode(node, nodeInitializationContext);
                     console.debug('Finished initializing node after ', performance.now() - start, 'ms');
                 }
             }
@@ -229,7 +161,7 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
         yield put(actions.UI.ContentCanvas.requestScrollIntoView(true));
     }
 
-    yield takeEvery(actionTypes.CR.Nodes.FOCUS, function * (action) {
+    yield takeEvery(actionTypes.CR.Nodes.FOCUS, function* (action) {
         // Don't focus node in contentcanvas when multiselecting
         if (action.payload.selectionMode !== SelectionModeTypes.SINGLE_SELECT) {
             return;

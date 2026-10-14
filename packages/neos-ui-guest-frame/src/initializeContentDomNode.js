@@ -1,7 +1,6 @@
 import {$get, $count} from 'plow-js';
 
 import {
-    getGuestFrameDocument,
     createEmptyContentCollectionPlaceholderIfMissing,
     createNotInlineEditableOverlay,
     findRelativePropertiesInGuestFrame
@@ -10,9 +9,23 @@ import initializePropertyDomNode from './initializePropertyDomNode';
 
 import style from './style.module.css';
 
-export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry}) => contentDomNode => {
-    const nodes = store.getState().cr.nodes.byContextPath;
+//
+// `nodes` and `propertiesByContextPath` are optional pre-computed lookups, so that initializing
+// many nodes at once does not have to re-read the store and re-query the guest frame's DOM for
+// every single node.
+//
+export default ({
+    store,
+    globalRegistry,
+    nodeTypesRegistry,
+    inlineEditorRegistry
+}) => (contentDomNode, {nodes: precomputedNodes, propertiesByContextPath} = {}) => {
     const contextPath = contentDomNode.getAttribute('data-__neos-node-contextpath');
+    // The pre-computed nodes may be outdated, as nodes can be merged into the store while the
+    // initialization is still running, so we fall back to a fresh read.
+    const nodes = precomputedNodes && precomputedNodes[contextPath] ?
+        precomputedNodes :
+        store.getState().cr.nodes.byContextPath;
 
     if (!nodes[contextPath]) {
         // Node is not available in the store yet, so we can't initialize any interaction
@@ -41,34 +54,21 @@ export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry}
         contentDomNode.classList.add('neos-contentelement-shine-through');
     }
 
-    contentDomNode.addEventListener('mouseenter', e => {
-        const oldNode = getGuestFrameDocument().querySelector(`.${style.markHoveredNodeAsHovered}`);
-        if (oldNode) {
-            oldNode.classList.remove(style.markHoveredNodeAsHovered);
-        }
-
-        contentDomNode.classList.add(style.markHoveredNodeAsHovered);
-
-        e.stopPropagation();
-    });
-
-    contentDomNode.addEventListener('mouseleave', e => {
-        contentDomNode.classList.remove(style.markHoveredNodeAsHovered);
-
-        e.stopPropagation();
-    });
-
     if (contentDomNode.classList.contains('neos-contentcollection')) {
         createEmptyContentCollectionPlaceholderIfMissing(contentDomNode);
     }
 
-    findRelativePropertiesInGuestFrame(contentDomNode).forEach(
-        initializePropertyDomNode({
-            store,
-            globalRegistry,
-            nodeTypesRegistry,
-            inlineEditorRegistry,
-            nodes
-        })
-    );
+    const propertyDomNodes = propertiesByContextPath ?
+        (propertiesByContextPath[contextPath] || []) :
+        findRelativePropertiesInGuestFrame(contentDomNode);
+
+    const initializeCurrentPropertyDomNode = initializePropertyDomNode({
+        store,
+        globalRegistry,
+        nodeTypesRegistry,
+        inlineEditorRegistry,
+        nodes
+    });
+
+    propertyDomNodes.forEach(initializeCurrentPropertyDomNode);
 };

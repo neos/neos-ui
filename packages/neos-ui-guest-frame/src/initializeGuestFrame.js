@@ -173,24 +173,52 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
         }
     });
 
-    const initializeNodes = findAllNodesInGuestFrame().reduceRight((initializeSubSequentNodes, node) => () => {
-        const initializeCurrentNode = initializeContentDomNode({
-            store,
-            globalRegistry,
-            nodeTypesRegistry,
-            inlineEditorRegistry
-        });
+    // Nodes are initialized in batches during the browser's idle periods. We deliberately do not
+    // rely on the deadline handed to us by `requestIdleCallback`: on a busy editor frame it is
+    // regularly already expired (`timeRemaining() === 0`), which would degrade the initialization
+    // into one node per idle period. Instead, we self-time each slice and always initialize at
+    // least `minimumBatchSize` nodes, so progress does not depend on the browser's scheduling.
+    const minimumBatchSize = 25;
+    const sliceDurationInMilliseconds = 8;
 
-        requestIdleCallback(() => {
-            // Only of guest frame document did not change in the meantime, we continue initializing the node
-            if (getGuestFrameDocument() === node.ownerDocument) {
-                initializeCurrentNode(node);
+    const nodesToInitialize = findAllNodesInGuestFrame();
+    let currentNodeIndex = 0;
+
+    const start = performance.now();
+    const initializeNodesInIdlePeriods = () => {
+        const initializeNodesInCurrentIdlePeriod = () => {
+            const sliceStartTime = performance.now();
+            let nodesInitializedInCurrentBatch = 0;
+            console.debug('Initializing nodes in idle period', nodesToInitialize.length);
+
+            while (currentNodeIndex < nodesToInitialize.length && (nodesInitializedInCurrentBatch < minimumBatchSize || performance.now() - sliceStartTime < sliceDurationInMilliseconds)) {
+                const node = nodesToInitialize[currentNodeIndex++];
+                nodesInitializedInCurrentBatch++;
+
+                const initializeCurrentNode = initializeContentDomNode({
+                    store,
+                    globalRegistry,
+                    nodeTypesRegistry,
+                    inlineEditorRegistry
+                });
+
+                // Only if guest frame document did not change in the meantime, we continue initializing the node
+                if (getGuestFrameDocument() === node.ownerDocument) {
+                    initializeCurrentNode(node);
+                    console.debug('Finished initializing node after ', performance.now() - start, 'ms');
+                }
             }
-            initializeSubSequentNodes();
-        });
-    }, () => { /* This noop function is called right at the end of content inialization */ });
 
-    initializeNodes();
+            if (currentNodeIndex < nodesToInitialize.length) {
+                // The timeout makes sure we are called back even while the editor frame stays busy.
+                requestIdleCallback(initializeNodesInCurrentIdlePeriod, {timeout: 500});
+            }
+        };
+
+        requestIdleCallback(initializeNodesInCurrentIdlePeriod, {timeout: 500});
+    };
+
+    initializeNodesInIdlePeriods();
 
     // When the contentCanvas is reloaded (e.g. from the inspector change) and focused style to it
     const focusedNode = yield select(selectors.CR.Nodes.focusedNodePathSelector);

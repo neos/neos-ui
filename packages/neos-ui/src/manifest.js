@@ -500,7 +500,10 @@ manifest('main', {}, (globalRegistry, {routes}) => {
                 globalRegistry,
                 nodeTypesRegistry,
                 inlineEditorRegistry,
-                nodes
+                nodes,
+                // These nodes are added to an already initialized guest frame and there are only
+                // few of them, so their inline editors are set up right away.
+                initializeInlineEditorsImmediately: true
             })
         );
         store.dispatch(actions.CR.Nodes.focus(contextPath, fusionPath));
@@ -585,7 +588,10 @@ manifest('main', {}, (globalRegistry, {routes}) => {
                 globalRegistry,
                 nodeTypesRegistry,
                 inlineEditorRegistry,
-                nodes
+                nodes,
+                // These nodes are added to an already initialized guest frame and there are only
+                // few of them, so their inline editors are set up right away.
+                initializeInlineEditorsImmediately: true
             })
         );
         store.dispatch(actions.CR.Nodes.focus(contextPath, fusionPath));

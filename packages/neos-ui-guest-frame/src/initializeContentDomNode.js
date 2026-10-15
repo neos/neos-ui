@@ -14,17 +14,12 @@ import style from './style.module.css';
 // many nodes at once does not have to re-read the store and re-query the guest frame's DOM for
 // every single node.
 //
-// `initializeInlineEditorsImmediately` can be passed for nodes that are added to an already
-// initialized guest frame - those are few, so their inline editors can be set up right away, while
-// the inline editors of all nodes of a freshly loaded document are deferred until interaction.
-//
 export default ({
     store,
     globalRegistry,
     nodeTypesRegistry,
     inlineEditorRegistry,
-    nodes: precomputedNodesFromDependencies,
-    initializeInlineEditorsImmediately = false
+    nodes: precomputedNodesFromDependencies
 }) => (contentDomNode, {nodes: precomputedNodes, propertiesByContextPath} = {}) => {
     const contextPath = contentDomNode.getAttribute('data-__neos-node-contextpath');
     const precomputedNodesToUse = precomputedNodes || precomputedNodesFromDependencies;
@@ -74,7 +69,6 @@ export default ({
         globalRegistry,
         nodeTypesRegistry,
         inlineEditorRegistry,
-        initializeInlineEditorsImmediately,
         nodes
     });
 

@@ -217,7 +217,7 @@ const deferInlineEditorInitialization = (dependencies, propertyDomNode) => {
 };
 
 export default dependencies => propertyDomNode => {
-    const {store, nodeTypesRegistry, initializeInlineEditorsImmediately, nodes: precomputedNodes} = dependencies;
+    const {store, nodeTypesRegistry, nodes: precomputedNodes} = dependencies;
     const contextPath = closestContextPathInGuestFrame(propertyDomNode);
     const propertyName = propertyDomNode.getAttribute('data-__neos-property');
     const nodes = precomputedNodes && precomputedNodes[contextPath] ?
@@ -235,11 +235,6 @@ export default dependencies => propertyDomNode => {
     }
 
     if (propertyDomNode.dataset.neosInlineEditorIsInitialized || propertyDomNode.dataset.neosInlineEditorInitializationIsPending) {
-        return;
-    }
-
-    if (initializeInlineEditorsImmediately) {
-        initializeInlineEditor(dependencies, propertyDomNode);
         return;
     }
 

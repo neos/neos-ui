@@ -112,14 +112,12 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
     });
     const nodeInitializationContext = {nodes: currentNodesByContextPath, propertiesByContextPath};
 
-    const start = performance.now();
     nodesToInitialize.forEach(node => {
         // Only if guest frame document did not change in the meantime, we continue initializing the node
         if (getGuestFrameDocument() === node.ownerDocument) {
             initializeCurrentNode(node, nodeInitializationContext);
         }
     });
-    console.debug('Finished initializing', nodesToInitialize.length, ' nodes after ', performance.now() - start, 'ms');
 
     // When the contentCanvas is reloaded (e.g. from the inspector change) and focused style to it
     const focusedNode = yield select(selectors.CR.Nodes.focusedNodePathSelector);

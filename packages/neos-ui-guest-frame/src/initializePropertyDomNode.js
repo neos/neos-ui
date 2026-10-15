@@ -5,7 +5,7 @@ import {closestContextPathInGuestFrame, getGuestFrameDocument, getGuestFrameWind
 
 //
 // Inline editors are heavy - especially the CKEditor instance, which we would need to create for
-// every single inline editable property of the current document. Therefore we defer their setup:
+// every single inline editable property of the current document. Therefore, we defer their setup:
 // properties that are still waiting for it are marked, and the editors of a content node are
 // created once that node enters the viewport.
 //
@@ -41,6 +41,11 @@ const initializeInlineEditor = (dependencies, propertyDomNode) => {
 
     const nodeTypeName = nodes?.[contextPath]?.nodeType;
     const nodeType = nodeTypesRegistry.get(nodeTypeName);
+
+    if (!nodeType) {
+        console.warn(`Node type "${nodeTypeName}" is not available in the registry.`);
+        return;
+    }
 
     if (!guestFrameWindow['@Neos.Neos.Ui:InitializedInlineEditors']) {
         guestFrameWindow['@Neos.Neos.Ui:InitializedInlineEditors'] = {};
@@ -158,12 +163,9 @@ const deferInlineEditorInitialization = (dependencies, propertyDomNode) => {
     if (!guestFramesWithDeferredInitialization.has(guestFrameDocument)) {
         const {IntersectionObserver} = getGuestFrameWindow();
 
-        //
-        // The inline editors of a content node are set up as soon as the node enters the viewport,
+        // The inline editors of editable nodes are set up as soon as the node enters the viewport
         // so that all of its inline editable properties - including their placeholders - are ready
-        // before the user starts working with the node, and we only pay for the editors of the
-        // nodes that are actually seen.
-        //
+        // before the user starts interacting with the node.
         const observer = IntersectionObserver ?
             new IntersectionObserver(entries => {
                 const {dependencies: currentDependencies} = guestFramesWithDeferredInitialization.get(guestFrameDocument);
@@ -178,10 +180,7 @@ const deferInlineEditorInitialization = (dependencies, propertyDomNode) => {
             }) :
             null;
 
-        //
-        // Safety net for content nodes that never trigger the observer, for instance because they
-        // have no size at all, so their editors are still set up when they are interacted with.
-        //
+        // Safety net for content nodes that never trigger the observer, for example, when they have no size at all.
         const handleInteraction = e => {
             if (!e.target || !e.target.closest) {
                 return;
@@ -211,7 +210,7 @@ const deferInlineEditorInitialization = (dependencies, propertyDomNode) => {
 
     const {observer} = guestFramesWithDeferredInitialization.get(guestFrameDocument);
 
-    // Content nodes that are already within the viewport are reported by the observer right away
+    // The observer reports content nodes that are already within the viewport right away
     if (observer) {
         observer.observe(contentDomNode);
     }

@@ -1,5 +1,3 @@
-import {$get, $contains} from 'plow-js';
-
 import {actions} from '@neos-project/neos-ui-redux-store';
 import {validateElement} from '@neos-project/neos-ui-validators';
 
@@ -19,11 +17,12 @@ const guestFramesWithDeferredInitialization = new WeakMap();
 const pendingPropertySelector = '[data-__neos-property][data-__neos-editable-node-contextpath][data-neos-inline-editor-initialization-is-pending]';
 
 const isInlineEditable = (nodeTypesRegistry, propertyName, contextPath, nodes) => {
-    const nodeType = nodeTypesRegistry.get($get([contextPath, 'nodeType'], nodes));
+    const nodeTypeName = nodes?.[contextPath]?.nodeType;
+    const nodeType = nodeTypesRegistry.get(nodeTypeName);
 
     return (
-        $get(['properties', propertyName, 'ui', 'inlineEditable'], nodeType) !== false &&
-        !$contains(propertyName, [contextPath, 'policy', 'disallowedProperties'], nodes)
+        nodeType?.properties?.[propertyName]?.ui?.inlineEditable !== false &&
+        !nodes?.[contextPath]?.policy?.disallowedProperties?.includes(propertyName)
     );
 };
 
@@ -40,7 +39,7 @@ const initializeInlineEditor = (dependencies, propertyDomNode) => {
         return;
     }
 
-    const nodeTypeName = $get([contextPath, 'nodeType'], nodes);
+    const nodeTypeName = nodes?.[contextPath]?.nodeType;
     const nodeType = nodeTypesRegistry.get(nodeTypeName);
 
     if (!guestFrameWindow['@Neos.Neos.Ui:InitializedInlineEditors']) {
@@ -78,7 +77,7 @@ const initializeInlineEditor = (dependencies, propertyDomNode) => {
     }
 
     try {
-        const userPreferences = $get('user.preferences', store.getState());
+        const userPreferences = store.getState()?.user?.preferences;
 
         createInlineEditor({
             propertyDomNode,
@@ -92,7 +91,7 @@ const initializeInlineEditor = (dependencies, propertyDomNode) => {
                 actions.Changes.persistChanges([change])
             ),
             onChange: value => {
-                const validationResult = validateElement(value, $get(['properties', propertyName], nodeType), globalRegistry.get('validators'));
+                const validationResult = validateElement(value, nodeType?.properties?.[propertyName], globalRegistry.get('validators'));
                 // Update inline validation errors
                 store.dispatch(
                     actions.CR.Nodes.setInlineValidationErrors(contextPath, propertyName, validationResult)

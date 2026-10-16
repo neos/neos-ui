@@ -500,6 +500,12 @@
       <trans-unit id="nodeInfoView.name" xml:space="preserve">
 				<source>Name</source>
 			</trans-unit>
+      <trans-unit id="nodeInfoView.assignedTags" xml:space="preserve">
+				<source>Assigned tags</source>
+			</trans-unit>
+      <trans-unit id="nodeInfoView.inheritedTags" xml:space="preserve">
+				<source>Inherited tags</source>
+			</trans-unit>
       <trans-unit id="filter" xml:space="preserve">
 				<source>Filter</source>
 			</trans-unit>

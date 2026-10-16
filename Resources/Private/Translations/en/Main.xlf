@@ -500,6 +500,9 @@
       <trans-unit id="nodeInfoView.name" xml:space="preserve">
 				<source>Name</source>
 			</trans-unit>
+      <trans-unit id="nodeInfoView.tags" xml:space="preserve">
+				<source>Tags</source>
+			</trans-unit>
       <trans-unit id="filter" xml:space="preserve">
 				<source>Filter</source>
 			</trans-unit>

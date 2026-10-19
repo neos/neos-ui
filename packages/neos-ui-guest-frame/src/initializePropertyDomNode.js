@@ -176,7 +176,7 @@ const deferInlineEditorInitialization = (dependencies, propertyDomNode) => {
                     initializePendingInlineEditors(currentDependencies, entry.target);
                 });
             }, {
-                rootMargin: '200% 0px'
+                rootMargin: '110% 0px'
             }) :
             null;
 

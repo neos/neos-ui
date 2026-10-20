@@ -192,6 +192,10 @@ a.ck.ck-button:not(.ck-disabled):hover {
     color: var(--ck-color-base-text-focus);
 }
 
+.ck.ck-editor__editable_inline {
+    overflow: initial;
+}
+
 .ck.ck-editor__editable_inline.ck-focused {
     box-sizing: border-box;
 }

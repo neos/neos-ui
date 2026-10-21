@@ -104,11 +104,16 @@ const NodeToolbar: React.FC<NodeToolbarProps & InjectedNodeToolbarProps> = ({
     // content collections like the columns of a multi-column element), then "into" is the
     // only valid insertion and is performed no matter which of the three hover zones the
     // toolbar is shown in - the toolbar placement itself still follows the cursor position
-    const effectiveInsertPosition = (!canInsertAlongside && canInsertInto) || isEmptyCollection
+    const effectiveInsertPosition = !canInsertAlongside && canInsertInto
         ? InsertPosition.INTO
         : insertPosition;
 
-    const toolbarPlacement = isEmptyCollection ? InsertPosition.INTO : insertPosition;
+    // An empty content collection is pinned to the center "into" position - but only as long
+    // as inserting alongside it is disallowed. If siblings may be added, the above/below
+    // positions are offered again so that content can be placed before and after the element
+    const toolbarPlacement = isEmptyCollection && !canInsertAlongside
+        ? InsertPosition.INTO
+        : insertPosition;
 
     // When the toolbar is shown in the top hover zone, but only "into" insertion is allowed
     // (e.g., for auto-created content collections), a node can still be placed at the very

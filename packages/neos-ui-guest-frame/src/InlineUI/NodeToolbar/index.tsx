@@ -12,6 +12,7 @@ import {neos} from '@neos-project/neos-ui-decorators';
 import {InsertPosition, Node} from '@neos-project/neos-ts-interfaces';
 import {NodeTypesRegistry} from '@neos-project/neos-ui-contentrepository';
 import {I18nRegistry} from '@neos-project/neos-ui-i18n';
+import {selectors, useSelector} from '@neos-project/neos-ui-redux-store';
 
 import StructuralToolbar from './StructuralToolbar';
 import ContextToolbar from './ContextToolbar';
@@ -70,6 +71,35 @@ const NodeToolbar: React.FC<NodeToolbarProps & InjectedNodeToolbarProps> = ({
     const isContentCollection = useMemo(() => {
         return focusedNode ? nodeTypesRegistry.hasRole(focusedNode.nodeType, 'contentCollection') : false
     }, [focusedNode, nodeTypesRegistry]);
+
+    // Check whether inserting nodes alongside (before/after) or into the focused node is
+    // allowed, so that structurally disallowed insert positions are not offered at all
+    const allowedSiblingNodeTypesSelector = useMemo(
+        () => selectors.CR.Nodes.makeGetAllowedSiblingNodeTypesSelector(nodeTypesRegistry),
+        [nodeTypesRegistry]
+    );
+    const allowedChildNodeTypesSelector = useMemo(
+        () => selectors.CR.Nodes.makeGetAllowedChildNodeTypesSelector(nodeTypesRegistry),
+        [nodeTypesRegistry]
+    );
+
+    const role = focusedNode
+        ? (nodeTypesRegistry.hasRole(focusedNode.nodeType, 'document') ? 'document' : 'content')
+        : 'content';
+
+    const canInsertAlongside = useSelector(state =>
+        allowedSiblingNodeTypesSelector(state, {reference: contextPath ?? null, subject: null, role}).length > 0
+    );
+    const canInsertInto = useSelector(state =>
+        allowedChildNodeTypesSelector(state, {reference: contextPath ?? null, subject: null, role}).length > 0
+    );
+
+    // If inserting alongside is not allowed, but inserting into is (e.g., for auto-created
+    // content collections like the columns of a multi-column element), then only the
+    // "into" position should be offered
+    const effectiveInsertPosition = !canInsertAlongside && canInsertInto
+        ? InsertPosition.INTO
+        : insertPosition;
 
     const nodeElement = useMemo(() => findNodeInGuestFrame(contextPath, fusionPath), [contextPath, fusionPath]);
 
@@ -132,10 +162,10 @@ const NodeToolbar: React.FC<NodeToolbarProps & InjectedNodeToolbarProps> = ({
             isCopied,
             isCut,
             visibilityCanBeToggled,
-            insertPosition,
+            insertPosition: effectiveInsertPosition,
             className: style.toolBar__btnGroup__btn
         };
-    }, [i18nRegistry, contextPath, fusionPath, destructiveOperationsAreDisabled, canBeDeleted, canBeEdited, isCopied, isCut, visibilityCanBeToggled, insertPosition]);
+    }, [i18nRegistry, contextPath, fusionPath, destructiveOperationsAreDisabled, canBeDeleted, canBeEdited, isCopied, isCut, visibilityCanBeToggled, effectiveInsertPosition]);
 
     useEffect(() => {
         if (!iframeWindow) {
@@ -180,7 +210,7 @@ const NodeToolbar: React.FC<NodeToolbarProps & InjectedNodeToolbarProps> = ({
             >
             </div>
             <ContextToolbar buttonProps={toolbarButtonProps} fusionPath={fusionPath}/>
-            <StructuralToolbar insertPosition={insertPosition} buttonProps={toolbarButtonProps}/>
+            <StructuralToolbar insertPosition={effectiveInsertPosition} buttonProps={toolbarButtonProps}/>
         </>
     ) : (
         <div
@@ -189,7 +219,7 @@ const NodeToolbar: React.FC<NodeToolbarProps & InjectedNodeToolbarProps> = ({
             style={anchorPosition}
         >
             <ContextToolbar buttonProps={toolbarButtonProps} fusionPath={fusionPath}/>
-            <StructuralToolbar insertPosition={insertPosition} buttonProps={toolbarButtonProps}/>
+            <StructuralToolbar insertPosition={effectiveInsertPosition} buttonProps={toolbarButtonProps}/>
         </div>
     );
 };

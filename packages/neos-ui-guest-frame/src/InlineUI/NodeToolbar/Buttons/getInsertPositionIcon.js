@@ -7,7 +7,7 @@ import {InsertPosition} from '@neos-project/neos-ts-interfaces';
 const getInsertPositionIcon = (insertPosition, creationReference, insertsBelowExistingContent) => {
     if (creationReference) {
         // The node will be placed at the very top of the referenced collection
-        return 'arrow-up';
+        return 'arrow-turn-up';
     }
 
     switch (insertPosition) {
@@ -20,7 +20,7 @@ const getInsertPositionIcon = (insertPosition, creationReference, insertsBelowEx
         default:
             // An "into" insertion is appended after the last child - so with existing
             // content it lands below it, while an empty collection has nothing below
-            return insertsBelowExistingContent ? 'arrow-down' : 'arrow-right';
+            return insertsBelowExistingContent ? 'arrow-turn-down' : 'arrow-right';
     }
 };
 

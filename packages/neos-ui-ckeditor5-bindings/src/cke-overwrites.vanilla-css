@@ -39,10 +39,21 @@
 .ck.ck-toolbar.neos-ck-anchored-toolbar--visible {
     display: flex;
 }
+/* Stick to viewport top when the toolbar is above the property and would be clipped.
+   Keeps the horizontal right-align fallback but drops the bottom fallback. */
+.ck.ck-toolbar.neos-ck-anchored-toolbar--sticky {
+    top: 5px;
+    bottom: auto;
+    position-try-fallbacks: --neos-ck-toolbar-align-right;
+}
 
 @supports not (anchor-name: --inline-ui-node-toolbar-anchor) {
     .ck.ck-toolbar.neos-ck-anchored-toolbar {
         position: absolute;
+    }
+    .ck.ck-toolbar.neos-ck-anchored-toolbar--sticky {
+        position: fixed;
+        top: 5px;
     }
 }
 

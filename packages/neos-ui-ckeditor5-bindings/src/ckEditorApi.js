@@ -36,6 +36,7 @@ let currentEditor = null;
 let currentPropertyDomNode = null;
 let editorConfig = {};
 let resizeObserver = null;
+let currentScrollTarget = null;
 
 // We cache the "formattingUnderCursor"; to only emit events when it really changed.
 // As there is only a single cursor active at any given time, it is safe to do this caching here inside the singleton object.
@@ -61,22 +62,138 @@ const handleUserInteractionCallback = () => {
     }
 };
 
-// Helper function to update toolbar position when CSS anchors are not supported
+// Update toolbar position. For the non-anchor fallback this always runs;
+// for CSS-anchor supported browsers it only kicks in when sticky is active,
+// taking over from anchor positioning with explicit coordinates to keep the
+// rendered position and hit-test area in sync (overriding anchor-driven
+// positions via CSS class can desync them on some engines).
 const updateToolbarPosition = () => {
-    if (!currentEditor || !currentPropertyDomNode || supportsCSSAnchors) {
+    if (!currentEditor || !currentPropertyDomNode) {
         return;
     }
 
     const toolbar = currentEditor.ui.view.toolbar.element;
-    // Only reposition if toolbar is visible
     if (!toolbar.classList.contains('neos-ck-anchored-toolbar--visible')) {
         return;
     }
 
+    if (toolbar.classList.contains('neos-ck-anchored-toolbar--sticky')) {
+        setStickyToolbarCoordinates(toolbar);
+        return;
+    }
+
+    if (supportsCSSAnchors) {
+        return;
+    }
+
     const guestFrameWindow = getGuestFrameWindow();
-    toolbar.style.left = (currentPropertyDomNode.getBoundingClientRect().left + guestFrameWindow.scrollX) + 'px';
-    toolbar.style.top = (currentPropertyDomNode.getBoundingClientRect().top - toolbar.offsetHeight + guestFrameWindow.scrollY) + 'px';
+    const propertyRect = currentPropertyDomNode.getBoundingClientRect();
+    toolbar.style.left = (propertyRect.left + guestFrameWindow.scrollX) + 'px';
+    toolbar.style.top = (propertyRect.top - toolbar.offsetHeight + guestFrameWindow.scrollY) + 'px';
 };
+
+// Computes sticky toolbar inline coordinates. Mimics the
+// `--neos-ck-toolbar-align-right` fallback that anchor positioning would have
+// applied when the toolbar would overflow the viewport's right edge: in that
+// case right-align the toolbar to the property's right edge instead.
+const setStickyToolbarCoordinates = toolbar => {
+    if (!currentPropertyDomNode) {
+        return;
+    }
+    const propertyRect = currentPropertyDomNode.getBoundingClientRect();
+    const guestFrameWindow = getGuestFrameWindow();
+    const viewportWidth = guestFrameWindow.innerWidth;
+
+    if (propertyRect.left + toolbar.offsetWidth > viewportWidth) {
+        toolbar.style.left = 'auto';
+        toolbar.style.right = (viewportWidth - propertyRect.right) + 'px';
+    } else {
+        toolbar.style.left = propertyRect.left + 'px';
+        toolbar.style.right = 'auto';
+    }
+    toolbar.style.top = '5px';
+};
+
+// Enables JS-driven sticky positioning, disabling CSS anchor positioning
+// so the rendered position and hit-test area stay in sync.
+const enableStickyPositioning = () => {
+    const toolbar = currentEditor.ui.view.toolbar.element;
+    toolbar.classList.add('neos-ck-anchored-toolbar--sticky');
+    if (supportsCSSAnchors && currentPropertyDomNode) {
+        toolbar.style.positionAnchor = '';
+        toolbar.style.bottom = 'auto';
+        setStickyToolbarCoordinates(toolbar);
+    }
+};
+
+// Restores CSS anchor positioning after sticky was active.
+// Accepts an explicit toolbar and anchorName so it works correctly in blur
+// handlers where currentEditor/currentPropertyDomNode may already point to a
+// different editor instance.
+const disableStickyPositioning = (toolbar, anchorName) => {
+    if (!toolbar) {
+        return;
+    }
+    toolbar.classList.remove('neos-ck-anchored-toolbar--sticky');
+    if (supportsCSSAnchors) {
+        toolbar.style.positionAnchor = anchorName || '';
+        toolbar.style.top = '';
+        toolbar.style.bottom = '';
+        toolbar.style.left = '';
+        toolbar.style.right = '';
+    }
+};
+
+// Update stickiness of the toolbar - pin to viewport top when the toolbar is above
+// the property and would be clipped by the viewport. Only applies when the toolbar
+// is in the "above" placement (not the below fallback).
+const updateToolbarStickiness = () => {
+    if (!currentEditor || !currentPropertyDomNode) {
+        return;
+    }
+
+    const toolbar = currentEditor.ui.view.toolbar.element;
+    if (!toolbar.classList.contains('neos-ck-anchored-toolbar--visible')) {
+        return;
+    }
+
+    const propertyRect = currentPropertyDomNode.getBoundingClientRect();
+
+    // Match the ContextToolbar threshold
+    const propertyIsPartiallyVisible = propertyRect.top < 50 && propertyRect.bottom > 0;
+
+    const isCurrentlySticky = toolbar.classList.contains('neos-ck-anchored-toolbar--sticky');
+
+    if (!propertyIsPartiallyVisible) {
+        if (isCurrentlySticky) {
+            disableStickyPositioning(toolbar, currentPropertyDomNode.dataset.neosInlineEditorAnchorName);
+        }
+        return;
+    }
+
+    if (isCurrentlySticky) {
+        // Once sticky, stay sticky as long as the property is partially visible.
+        // This provides hysteresis and prevents flicker from re-evaluating the
+        // toolbar's rendered position (which changes when the sticky class is toggled).
+        return;
+    }
+
+    // Only become sticky when the toolbar is rendered above the property
+    // (the default placement or the horizontal-align-right fallback). When it
+    // fell back to below the property, pinning it to the top would cover edited text.
+    const toolbarRect = toolbar.getBoundingClientRect();
+    const toolbarIsAboveProperty = toolbarRect.top < propertyRect.top;
+
+    if (toolbarIsAboveProperty) {
+        enableStickyPositioning();
+    }
+};
+
+// Debounced scroll handler for toolbar position and stickiness updates
+const handleToolbarScroll = debounce(() => {
+    updateToolbarStickiness();
+    updateToolbarPosition();
+}, 5);
 
 export const bootstrap = _editorConfig => {
     editorConfig = _editorConfig;
@@ -158,6 +275,7 @@ export const createEditor = () => async options => {
                     return;
                 }
                 resizeObserver = new ResizeObserver(() => {
+                    updateToolbarStickiness();
                     updateToolbarPosition();
                 });
                 resizeObserver.observe(getGuestFrameDocument().documentElement);
@@ -206,6 +324,12 @@ export const createEditor = () => async options => {
                     // when another editor is focused commit all possible pending changes
                     debouncedOnChange.flush();
                     editor.ui.view.toolbar.element.classList.remove('neos-ck-anchored-toolbar--visible');
+                    disableStickyPositioning(editor.ui.view.toolbar.element, propertyDomNode.dataset.neosInlineEditorAnchorName);
+                    if (currentScrollTarget) {
+                        currentScrollTarget.removeEventListener('scroll', handleToolbarScroll);
+                        currentScrollTarget = null;
+                    }
+                    handleToolbarScroll.cancel();
                     return;
                 }
 
@@ -214,6 +338,13 @@ export const createEditor = () => async options => {
 
                 if (editor.ui.view.toolbar.items.length > 0) {
                     editor.ui.view.toolbar.element.classList.add('neos-ck-anchored-toolbar--visible');
+                    const guestFrameWindow = getGuestFrameWindow();
+                    if (currentScrollTarget) {
+                        currentScrollTarget.removeEventListener('scroll', handleToolbarScroll);
+                    }
+                    currentScrollTarget = guestFrameWindow;
+                    currentScrollTarget.addEventListener('scroll', handleToolbarScroll);
+                    updateToolbarStickiness();
                     if (!supportsCSSAnchors) {
                         updateToolbarPosition();
                     }

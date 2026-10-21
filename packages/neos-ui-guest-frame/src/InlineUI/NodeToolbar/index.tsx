@@ -94,12 +94,44 @@ const NodeToolbar: React.FC<NodeToolbarProps & InjectedNodeToolbarProps> = ({
         allowedChildNodeTypesSelector(state, {reference: contextPath ?? null, subject: null, role}).length > 0
     );
 
+    // An empty content collection has no meaningful "alongside" positions - a new node can
+    // only be inserted into it, so the toolbar always shows in the center "into" position
+    const isEmptyCollection = isContentCollection
+        && Boolean(focusedNode?.isFullyLoaded)
+        && (focusedNode?.children?.length ?? 0) === 0;
+
     // If inserting alongside is not allowed, but inserting into is (e.g., for auto-created
-    // content collections like the columns of a multi-column element), then only the
-    // "into" position should be offered
-    const effectiveInsertPosition = !canInsertAlongside && canInsertInto
+    // content collections like the columns of a multi-column element), then "into" is the
+    // only valid insertion and is performed no matter which of the three hover zones the
+    // toolbar is shown in - the toolbar placement itself still follows the cursor position
+    const effectiveInsertPosition = (!canInsertAlongside && canInsertInto) || isEmptyCollection
         ? InsertPosition.INTO
         : insertPosition;
+
+    const toolbarPlacement = isEmptyCollection ? InsertPosition.INTO : insertPosition;
+
+    // When the toolbar is shown in the top hover zone, but only "into" insertion is allowed
+    // (e.g., for auto-created content collections), a node can still be placed at the very
+    // top by inserting it before the first child node instead of at the end
+    const creationReference = useSelector(state => {
+        if (effectiveInsertPosition === InsertPosition.INTO && insertPosition === InsertPosition.BEFORE) {
+            for (const child of focusedNode?.children ?? []) {
+                if (child && state?.cr?.nodes?.byContextPath?.[child.contextPath]) {
+                    return {contextPath: child.contextPath, fusionPath: undefined};
+                }
+            }
+        }
+        return null;
+    });
+    const creationInsertPosition = creationReference ? InsertPosition.BEFORE : effectiveInsertPosition;
+
+    // Whether an "into" insertion will land below existing content (i.e. it is appended
+    // after the last child, as opposed to being placed before the first one via a
+    // creation reference, or into an empty collection) - used by the buttons to hint
+    // at the resulting relative position
+    const insertsBelowExistingContent = effectiveInsertPosition === InsertPosition.INTO
+        && !creationReference
+        && !isEmptyCollection;
 
     const nodeElement = useMemo(() => findNodeInGuestFrame(contextPath, fusionPath), [contextPath, fusionPath]);
 
@@ -163,9 +195,12 @@ const NodeToolbar: React.FC<NodeToolbarProps & InjectedNodeToolbarProps> = ({
             isCut,
             visibilityCanBeToggled,
             insertPosition: effectiveInsertPosition,
+            creationReference,
+            creationInsertPosition,
+            insertsBelowExistingContent,
             className: style.toolBar__btnGroup__btn
         };
-    }, [i18nRegistry, contextPath, fusionPath, destructiveOperationsAreDisabled, canBeDeleted, canBeEdited, isCopied, isCut, visibilityCanBeToggled, effectiveInsertPosition]);
+    }, [i18nRegistry, contextPath, fusionPath, destructiveOperationsAreDisabled, canBeDeleted, canBeEdited, isCopied, isCut, visibilityCanBeToggled, effectiveInsertPosition, creationReference, creationInsertPosition, insertsBelowExistingContent]);
 
     useEffect(() => {
         if (!iframeWindow) {
@@ -210,7 +245,7 @@ const NodeToolbar: React.FC<NodeToolbarProps & InjectedNodeToolbarProps> = ({
             >
             </div>
             <ContextToolbar buttonProps={toolbarButtonProps} fusionPath={fusionPath}/>
-            <StructuralToolbar insertPosition={effectiveInsertPosition} buttonProps={toolbarButtonProps}/>
+            <StructuralToolbar insertPosition={toolbarPlacement} buttonProps={toolbarButtonProps}/>
         </>
     ) : (
         <div
@@ -219,7 +254,7 @@ const NodeToolbar: React.FC<NodeToolbarProps & InjectedNodeToolbarProps> = ({
             style={anchorPosition}
         >
             <ContextToolbar buttonProps={toolbarButtonProps} fusionPath={fusionPath}/>
-            <StructuralToolbar insertPosition={effectiveInsertPosition} buttonProps={toolbarButtonProps}/>
+            <StructuralToolbar insertPosition={toolbarPlacement} buttonProps={toolbarButtonProps}/>
         </div>
     );
 };

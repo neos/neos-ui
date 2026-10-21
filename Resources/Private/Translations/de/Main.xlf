@@ -226,6 +226,46 @@
           <target xml:lang="de">Neues Element erstellen</target>
         </alt-trans>
       </trans-unit>
+      <trans-unit id="createNewAbove" xml:space="preserve">
+        <source>Create new above</source>
+        <target xml:lang="de" state="translated">Darüber neu erstellen</target>
+      </trans-unit>
+      <trans-unit id="createNewBelow" xml:space="preserve">
+        <source>Create new below</source>
+        <target xml:lang="de" state="translated">Darunter neu erstellen</target>
+      </trans-unit>
+      <trans-unit id="createNewInside" xml:space="preserve">
+        <source>Create new inside</source>
+        <target xml:lang="de" state="translated">Innerhalb neu erstellen</target>
+      </trans-unit>
+      <trans-unit id="createNewAtTop" xml:space="preserve">
+        <source>Create new at the top</source>
+        <target xml:lang="de" state="translated">Ganz oben neu erstellen</target>
+      </trans-unit>
+      <trans-unit id="createNewAtBottom" xml:space="preserve">
+        <source>Create new at the bottom</source>
+        <target xml:lang="de" state="translated">Ganz unten neu erstellen</target>
+      </trans-unit>
+      <trans-unit id="pasteAbove" xml:space="preserve">
+        <source>Paste above</source>
+        <target xml:lang="de" state="translated">Darüber einfügen</target>
+      </trans-unit>
+      <trans-unit id="pasteBelow" xml:space="preserve">
+        <source>Paste below</source>
+        <target xml:lang="de" state="translated">Darunter einfügen</target>
+      </trans-unit>
+      <trans-unit id="pasteInside" xml:space="preserve">
+        <source>Paste inside</source>
+        <target xml:lang="de" state="translated">Innerhalb einfügen</target>
+      </trans-unit>
+      <trans-unit id="pasteAtTop" xml:space="preserve">
+        <source>Paste at the top</source>
+        <target xml:lang="de" state="translated">Ganz oben einfügen</target>
+      </trans-unit>
+      <trans-unit id="pasteAtBottom" xml:space="preserve">
+        <source>Paste at the bottom</source>
+        <target xml:lang="de" state="translated">Ganz unten einfügen</target>
+      </trans-unit>
       <trans-unit id="noMatchesFound" xml:space="preserve">
         <source>No matches found</source>
         <target xml:lang="de" state="translated">Keine Treffer gefunden</target>

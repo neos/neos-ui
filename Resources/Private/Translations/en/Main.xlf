@@ -197,6 +197,36 @@
             <trans-unit id="createNew" xml:space="preserve">
                 <source>Create new</source>
             </trans-unit>
+            <trans-unit id="createNewAbove" xml:space="preserve">
+                <source>Create new above</source>
+            </trans-unit>
+            <trans-unit id="createNewBelow" xml:space="preserve">
+                <source>Create new below</source>
+            </trans-unit>
+            <trans-unit id="createNewInside" xml:space="preserve">
+                <source>Create new inside</source>
+            </trans-unit>
+            <trans-unit id="createNewAtTop" xml:space="preserve">
+                <source>Create new at the top</source>
+            </trans-unit>
+            <trans-unit id="createNewAtBottom" xml:space="preserve">
+                <source>Create new at the bottom</source>
+            </trans-unit>
+            <trans-unit id="pasteAbove" xml:space="preserve">
+                <source>Paste above</source>
+            </trans-unit>
+            <trans-unit id="pasteBelow" xml:space="preserve">
+                <source>Paste below</source>
+            </trans-unit>
+            <trans-unit id="pasteInside" xml:space="preserve">
+                <source>Paste inside</source>
+            </trans-unit>
+            <trans-unit id="pasteAtTop" xml:space="preserve">
+                <source>Paste at the top</source>
+            </trans-unit>
+            <trans-unit id="pasteAtBottom" xml:space="preserve">
+                <source>Paste at the bottom</source>
+            </trans-unit>
             <trans-unit id="noMatchesFound" xml:space="preserve">
                 <source>No matches found</source>
             </trans-unit>

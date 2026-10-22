@@ -12,9 +12,11 @@ import {neos} from '@neos-project/neos-ui-decorators';
 import {InsertPosition, Node} from '@neos-project/neos-ts-interfaces';
 import {NodeTypesRegistry} from '@neos-project/neos-ui-contentrepository';
 import {I18nRegistry} from '@neos-project/neos-ui-i18n';
+import {selectors, useSelector} from '@neos-project/neos-ui-redux-store';
 
 import StructuralToolbar from './StructuralToolbar';
 import ContextToolbar from './ContextToolbar';
+import isEmptyContentCollection from './isEmptyContentCollection';
 
 import style from './style.module.css';
 
@@ -70,6 +72,61 @@ const NodeToolbar: React.FC<NodeToolbarProps & InjectedNodeToolbarProps> = ({
     const isContentCollection = useMemo(() => {
         return focusedNode ? nodeTypesRegistry.hasRole(focusedNode.nodeType, 'contentCollection') : false
     }, [focusedNode, nodeTypesRegistry]);
+
+    // Check whether inserting nodes alongside (before/after) or into the focused node is
+    // allowed, so that structurally disallowed insert positions are not offered at all
+    const allowedSiblingNodeTypesSelector = useMemo(
+        () => selectors.CR.Nodes.makeGetAllowedSiblingNodeTypesSelector(nodeTypesRegistry),
+        [nodeTypesRegistry]
+    );
+    const allowedChildNodeTypesSelector = useMemo(
+        () => selectors.CR.Nodes.makeGetAllowedChildNodeTypesSelector(nodeTypesRegistry),
+        [nodeTypesRegistry]
+    );
+
+    const role = focusedNode
+        ? (nodeTypesRegistry.hasRole(focusedNode.nodeType, 'document') ? 'document' : 'content')
+        : 'content';
+
+    const canInsertAlongside = useSelector(state =>
+        allowedSiblingNodeTypesSelector(state, {reference: contextPath ?? null, subject: null, role}).length > 0
+    );
+    const canInsertInto = useSelector(state =>
+        allowedChildNodeTypesSelector(state, {reference: contextPath ?? null, subject: null, role}).length > 0
+    );
+
+    // An empty content collection has no meaningful "alongside" positions - a new node can
+    // only be inserted into it, so the toolbar always shows in the center "into" position
+    const isEmptyCollection = isEmptyContentCollection(focusedNode, nodeTypesRegistry);
+
+    // If inserting alongside is not allowed, but inserting into is (e.g., for auto-created
+    // content collections like the columns of a multi-column element), then "into" is the
+    // only valid insertion and is performed no matter which of the three hover zones the
+    // toolbar is shown in - the toolbar placement itself still follows the cursor position
+    const effectiveInsertPosition = !canInsertAlongside && canInsertInto
+        ? InsertPosition.INTO
+        : insertPosition;
+
+    // An empty content collection is pinned to the center "into" position - but only as long
+    // as inserting alongside it is disallowed. If siblings may be added, the above/below
+    // positions are offered again so that content can be placed before and after the element
+    const toolbarPlacement = isEmptyCollection && !canInsertAlongside
+        ? InsertPosition.INTO
+        : insertPosition;
+
+    // When the toolbar is shown in the top hover zone, but only "into" insertion is allowed
+    // (e.g., for auto-created content collections), a node can still be placed at the very
+    // top by inserting it before the first child node instead of at the end
+    const creationReference = useSelector(state => {
+        if (effectiveInsertPosition === InsertPosition.INTO && insertPosition === InsertPosition.BEFORE) {
+            for (const child of focusedNode?.children ?? []) {
+                if (child && state?.cr?.nodes?.byContextPath?.[child.contextPath]) {
+                    return {contextPath: child.contextPath, fusionPath: undefined};
+                }
+            }
+        }
+        return null;
+    });
 
     const nodeElement = useMemo(() => findNodeInGuestFrame(contextPath, fusionPath), [contextPath, fusionPath]);
 
@@ -132,10 +189,14 @@ const NodeToolbar: React.FC<NodeToolbarProps & InjectedNodeToolbarProps> = ({
             isCopied,
             isCut,
             visibilityCanBeToggled,
-            insertPosition,
+            // The buttons insert relative to the referenced first child (i.e. at the very top
+            // of a content collection) when a reference is given, otherwise at the effective
+            // hover position
+            insertPosition: creationReference ? InsertPosition.BEFORE : effectiveInsertPosition,
+            creationReference,
             className: style.toolBar__btnGroup__btn
         };
-    }, [i18nRegistry, contextPath, fusionPath, destructiveOperationsAreDisabled, canBeDeleted, canBeEdited, isCopied, isCut, visibilityCanBeToggled, insertPosition]);
+    }, [i18nRegistry, contextPath, fusionPath, destructiveOperationsAreDisabled, canBeDeleted, canBeEdited, isCopied, isCut, visibilityCanBeToggled, effectiveInsertPosition, creationReference]);
 
     useEffect(() => {
         if (!iframeWindow) {
@@ -180,7 +241,7 @@ const NodeToolbar: React.FC<NodeToolbarProps & InjectedNodeToolbarProps> = ({
             >
             </div>
             <ContextToolbar buttonProps={toolbarButtonProps} fusionPath={fusionPath}/>
-            <StructuralToolbar insertPosition={insertPosition} buttonProps={toolbarButtonProps}/>
+            <StructuralToolbar insertPosition={toolbarPlacement} buttonProps={toolbarButtonProps}/>
         </>
     ) : (
         <div
@@ -189,7 +250,7 @@ const NodeToolbar: React.FC<NodeToolbarProps & InjectedNodeToolbarProps> = ({
             style={anchorPosition}
         >
             <ContextToolbar buttonProps={toolbarButtonProps} fusionPath={fusionPath}/>
-            <StructuralToolbar insertPosition={insertPosition} buttonProps={toolbarButtonProps}/>
+            <StructuralToolbar insertPosition={toolbarPlacement} buttonProps={toolbarButtonProps}/>
         </div>
     );
 };

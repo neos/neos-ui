@@ -7,6 +7,35 @@ import {Button, Icon} from '@neos-project/react-ui-components';
 import {InsertPosition} from '@neos-project/neos-ts-interfaces';
 import {neos} from '@neos-project/neos-ui-decorators';
 
+import getInsertPositionIcon from '../getInsertPositionIcon';
+import isEmptyContentCollection from '../../isEmptyContentCollection';
+
+//
+// Determine the button label from the relative insert position the new node
+// will actually end up in
+//
+const createLabelForIntent = (insertPosition, creationReference, isEmptyCollection) => {
+    if (creationReference) {
+        // The new node will be placed at the very top of the referenced collection
+        return translate('Neos.Neos.Ui:Main:createNewAtTop', 'Create new at the top');
+    }
+
+    switch (insertPosition) {
+        case InsertPosition.BEFORE:
+            return translate('Neos.Neos.Ui:Main:createNewAbove', 'Create new above');
+
+        case InsertPosition.AFTER:
+            return translate('Neos.Neos.Ui:Main:createNewBelow', 'Create new below');
+
+        default:
+            // An "into" insertion is appended after the last child - so with existing
+            // content it lands below it, while an empty collection has nothing below
+            return isEmptyCollection
+                ? translate('Neos.Neos.Ui:Main:createNewInside', 'Create new inside')
+                : translate('Neos.Neos.Ui:Main:createNewAtBottom', 'Create new at the bottom');
+    }
+};
+
 @neos(globalRegistry => ({
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
 }))
@@ -25,7 +54,8 @@ import {neos} from '@neos-project/neos-ui-decorators';
         });
 
         return {
-            isAllowedToAddChildOrSiblingNodes
+            isAllowedToAddChildOrSiblingNodes,
+            isEmptyCollection: isEmptyContentCollection(focusedNode, nodeTypesRegistry)
         };
     };
 }, {
@@ -37,25 +67,32 @@ export default class AddNode extends PureComponent {
         fusionPath: PropTypes.string,
         className: PropTypes.string,
         insertPosition: PropTypes.string,
+        creationReference: PropTypes.object,
+        isEmptyCollection: PropTypes.bool,
         commenceNodeCreation: PropTypes.func.isRequired,
         isAllowedToAddChildOrSiblingNodes: PropTypes.bool
     };
 
     handleCommenceNodeCreation = () => {
-        const {
-            commenceNodeCreation,
-            contextPath,
-            fusionPath,
-            insertPosition
-        } = this.props;
+        const {commenceNodeCreation, contextPath, fusionPath, insertPosition, creationReference} = this.props;
 
-        commenceNodeCreation(contextPath, fusionPath, insertPosition);
+        // Insert relative to the referenced node if one is given - e.g. before the first
+        // child of a content collection to place the new node at the very top of it
+        const target = creationReference ?? {contextPath, fusionPath};
+
+        commenceNodeCreation(target.contextPath, target.fusionPath, insertPosition);
     }
 
     render() {
-        const {isAllowedToAddChildOrSiblingNodes, className, insertPosition} = this.props;
-        const insertPositionIcon = insertPosition === InsertPosition.BEFORE
-            ? 'arrow-up' : (insertPosition === InsertPosition.AFTER ? 'arrow-down' : 'arrow-right');
+        const {
+            isAllowedToAddChildOrSiblingNodes,
+            className,
+            insertPosition,
+            creationReference,
+            isEmptyCollection
+        } = this.props;
+        const insertPositionIcon = getInsertPositionIcon(insertPosition, creationReference, isEmptyCollection);
+        const title = createLabelForIntent(insertPosition, creationReference, isEmptyCollection);
 
         return (
             <Button
@@ -63,7 +100,7 @@ export default class AddNode extends PureComponent {
                 className={className}
                 disabled={!isAllowedToAddChildOrSiblingNodes}
                 onClick={this.handleCommenceNodeCreation}
-                title={translate('Neos.Neos:Main:createNew')}
+                title={title}
                 size="small"
                 style="brand"
             >

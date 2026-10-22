@@ -9,12 +9,13 @@ import {InsertPosition} from '@neos-project/neos-ts-interfaces';
 import {Button, Icon} from '@neos-project/react-ui-components';
 
 import getInsertPositionIcon from '../getInsertPositionIcon';
+import isEmptyContentCollection from '../../isEmptyContentCollection';
 
 //
 // Determine the button label from the relative insert position the pasted
 // node will actually end up in
 //
-const getPasteTitle = (insertPosition, creationReference, insertsBelowExistingContent) => {
+const createLabelForIntent = (insertPosition, creationReference, isEmptyCollection) => {
     if (creationReference) {
         // The pasted node will be placed at the very top of the referenced collection
         return translate('Neos.Neos.Ui:Main:pasteAtTop', 'Paste at the top');
@@ -30,9 +31,9 @@ const getPasteTitle = (insertPosition, creationReference, insertsBelowExistingCo
         default:
             // An "into" insertion is appended after the last child - so with existing
             // content it lands below it, while an empty collection has nothing below
-            return insertsBelowExistingContent
-                ? translate('Neos.Neos.Ui:Main:pasteAtBottom', 'Paste at the bottom')
-                : translate('Neos.Neos.Ui:Main:pasteInside', 'Paste inside');
+            return isEmptyCollection
+                ? translate('Neos.Neos.Ui:Main:pasteInside', 'Paste inside')
+                : translate('Neos.Neos.Ui:Main:pasteAtBottom', 'Paste at the bottom');
     }
 };
 
@@ -50,8 +51,12 @@ const getPasteTitle = (insertPosition, creationReference, insertsBelowExistingCo
                 reference: contextPath
             });
         }));
+        const focusedNode = selectors.CR.Nodes.makeGetNodeByContextPathSelector(contextPath)(state);
 
-        return {canBePasted};
+        return {
+            canBePasted,
+            isEmptyCollection: isEmptyContentCollection(focusedNode, nodeTypesRegistry)
+        };
     };
 }, {
     pasteNode: actions.CR.Nodes.paste
@@ -65,42 +70,31 @@ export default class PasteClipBoardNode extends PureComponent {
         fusionPath: PropTypes.string,
         insertPosition: PropTypes.string,
         creationReference: PropTypes.object,
-        creationInsertPosition: PropTypes.string,
-        insertsBelowExistingContent: PropTypes.bool,
+        isEmptyCollection: PropTypes.bool,
 
         pasteNode: PropTypes.func.isRequired
     };
 
     handlePasteButtonClick = () => {
-        const {
-            pasteNode,
-            contextPath,
-            fusionPath,
-            insertPosition,
-            creationReference,
-            creationInsertPosition
-        } = this.props;
+        const {pasteNode, contextPath, fusionPath, insertPosition, creationReference} = this.props;
 
-        if (creationReference) {
-            // Paste relative to the referenced node instead, e.g. before the first child
-            // of a content collection to place the node at the very top of it
-            pasteNode(creationReference.contextPath, creationReference.fusionPath, creationInsertPosition);
-            return;
-        }
+        // Paste relative to the referenced node if one is given - e.g. before the first
+        // child of a content collection to place the node at the very top of it
+        const target = creationReference ?? {contextPath, fusionPath};
 
-        pasteNode(contextPath, fusionPath, insertPosition);
+        pasteNode(target.contextPath, target.fusionPath, insertPosition);
     }
 
     render() {
-        const {className, canBePasted, insertPosition, creationReference, insertsBelowExistingContent} = this.props;
+        const {className, canBePasted, insertPosition, creationReference, isEmptyCollection} = this.props;
 
         // FIXME: Also hide/disable button if insertPosition is invalid for the current node
         if (!canBePasted) {
             return null;
         }
 
-        const insertPositionIcon = getInsertPositionIcon(insertPosition, creationReference, insertsBelowExistingContent);
-        const title = getPasteTitle(insertPosition, creationReference, insertsBelowExistingContent);
+        const insertPositionIcon = getInsertPositionIcon(insertPosition, creationReference, isEmptyCollection);
+        const title = createLabelForIntent(insertPosition, creationReference, isEmptyCollection);
 
         return (
             <Button

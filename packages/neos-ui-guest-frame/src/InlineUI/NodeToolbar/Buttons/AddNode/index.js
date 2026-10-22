@@ -8,12 +8,13 @@ import {InsertPosition} from '@neos-project/neos-ts-interfaces';
 import {neos} from '@neos-project/neos-ui-decorators';
 
 import getInsertPositionIcon from '../getInsertPositionIcon';
+import isEmptyContentCollection from '../../isEmptyContentCollection';
 
 //
 // Determine the button label from the relative insert position the new node
 // will actually end up in
 //
-const getCreateTitle = (insertPosition, creationReference, insertsBelowExistingContent) => {
+const createLabelForIntent = (insertPosition, creationReference, isEmptyCollection) => {
     if (creationReference) {
         // The new node will be placed at the very top of the referenced collection
         return translate('Neos.Neos.Ui:Main:createNewAtTop', 'Create new at the top');
@@ -29,9 +30,9 @@ const getCreateTitle = (insertPosition, creationReference, insertsBelowExistingC
         default:
             // An "into" insertion is appended after the last child - so with existing
             // content it lands below it, while an empty collection has nothing below
-            return insertsBelowExistingContent
-                ? translate('Neos.Neos.Ui:Main:createNewAtBottom', 'Create new at the bottom')
-                : translate('Neos.Neos.Ui:Main:createNewInside', 'Create new inside');
+            return isEmptyCollection
+                ? translate('Neos.Neos.Ui:Main:createNewInside', 'Create new inside')
+                : translate('Neos.Neos.Ui:Main:createNewAtBottom', 'Create new at the bottom');
     }
 };
 
@@ -53,7 +54,8 @@ const getCreateTitle = (insertPosition, creationReference, insertsBelowExistingC
         });
 
         return {
-            isAllowedToAddChildOrSiblingNodes
+            isAllowedToAddChildOrSiblingNodes,
+            isEmptyCollection: isEmptyContentCollection(focusedNode, nodeTypesRegistry)
         };
     };
 }, {
@@ -66,30 +68,19 @@ export default class AddNode extends PureComponent {
         className: PropTypes.string,
         insertPosition: PropTypes.string,
         creationReference: PropTypes.object,
-        creationInsertPosition: PropTypes.string,
-        insertsBelowExistingContent: PropTypes.bool,
+        isEmptyCollection: PropTypes.bool,
         commenceNodeCreation: PropTypes.func.isRequired,
         isAllowedToAddChildOrSiblingNodes: PropTypes.bool
     };
 
     handleCommenceNodeCreation = () => {
-        const {
-            commenceNodeCreation,
-            contextPath,
-            fusionPath,
-            insertPosition,
-            creationReference,
-            creationInsertPosition
-        } = this.props;
+        const {commenceNodeCreation, contextPath, fusionPath, insertPosition, creationReference} = this.props;
 
-        if (creationReference) {
-            // Insert relative to the referenced node instead, e.g. before the first child
-            // of a content collection to place the new node at the very top of it
-            commenceNodeCreation(creationReference.contextPath, creationReference.fusionPath, creationInsertPosition);
-            return;
-        }
+        // Insert relative to the referenced node if one is given - e.g. before the first
+        // child of a content collection to place the new node at the very top of it
+        const target = creationReference ?? {contextPath, fusionPath};
 
-        commenceNodeCreation(contextPath, fusionPath, insertPosition);
+        commenceNodeCreation(target.contextPath, target.fusionPath, insertPosition);
     }
 
     render() {
@@ -98,10 +89,10 @@ export default class AddNode extends PureComponent {
             className,
             insertPosition,
             creationReference,
-            insertsBelowExistingContent
+            isEmptyCollection
         } = this.props;
-        const insertPositionIcon = getInsertPositionIcon(insertPosition, creationReference, insertsBelowExistingContent);
-        const title = getCreateTitle(insertPosition, creationReference, insertsBelowExistingContent);
+        const insertPositionIcon = getInsertPositionIcon(insertPosition, creationReference, isEmptyCollection);
+        const title = createLabelForIntent(insertPosition, creationReference, isEmptyCollection);
 
         return (
             <Button

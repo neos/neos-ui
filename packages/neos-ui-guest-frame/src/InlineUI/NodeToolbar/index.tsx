@@ -16,6 +16,7 @@ import {selectors, useSelector} from '@neos-project/neos-ui-redux-store';
 
 import StructuralToolbar from './StructuralToolbar';
 import ContextToolbar from './ContextToolbar';
+import isEmptyContentCollection from './isEmptyContentCollection';
 
 import style from './style.module.css';
 
@@ -96,9 +97,7 @@ const NodeToolbar: React.FC<NodeToolbarProps & InjectedNodeToolbarProps> = ({
 
     // An empty content collection has no meaningful "alongside" positions - a new node can
     // only be inserted into it, so the toolbar always shows in the center "into" position
-    const isEmptyCollection = isContentCollection
-        && Boolean(focusedNode?.isFullyLoaded)
-        && (focusedNode?.children?.length ?? 0) === 0;
+    const isEmptyCollection = isEmptyContentCollection(focusedNode, nodeTypesRegistry);
 
     // If inserting alongside is not allowed, but inserting into is (e.g., for auto-created
     // content collections like the columns of a multi-column element), then "into" is the
@@ -128,15 +127,6 @@ const NodeToolbar: React.FC<NodeToolbarProps & InjectedNodeToolbarProps> = ({
         }
         return null;
     });
-    const creationInsertPosition = creationReference ? InsertPosition.BEFORE : effectiveInsertPosition;
-
-    // Whether an "into" insertion will land below existing content (i.e. it is appended
-    // after the last child, as opposed to being placed before the first one via a
-    // creation reference, or into an empty collection) - used by the buttons to hint
-    // at the resulting relative position
-    const insertsBelowExistingContent = effectiveInsertPosition === InsertPosition.INTO
-        && !creationReference
-        && !isEmptyCollection;
 
     const nodeElement = useMemo(() => findNodeInGuestFrame(contextPath, fusionPath), [contextPath, fusionPath]);
 
@@ -199,13 +189,14 @@ const NodeToolbar: React.FC<NodeToolbarProps & InjectedNodeToolbarProps> = ({
             isCopied,
             isCut,
             visibilityCanBeToggled,
-            insertPosition: effectiveInsertPosition,
+            // The buttons insert relative to the referenced first child (i.e. at the very top
+            // of a content collection) when a reference is given, otherwise at the effective
+            // hover position
+            insertPosition: creationReference ? InsertPosition.BEFORE : effectiveInsertPosition,
             creationReference,
-            creationInsertPosition,
-            insertsBelowExistingContent,
             className: style.toolBar__btnGroup__btn
         };
-    }, [i18nRegistry, contextPath, fusionPath, destructiveOperationsAreDisabled, canBeDeleted, canBeEdited, isCopied, isCut, visibilityCanBeToggled, effectiveInsertPosition, creationReference, creationInsertPosition, insertsBelowExistingContent]);
+    }, [i18nRegistry, contextPath, fusionPath, destructiveOperationsAreDisabled, canBeDeleted, canBeEdited, isCopied, isCut, visibilityCanBeToggled, effectiveInsertPosition, creationReference]);
 
     useEffect(() => {
         if (!iframeWindow) {

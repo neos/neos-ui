@@ -1,4 +1,4 @@
-import {isNode, Node, NodeMap, NodeContextPath, SelectionModeTypes} from '@neos-project/neos-ts-interfaces';
+import {isNode, Node, NodeMap, NodeContextPath, NodeChildren, SelectionModeTypes} from '@neos-project/neos-ts-interfaces';
 
 //
 // Helper function to determine allowed node types
@@ -48,6 +48,36 @@ export const parentNodeContextPath = (contextPath: NodeContextPath) => {
 export const isNodeCollapsed = (node: Node, isToggled: boolean, rootNode: Node, loadingDepth: number) => {
     const isCollapsedByDefault = loadingDepth === 0 ? false : node.depth - rootNode.depth >= loadingDepth;
     return (isCollapsedByDefault && !isToggled) || (!isCollapsedByDefault && isToggled);
+};
+
+//
+// Helper function to merge two lists of children of a node
+//
+// IMPORTANT: The children of a node are rendered differently depending on the
+// representation which was requested from the server: The document tree only
+// contains the document children, while a fully loaded node also contains the
+// content collections. Such lists must therefore be merged by context path and
+// never by index, as only the context path is unique.
+//
+export const mergeNodeChildren = (existingChildren: NodeChildren, newChildren: NodeChildren): NodeChildren => {
+    const mergedChildren: NodeChildren = [];
+    const indexByContextPath = new Map<NodeContextPath, number>();
+
+    [...existingChildren, ...newChildren].forEach(child => {
+        if (!child || !child.contextPath) {
+            return;
+        }
+        const existingIndex = indexByContextPath.get(child.contextPath);
+        if (existingIndex === undefined) {
+            indexByContextPath.set(child.contextPath, mergedChildren.length);
+            mergedChildren.push(child);
+        } else {
+            // The child is already known, so we only refresh the information about it
+            mergedChildren[existingIndex] = {...mergedChildren[existingIndex], ...child};
+        }
+    });
+
+    return mergedChildren;
 };
 
 export const getNodeOrThrow = (nodeMap: NodeMap, contextPath: NodeContextPath) => {

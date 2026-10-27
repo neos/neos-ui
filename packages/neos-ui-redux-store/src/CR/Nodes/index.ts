@@ -5,7 +5,7 @@ import {actionTypes as system, InitAction} from '../../System';
 import {actionTypes as editPreviewMode, Action as EditPreviewModeAction} from '../../UI/EditPreviewMode';
 
 import * as selectors from './selectors';
-import {calculateNewFocusedNodes, getNodeOrThrow} from './helpers';
+import {calculateNewFocusedNodes, getNodeOrThrow, mergeNodeChildren} from './helpers';
 
 import {FusionPath, NodeContextPath, InsertPosition, NodeMap, ClipboardMode, SelectionModeTypes, NodeTypeName, Node} from '@neos-project/neos-ts-interfaces';
 
@@ -410,6 +410,46 @@ const moveNodeInState = (
 };
 
 //
+// Merges the given nodes into the given node map.
+//
+// Nodes which are already known are merged with the newly loaded data, while the
+// children of the nodes are merged by context path (see mergeNodeChildren) and
+// never by index.
+//
+const mergeNodesIntoNodeMap = (nodeMap: NodeMap, newNodeMap: NodeMap) => {
+    Object.keys(newNodeMap).forEach(contextPath => {
+        // This data may be coming from the Guest frame, so we need to re-create it at host/
+        // Otherwise we get all "can't execute code from a freed script" errors in Edge,
+        // when the guest frame has been navigated away and old guest frame document was destroyed
+        const newNode = adoptDataToHost(newNodeMap[contextPath]);
+        if (!newNode) {
+            throw new Error('This error should never be thrown, it\'s a way to fool TypeScript');
+        }
+        const existingNode = nodeMap[contextPath] || {} as Node;
+        const mergedNode: Node = defaultsDeep({}, newNode, existingNode);
+        if (newNode.children !== undefined) {
+            if (newNode.isFullyLoaded || !existingNode.children) {
+                mergedNode.children = mergeNodeChildren([], newNode.children);
+            } else {
+                // A non fully loaded node is either a node that was loaded for the document tree, or
+                // a content node that didn't have all its children loaded. This can happen either when the
+                // initial loading depth doesn't include the nodes children, or if not all children have been
+                // rendered in the guest frame with a content element wrapping.
+                mergedNode.children = mergeNodeChildren(
+                    existingNode.children.filter(({role}) => role !== 'document'),
+                    newNode.children
+                );
+            }
+        }
+        // Force overwrite of matchesCurrentDimensions
+        if (newNode.matchesCurrentDimensions !== undefined) {
+            mergedNode.matchesCurrentDimensions = newNode.matchesCurrentDimensions;
+        }
+        nodeMap[contextPath] = mergedNode;
+    });
+};
+
+//
 // Export the reducer
 //
 export const reducer = (state: State = defaultState, action: InitAction | EditPreviewModeAction | Action) => produce(state, draft => {
@@ -455,41 +495,7 @@ export const reducer = (state: State = defaultState, action: InitAction | EditPr
         }
         case actionTypes.MERGE: {
             const {nodeMap} = action.payload;
-            Object.keys(nodeMap).forEach(contextPath => {
-                // This data may be coming from the Guest frame, so we need to re-create it at host/
-                // Otherwise we get all "can't execute code from a freed script" errors in Edge,
-                // when the guest frame has been navigated away and old guest frame document was destroyed
-                const newNode = adoptDataToHost(nodeMap[contextPath]);
-                if (!newNode) {
-                    throw new Error('This error should never be thrown, it\'s a way to fool TypeScript');
-                }
-                const existingNode = draft.byContextPath[contextPath] || {} as Node;
-                const mergedNode: Node = defaultsDeep({}, newNode, existingNode);
-                if (newNode.children !== undefined) {
-                    if (newNode.isFullyLoaded || !existingNode.children) {
-                        mergedNode.children = newNode.children;
-                    } else {
-                        // A non fully loaded node is either a node that was loaded for the document tree, or
-                        // a content node that didn't have all its children loaded. This can happen either when the
-                        // initial loading depth doesn't include the nodes children, or if not all children have been
-                        // rendered in the guest frame with a content element wrapping.
-                        mergedNode.children = [
-                            ...existingNode.children.filter(({role}) => role !== 'document'),
-                            ...newNode.children
-                        ];
-                        // Remove duplicates after merging in case the node was not fully loaded but the list of
-                        // children has already partially been populated by content loaded in the guest frame.
-                        mergedNode.children = mergedNode.children.filter((child, index, self) =>
-                            index === self.findIndex(c => c.contextPath === child.contextPath)
-                        );
-                    }
-                }
-                // Force overwrite of matchesCurrentDimensions
-                if (newNode.matchesCurrentDimensions !== undefined) {
-                    mergedNode.matchesCurrentDimensions = newNode.matchesCurrentDimensions;
-                }
-                draft.byContextPath[contextPath] = mergedNode;
-            });
+            mergeNodesIntoNodeMap(draft.byContextPath as NodeMap, nodeMap);
             break;
         }
         case actionTypes.FOCUS: {
@@ -585,7 +591,11 @@ export const reducer = (state: State = defaultState, action: InitAction | EditPr
             draft.focused.fusionPath = null;
             draft.focused.contextPaths = [];
             if (nodes) {
-                draft.byContextPath = merge ? defaultsDeep({}, nodes, draft.byContextPath) : nodes;
+                if (merge) {
+                    mergeNodesIntoNodeMap(draft.byContextPath as NodeMap, nodes);
+                } else {
+                    draft.byContextPath = nodes;
+                }
             }
             break;
         }

@@ -234,9 +234,12 @@ const reloadState = ((payload: {
     );
 });
 
-// This data may be coming from the Guest frame, so we need to re-create it at host/
-// Otherwise we get all "can't execute code from a freed script" errors in Edge,
-// when the guest frame has been navigated away and old guest frame document was destroyed
+// Node data is usually loaded from the backend and therefore already lives in the host realm.
+// The exception is the guest frame initialization, which merges the legacy node data and the
+// serialized document node - both are created inside the guest frame realm and therefore have to
+// be re-created in the host realm. Otherwise we get all "can't execute code from a freed script"
+// errors in Edge, when the guest frame has been navigated away and the old guest frame document
+// was destroyed.
 const adoptDataToHost = <T>(object: T): T => JSON.parse(JSON.stringify(object));
 
 /**
@@ -418,9 +421,8 @@ const moveNodeInState = (
 //
 const mergeNodesIntoNodeMap = (nodeMap: NodeMap, newNodeMap: NodeMap) => {
     Object.keys(newNodeMap).forEach(contextPath => {
-        // This data may be coming from the Guest frame, so we need to re-create it at host/
-        // Otherwise we get all "can't execute code from a freed script" errors in Edge,
-        // when the guest frame has been navigated away and old guest frame document was destroyed
+        // The data may originate from the guest frame and therefore needs to be re-created in the
+        // host realm (see adoptDataToHost for details)
         const newNode = adoptDataToHost(newNodeMap[contextPath]);
         if (!newNode) {
             throw new Error('This error should never be thrown, it\'s a way to fool TypeScript');

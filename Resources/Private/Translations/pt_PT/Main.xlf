@@ -462,6 +462,14 @@
         <source>Invalid value</source>
         <target state="translated">Valor inválido</target>
       </trans-unit>
+      <trans-unit id="hide" xml:space="preserve">
+        <source>Hide</source>
+        <target state="needs-translation" state-qualifier="leveraged-mt">Ocultar</target>
+      </trans-unit>
+      <trans-unit id="toggleInspector" xml:space="preserve">
+        <source>Toggle inspector</source>
+        <target state="needs-translation" state-qualifier="leveraged-mt">Exibir/Ocultar inspetor</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

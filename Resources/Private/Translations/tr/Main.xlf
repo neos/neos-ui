@@ -265,7 +265,7 @@
         <source>Unfocus Node</source>
         <target xml:lang="tr" state="needs-translation">Unfocus Node</target>
       </trans-unit>
-    <trans-unit id="reviewChanges" xml:space="preserve">
+      <trans-unit id="reviewChanges" xml:space="preserve">
         <source>Review changes</source>
         <target state="translated">Değişiklikleri gözden geçir</target>
       </trans-unit>
@@ -577,6 +577,10 @@
         <source>Published</source>
         <target state="translated">Yayımlandı</target>
       </trans-unit>
-      </body>
+      <trans-unit id="internalWorkspaceGroupLabel" xml:space="preserve">
+        <source>Internal</source>
+        <target state="needs-translation" state-qualifier="leveraged-mt">Dahili</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

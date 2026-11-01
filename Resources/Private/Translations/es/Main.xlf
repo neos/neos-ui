@@ -512,7 +512,7 @@
         <source>Invalid value</source>
         <target state="translated">Valor incorrecto</target>
       </trans-unit>
-    <trans-unit id="reviewChanges" xml:space="preserve">
+      <trans-unit id="reviewChanges" xml:space="preserve">
         <source>Review changes</source>
         <target state="translated">Revisar cambios</target>
       </trans-unit>
@@ -828,6 +828,10 @@
         <source>Published</source>
         <target state="translated">Publicado</target>
       </trans-unit>
-      </body>
+      <trans-unit id="internalWorkspaceGroupLabel" xml:space="preserve">
+        <source>Internal</source>
+        <target state="needs-translation" state-qualifier="leveraged-mt">Interno</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

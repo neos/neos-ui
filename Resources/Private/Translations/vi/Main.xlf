@@ -262,7 +262,7 @@
         <source>Unfocus Node</source>
         <target xml:lang="vi" state="needs-translation">Unfocus Node</target>
       </trans-unit>
-    <trans-unit id="reviewChanges" xml:space="preserve">
+      <trans-unit id="reviewChanges" xml:space="preserve">
         <source>Review changes</source>
         <target state="translated">Xem trước thay đổi</target>
       </trans-unit>
@@ -574,6 +574,10 @@
         <source>Published</source>
         <target state="translated">Đã công khai</target>
       </trans-unit>
-      </body>
+      <trans-unit id="internalWorkspaceGroupLabel" xml:space="preserve">
+        <source>Internal</source>
+        <target state="needs-translation" state-qualifier="leveraged-mt">Nội bộ</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

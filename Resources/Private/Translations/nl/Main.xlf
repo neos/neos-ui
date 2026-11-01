@@ -537,7 +537,7 @@ Om te wisselen naar een andere worksapce , zul je eerst je wijzingen moeten publ
         <source>Add content</source>
         <target state="translated">Voeg content toe</target>
       </trans-unit>
-    <trans-unit id="reviewChanges" xml:space="preserve" approved="yes">
+      <trans-unit id="reviewChanges" xml:space="preserve" approved="yes">
         <source>Review changes</source>
         <target state="final">Controleer wijzigingen</target>
       </trans-unit>
@@ -861,6 +861,10 @@ Om te wisselen naar een andere worksapce , zul je eerst je wijzingen moeten publ
         <source>Published</source>
         <target state="final">Gepubliceerd</target>
       </trans-unit>
-      </body>
+      <trans-unit id="internalWorkspaceGroupLabel" xml:space="preserve">
+        <source>Internal</source>
+        <target state="needs-translation" state-qualifier="leveraged-mt">Intern</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

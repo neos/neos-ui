@@ -46,6 +46,14 @@
         <source>Enter link title</source>
         <target state="needs-translation" state-qualifier="leveraged-mt">Entrer le titre du lien</target>
       </trans-unit>
+      <trans-unit id="dialog.title.create" xml:space="preserve" approved="no">
+        <source>Create Link</source>
+        <target state="needs-translation" state-qualifier="leveraged-mt">Créer un lien</target>
+      </trans-unit>
+      <trans-unit id="dialog.title.edit" xml:space="preserve" approved="no">
+        <source>Edit Link</source>
+        <target state="needs-translation" state-qualifier="leveraged-mt">Modifier le lien</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -25,9 +25,9 @@ jobs:
       matrix:
         include:
           - php-version: '8.4'
-            neos-version: '9.2'
+            neos-version: '9.3'
           - php-version: '8.5'
-            neos-version: '9.2'
+            neos-version: '9.3'
 
     services:
       mariadb:

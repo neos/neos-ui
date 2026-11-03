@@ -39,6 +39,13 @@ export default class NodeInfoView extends PureComponent {
         }
     }
 
+    formatTags = tags => Object.entries(tags).map(([key, val], i) => (
+        <React.Fragment key={key}>
+            {i > 0 && ', '}
+            {val === true ? <u>{key}</u> : <React.Fragment>{key}</React.Fragment>}
+        </React.Fragment>
+    ));
+
     render() {
         const {focusedNodeContextPath, getNodeByContextPath} = this.props;
 
@@ -49,7 +56,8 @@ export default class NodeInfoView extends PureComponent {
             lastModification: node?.lastModificationDateTime,
             lastPublication: node?.lastPublicationDateTime,
             nodeAddress: node?.contextPath,
-            name: node?.name
+            name: node?.name,
+            tags: node?.tags
         };
 
         const nodeType = node?.nodeType;
@@ -82,6 +90,12 @@ export default class NodeInfoView extends PureComponent {
                     <li className={style.nodeInfoView__item} title={properties.name}>
                         <div className={style.nodeInfoView__title}>{translate('Neos.Neos.Ui:Main:nodeInfoView.name', 'Name')}</div>
                         <NodeInfoViewContent>{properties.name ?? translate('Neos.Neos.Ui:Main:unavailable', 'unavailable')}</NodeInfoViewContent>
+                    </li>
+                ) : ''}
+                {properties.tags ? (
+                    <li className={style.nodeInfoView__item} title={JSON.stringify(properties.tags)} >
+                        <div className={style.nodeInfoView__title}>{translate('Neos.Neos.Ui:Main:nodeInfoView.tags', 'Tags')}</div>
+                        <NodeInfoViewContent>{this.formatTags(properties.tags)}</NodeInfoViewContent>
                     </li>
                 ) : ''}
                 <li className={style.nodeInfoView__item} title={nodeType}>

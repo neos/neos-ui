@@ -50,6 +50,9 @@
     background: var(--colors-ContrastNeutral);
     border-radius: 2px;
     position: relative;
+    hyphens: auto;
+    overflow-wrap: break-word; /* Standards-compliant alias for word-wrap */
+    word-break: normal;
 }
 .nodeType__item--focused {
     background: var(--colors-PrimaryBlue);

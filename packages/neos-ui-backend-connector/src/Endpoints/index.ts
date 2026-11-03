@@ -606,7 +606,7 @@ export default (routes: Routes) => {
         }
     })).then(response => fetchWithErrorHandling.parseJson(response));
 
-    const getAdditionalNodeMetadata = (nodeContextPaths: NodeContextPath) => fetchWithErrorHandling.withCsrfToken(csrfToken => {
+    const requestAdditionalNodeMetadata = (nodeContextPaths: NodeContextPath[]) => fetchWithErrorHandling.withCsrfToken(csrfToken => {
         return {
             url: routes.ui.service.getAdditionalNodeMetadata,
             method: 'POST',
@@ -618,7 +618,49 @@ export default (routes: Routes) => {
             }
         };
     }).then(response => fetchWithErrorHandling.parseJson(response))
-    .catch(reason => console.warn('Something went wrong with requesting additional node metadata:', reason));
+        .catch(reason => console.warn('Something went wrong with requesting additional node metadata:', reason));
+
+    //
+    // Several consumers ask for the additional node metadata of (largely) the same nodes at the same
+    // time. Especially the content tree and the guest frame when a document is loaded.
+    // Instead of sending one request per consumer, callers share the request currently in
+    // flight and only request afterward the nodes it did not cover themselves.
+    let additionalNodeMetadataRequest: { promise: Promise<any>, contextPaths: Set<string> } | null = null;
+
+    const getAdditionalNodeMetadata = async (nodeContextPaths: NodeContextPath[]) => {
+        if (!Array.isArray(nodeContextPaths) || nodeContextPaths.length === 0) {
+            return {};
+        }
+
+        const result = {};
+
+        if (additionalNodeMetadataRequest) {
+            const {promise, contextPaths} = additionalNodeMetadataRequest;
+            Object.assign(result, await promise);
+
+            // If the shared request only covered a part of our nodes, we fetch the remainder.
+            const missingNodeContextPaths = nodeContextPaths.filter(contextPath => !contextPaths.has(contextPath));
+            if (missingNodeContextPaths.length > 0) {
+                Object.assign(result, await requestAdditionalNodeMetadata(missingNodeContextPaths));
+            }
+
+            return result;
+        }
+
+        const contextPaths = new Set<string>(nodeContextPaths);
+        const promise = requestAdditionalNodeMetadata(nodeContextPaths);
+        additionalNodeMetadataRequest = {promise, contextPaths};
+
+        try {
+            Object.assign(result, await promise);
+        } finally {
+            if (additionalNodeMetadataRequest && additionalNodeMetadataRequest.promise === promise) {
+                additionalNodeMetadataRequest = null;
+            }
+        }
+
+        return result;
+    };
 
     const dataSource = (dataSourceIdentifier: string, dataSourceUri: string, params = {}) => fetchWithErrorHandling.withCsrfToken(() => ({
         url: urlWithParams(dataSourceUri || `${routes.core.service.dataSource}/${dataSourceIdentifier}`, params),

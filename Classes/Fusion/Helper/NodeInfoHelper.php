@@ -106,6 +106,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             // TODO: we should export this correctly named, but that needs changes throughout the JS code as well.
             '_hidden' => $node->tags->withoutInherited()->contain(NeosSubtreeTag::disabled()),
             'hiddenInMenu' => $node->getProperty('hiddenInMenu'),
+            '_hiddenByAncestors' => $node->tags->onlyInherited()->contain(NeosSubtreeTag::disabled()),
             '_hiddenInIndex' => $node->getProperty('hiddenInMenu'),
             '_hasTimeableNodeVisibility' =>
                 $node->getProperty('enableAfterDateTime') instanceof \DateTimeInterface
@@ -148,6 +149,14 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         $nodeInfo['properties'] = $this->nodePropertyConverterService->getPropertiesArray($node);
         $nodeInfo['tags'] = $node->tags;
         $nodeInfo['isFullyLoaded'] = true;
+        $nodeInfo['properties'] = array_merge($nodeInfo['properties'], [
+            // TODO: we should export this correctly named, but that needs changes throughout the JS code as well.
+            '_hidden' => $node->tags->withoutInherited()->contain(NeosSubtreeTag::disabled()),
+            '_hiddenByAncestors' => $node->tags->onlyInherited()->contain(NeosSubtreeTag::disabled()),
+            '_hasTimeableNodeVisibility' =>
+                $node->getProperty('enableAfterDateTime') instanceof \DateTimeInterface
+                || $node->getProperty('disableAfterDateTime') instanceof \DateTimeInterface,
+        ]);
 
         if ($actionRequest !== null) {
             $nodeInfo = array_merge($nodeInfo, $this->getUriInformation($node, $actionRequest));

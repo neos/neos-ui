@@ -7,7 +7,7 @@ import {defaultProps} from './iconDefaultProps';
 
 type IconSize = 'xs' | 'sm' | 'lg' | '2x' | '3x';
 type IconPadding = 'none' | 'left' | 'right';
-type IconColor = 'default' | 'warn' | 'error' | 'primaryBlue';
+type IconColor = 'default' | 'warn' | 'error' | 'primaryBlue' | 'contrastDark';
 
 export interface IconTheme {
     readonly icon: string;
@@ -22,6 +22,7 @@ export interface IconTheme {
     readonly 'icon--color-warn': string;
     readonly 'icon--color-error': string;
     readonly 'icon--color-primaryBlue': string;
+    readonly 'icon--color-contrastDark': string;
 }
 
 export interface IconProps extends Omit<FontAwesomeIconProps, 'icon' | 'ref'> {

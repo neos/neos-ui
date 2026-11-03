@@ -10,6 +10,7 @@ exports[`<Icon/> should render correctly. 1`] = `
     Object {
       "icon": "iconClassName",
       "icon--big": "bigClassName",
+      "icon--color-contrastDark": "color-contrastDarkClassName",
       "icon--color-error": "color-errorClassName",
       "icon--color-primaryBlue": "color-primaryBlueClassName",
       "icon--color-warn": "color-warnClassName",

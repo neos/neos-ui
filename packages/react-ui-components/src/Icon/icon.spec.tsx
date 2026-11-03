@@ -13,6 +13,7 @@ describe('<Icon/>', () => {
             'icon--big': 'bigClassName',
             'icon--color-error': 'color-errorClassName',
             'icon--color-primaryBlue': 'color-primaryBlueClassName',
+            'icon--color-contrastDark': 'color-contrastDarkClassName',
             'icon--color-warn': 'color-warnClassName',
             'icon--paddedLeft': 'paddedLeftClassName',
             'icon--paddedRight': 'paddedRightClassName',

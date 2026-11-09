@@ -80,7 +80,7 @@ export default class NodeInfoView extends PureComponent {
                     <NodeInfoViewContent>{properties.identifier}</NodeInfoViewContent>
                 </li>
                 <li className={style.nodeInfoView__item} title={properties.nodeAddress}>
-                    <div className={style.nodeInfoView__title}>{translate('Neos.Neos.Ui:Main:nodeAddress', 'Node Address')}</div>
+                    <div className={style.nodeInfoView__title}>{translate('Neos.Neos.Ui:Main:nodeAddress', 'Node address')}</div>
                     <NodeInfoViewContent>{properties.nodeAddress}</NodeInfoViewContent>
                 </li>
                 {properties.name ? (

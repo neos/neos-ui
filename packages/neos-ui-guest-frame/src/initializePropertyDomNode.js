@@ -1,9 +1,9 @@
-import {$get, $contains} from 'plow-js';
+import {$contains, $get} from 'plow-js';
 
-import {actions} from '@neos-project/neos-ui-redux-store';
+import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {validateElement} from '@neos-project/neos-ui-validators';
 
-import {getGuestFrameWindow, closestContextPathInGuestFrame} from './dom';
+import {closestContextPathInGuestFrame, getGuestFrameDocument, getGuestFrameWindow} from './dom';
 
 export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry, nodes}) => propertyDomNode => {
     const guestFrameWindow = getGuestFrameWindow();
@@ -23,12 +23,19 @@ export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry,
 
     const nodeTypeName = $get([contextPath, 'nodeType'], nodes);
     const nodeType = nodeTypesRegistry.get(nodeTypeName);
-    const isInlineEditable = (
-        $get(['properties', propertyName, 'ui', 'inlineEditable'], nodeType) !== false &&
-        !$contains(propertyName, [contextPath, 'policy', 'disallowedProperties'], nodes)
-    );
+    const isInlineEditable = $get(['properties', propertyName, 'ui', 'inlineEditable'], nodeType) !== false;
 
-    if (isInlineEditable) {
+    // We do not initialize an inline editor for content the user is not
+    // allowed to edit (read-only workspace or missing edit permission on the node or
+    // property). The server-rendered markup is not editable by itself, which makes
+    // not booting the editor the most robust way to prevent editing.
+    const isWorkspaceReadOnly = selectors.CR.Workspaces.isWorkspaceReadOnlySelector(store.getState());
+
+    if (!isInlineEditable || isWorkspaceReadOnly) {
+        return;
+    }
+
+    const initializeInlineEditor = () => {
         const editorIdentifier = 'ckeditor5';
         const editorOptions = nodeTypesRegistry.getInlineEditorOptionsForProperty(nodeTypeName, propertyName);
         const {bootstrap, createInlineEditor} = inlineEditorRegistry.get(editorIdentifier);
@@ -107,5 +114,41 @@ export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry,
             //
             console.error(err);
         }
+    };
+
+    const initializeInlineEditorIfPermitted = policy => {
+        const isEditingDisallowed = $get('canEdit', policy) === false ||
+            $contains(propertyName, 'disallowedProperties', policy);
+
+        if (!isEditingDisallowed) {
+            initializeInlineEditor();
+        }
+    };
+
+    // The node policy is lazy-loaded after the initial node data arrived in the store, so it is usually not available
+    // yet while the guest frame content is initialized. We have to wait for it before we can decide
+    // whether an inline editor may be created for this property.
+    const selectNodePolicy = () => $get([contextPath, 'policy'], store.getState().cr.nodes.byContextPath);
+    const nodePolicy = selectNodePolicy();
+
+    if (nodePolicy) {
+        initializeInlineEditorIfPermitted(nodePolicy);
+        return;
     }
+
+    const unsubscribe = store.subscribe(() => {
+        const nodePolicy = selectNodePolicy();
+        if (!nodePolicy) {
+            return;
+        }
+
+        unsubscribe();
+
+        // The guest frame might have been reloaded while we waited for the policy
+        if (getGuestFrameDocument() !== propertyDomNode.ownerDocument) {
+            return;
+        }
+
+        initializeInlineEditorIfPermitted(nodePolicy);
+    });
 };

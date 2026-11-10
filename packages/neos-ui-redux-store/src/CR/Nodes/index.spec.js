@@ -212,6 +212,201 @@ test(`The "updateUri" action should update uris.`, () => {
     });
 });
 
+test(`The "merge" action should not duplicate the children of a node.`, () => {
+    const state = {
+        byContextPath: {
+            'parent@user-admin;language=en_US': {
+                contextPath: 'parent@user-admin;language=en_US',
+                isFullyLoaded: true,
+                children: [
+                    {
+                        contextPath: 'parent/child@user-admin;language=en_US',
+                        nodeType: 'Neos.Demo:Page',
+                        role: 'document'
+                    },
+                    {
+                        contextPath: 'parent/main@user-admin;language=en_US',
+                        nodeType: 'Neos.Demo:ContentCollection',
+                        role: 'content'
+                    }
+                ]
+            }
+        }
+    };
+
+    // The document tree only contains the document children of a node
+    const nextState = reducer(state, actions.merge({
+        'parent@user-admin;language=en_US': {
+            contextPath: 'parent@user-admin;language=en_US',
+            children: [
+                {
+                    contextPath: 'parent/child@user-admin;language=en_US',
+                    nodeType: 'Neos.Demo:Page',
+                    role: 'document'
+                }
+            ]
+        }
+    }));
+
+    expect(nextState.byContextPath['parent@user-admin;language=en_US'].children).toEqual([
+        {
+            contextPath: 'parent/main@user-admin;language=en_US',
+            nodeType: 'Neos.Demo:ContentCollection',
+            role: 'content'
+        },
+        {
+            contextPath: 'parent/child@user-admin;language=en_US',
+            nodeType: 'Neos.Demo:Page',
+            role: 'document'
+        }
+    ]);
+});
+
+test(`The "setState" action should not duplicate the children of a node when merging into the existing state.`, () => {
+    const state = {
+        byContextPath: {
+            'parent@user-admin;language=en_US': {
+                contextPath: 'parent@user-admin;language=en_US',
+                isFullyLoaded: true,
+                children: [
+                    {
+                        contextPath: 'parent/child@user-admin;language=en_US',
+                        nodeType: 'Neos.Demo:Page',
+                        role: 'document'
+                    },
+                    {
+                        contextPath: 'parent/main@user-admin;language=en_US',
+                        nodeType: 'Neos.Demo:ContentCollection',
+                        role: 'content'
+                    },
+                    {
+                        contextPath: 'parent/footer@user-admin;language=en_US',
+                        nodeType: 'Neos.Demo:ContentCollection',
+                        role: 'content'
+                    }
+                ]
+            }
+        },
+        focused: {
+            fusionPath: null,
+            contextPaths: []
+        }
+    };
+
+    // The document tree only contains the document children of a node
+    const mergedState = reducer(state, actions.merge({
+        'parent@user-admin;language=en_US': {
+            contextPath: 'parent@user-admin;language=en_US',
+            children: [
+                {
+                    contextPath: 'parent/child@user-admin;language=en_US',
+                    nodeType: 'Neos.Demo:Page',
+                    role: 'document'
+                }
+            ]
+        }
+    }));
+
+    // Reloading the state with the document tree representation must not duplicate the children
+    const nextState = reducer(mergedState, actions.setState({
+        siteNodeContextPath: 'site@user-admin;language=en_US',
+        documentNodeContextPath: 'parent/child@user-admin;language=en_US',
+        nodes: {
+            'parent@user-admin;language=en_US': {
+                contextPath: 'parent@user-admin;language=en_US',
+                children: [
+                    {
+                        contextPath: 'parent/child@user-admin;language=en_US',
+                        nodeType: 'Neos.Demo:Page',
+                        role: 'document'
+                    }
+                ]
+            }
+        },
+        merge: true
+    }));
+
+    expect(nextState.byContextPath['parent@user-admin;language=en_US'].children).toEqual([
+        {
+            contextPath: 'parent/main@user-admin;language=en_US',
+            nodeType: 'Neos.Demo:ContentCollection',
+            role: 'content'
+        },
+        {
+            contextPath: 'parent/footer@user-admin;language=en_US',
+            nodeType: 'Neos.Demo:ContentCollection',
+            role: 'content'
+        },
+        {
+            contextPath: 'parent/child@user-admin;language=en_US',
+            nodeType: 'Neos.Demo:Page',
+            role: 'document'
+        }
+    ]);
+});
+
+test(`The "setState" action should not duplicate the document children of a node when merging into the existing state.`, () => {
+    const documentChildren = ['child-a', 'child-b', 'child-c'].map(name => ({
+        contextPath: `parent/${name}@user-admin;language=en_US`,
+        nodeType: 'Neos.Demo:Page',
+        role: 'document'
+    }));
+    const contentChildren = ['main', 'footer'].map(name => ({
+        contextPath: `parent/${name}@user-admin;language=en_US`,
+        nodeType: 'Neos.Demo:ContentCollection',
+        role: 'content'
+    }));
+
+    const state = {
+        byContextPath: {
+            'parent@user-admin;language=en_US': {
+                contextPath: 'parent@user-admin;language=en_US',
+                isFullyLoaded: true,
+                children: [
+                    ...documentChildren,
+                    ...contentChildren
+                ]
+            }
+        },
+        focused: {
+            fusionPath: null,
+            contextPaths: []
+        }
+    };
+
+    // The document tree only contains the document children of a node
+    const mergedState = reducer(state, actions.merge({
+        'parent@user-admin;language=en_US': {
+            contextPath: 'parent@user-admin;language=en_US',
+            children: documentChildren
+        }
+    }));
+
+    // Reloading the state with the document tree representation must not duplicate the children
+    const nextState = reducer(mergedState, actions.setState({
+        siteNodeContextPath: 'site@user-admin;language=en_US',
+        documentNodeContextPath: 'parent/child-a@user-admin;language=en_US',
+        nodes: {
+            'parent@user-admin;language=en_US': {
+                contextPath: 'parent@user-admin;language=en_US',
+                children: documentChildren
+            }
+        },
+        merge: true
+    }));
+
+    const childrenContextPaths = nextState.byContextPath['parent@user-admin;language=en_US'].children.map(child => child.contextPath);
+
+    expect(childrenContextPaths).toEqual([
+        'parent/main@user-admin;language=en_US',
+        'parent/footer@user-admin;language=en_US',
+        'parent/child-a@user-admin;language=en_US',
+        'parent/child-b@user-admin;language=en_US',
+        'parent/child-c@user-admin;language=en_US'
+    ]);
+    expect(new Set(childrenContextPaths).size).toEqual(childrenContextPaths.length);
+});
+
 test(`The "setInlineValidationErrors" action should set validation errors.`, () => {
     const state = {
         inlineValidationErrors: {}

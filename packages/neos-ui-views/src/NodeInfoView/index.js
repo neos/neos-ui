@@ -49,12 +49,17 @@ export default class NodeInfoView extends PureComponent {
             lastModification: node?.lastModificationDateTime,
             lastPublication: node?.lastPublicationDateTime,
             nodeAddress: node?.contextPath,
-            name: node?.name
+            name: node?.name,
+            tags: node?.tags
         };
 
         const nodeType = node?.nodeType;
         // Insert word breaking tags to make the node type more readable
         const wrappingNodeTypeName = nodeType?.replace(/([:.])/g, '<wbr/>$1');
+
+        const tags = Object.keys(properties.tags ?? {});
+        const assignedTags = tags.filter(tag => properties.tags[tag] === true);
+        const interitedTags = tags.filter(tag => properties.tags[tag] === null);
 
         return (
             <ul className={style.nodeInfoView}>
@@ -75,13 +80,25 @@ export default class NodeInfoView extends PureComponent {
                     <NodeInfoViewContent>{properties.identifier}</NodeInfoViewContent>
                 </li>
                 <li className={style.nodeInfoView__item} title={properties.nodeAddress}>
-                    <div className={style.nodeInfoView__title}>{translate('Neos.Neos.Ui:Main:nodeAddress', 'Node Address')}</div>
+                    <div className={style.nodeInfoView__title}>{translate('Neos.Neos.Ui:Main:nodeAddress', 'Node address')}</div>
                     <NodeInfoViewContent>{properties.nodeAddress}</NodeInfoViewContent>
                 </li>
                 {properties.name ? (
                     <li className={style.nodeInfoView__item} title={properties.name}>
                         <div className={style.nodeInfoView__title}>{translate('Neos.Neos.Ui:Main:nodeInfoView.name', 'Name')}</div>
                         <NodeInfoViewContent>{properties.name ?? translate('Neos.Neos.Ui:Main:unavailable', 'unavailable')}</NodeInfoViewContent>
+                    </li>
+                ) : ''}
+                {assignedTags.length > 0 ? (
+                    <li className={style.nodeInfoView__item} title={JSON.stringify(assignedTags)} >
+                        <div className={style.nodeInfoView__title}>{translate('Neos.Neos.Ui:Main:nodeInfoView.directlyAssignedTags', 'Assigned tags')}</div>
+                        <NodeInfoViewContent>{assignedTags.join(', ')}</NodeInfoViewContent>
+                    </li>
+                ) : ''}
+                {interitedTags.length > 0 ? (
+                    <li className={style.nodeInfoView__item} title={JSON.stringify(interitedTags)} >
+                        <div className={style.nodeInfoView__title}>{translate('Neos.Neos.Ui:Main:nodeInfoView.inheritedTags', 'Inherited tags')}</div>
+                        <NodeInfoViewContent>{interitedTags.join(', ')}</NodeInfoViewContent>
                     </li>
                 ) : ''}
                 <li className={style.nodeInfoView__item} title={nodeType}>

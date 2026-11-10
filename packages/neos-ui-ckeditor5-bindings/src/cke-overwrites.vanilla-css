@@ -40,6 +40,15 @@
     display: flex;
 }
 
+/*
+ * The balloon toolbar (bold, italic, …) and the anchored toolbar can overlap.
+ * Raise whichever one is hovered above the other, like the node toolbar does.
+ */
+.ck.ck-toolbar.neos-ck-anchored-toolbar:hover,
+.ck.ck-balloon-panel.ck-balloon-panel_visible:hover {
+    z-index: calc(infinity);
+}
+
 @supports not (anchor-name: --inline-ui-node-toolbar-anchor) {
     .ck.ck-toolbar.neos-ck-anchored-toolbar {
         position: absolute;

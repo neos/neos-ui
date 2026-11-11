@@ -292,7 +292,7 @@
           <target xml:lang="no" state="needs-translation">Discarded {0} changes.</target>
         </trans-unit>
       </group>
-    <trans-unit id="reviewChanges" xml:space="preserve">
+      <trans-unit id="reviewChanges" xml:space="preserve">
         <source>Review changes</source>
         <target state="translated">Se gjennom endringene</target>
       </trans-unit>
@@ -604,6 +604,10 @@
         <source>Published</source>
         <target state="translated">Publisert</target>
       </trans-unit>
-      </body>
+      <trans-unit id="internalWorkspaceGroupLabel" xml:space="preserve">
+        <source>Internal</source>
+        <target state="needs-translation" state-qualifier="leveraged-mt">Intern</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

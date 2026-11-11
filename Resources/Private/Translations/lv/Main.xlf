@@ -351,7 +351,7 @@
         <source>Preformatted</source>
         <target state="translated">Iepriekš formatēts</target>
       </trans-unit>
-    <trans-unit id="reviewChanges" xml:space="preserve" approved="yes">
+      <trans-unit id="reviewChanges" xml:space="preserve" approved="yes">
         <source>Review changes</source>
         <target state="final">Izmaiņu pārskatīšana</target>
       </trans-unit>
@@ -663,6 +663,10 @@
         <source>Published</source>
         <target state="final">Publicēts</target>
       </trans-unit>
-      </body>
+      <trans-unit id="internalWorkspaceGroupLabel" xml:space="preserve">
+        <source>Internal</source>
+        <target state="needs-translation" state-qualifier="leveraged-mt">Iekšēji</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

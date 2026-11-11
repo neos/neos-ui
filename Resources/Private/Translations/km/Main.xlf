@@ -292,7 +292,7 @@
           <target xml:lang="km" state="needs-translation">Discarded {0} changes.</target>
         </trans-unit>
       </group>
-    <trans-unit id="reviewChanges" xml:space="preserve" approved="yes">
+      <trans-unit id="reviewChanges" xml:space="preserve" approved="yes">
         <source>Review changes</source>
         <target state="final">ការផ្លាស់ប្តូរពិនិត្យឡើងវិញ</target>
       </trans-unit>
@@ -604,6 +604,10 @@
         <source>Published</source>
         <target state="final">បានចុះផ្សាយ</target>
       </trans-unit>
-      </body>
+      <trans-unit id="internalWorkspaceGroupLabel" xml:space="preserve">
+        <source>Internal</source>
+        <target state="needs-translation" state-qualifier="leveraged-mt">ផ្ទៃក្នុង</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

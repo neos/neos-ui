@@ -337,7 +337,7 @@
         <source>Preformatted</source>
         <target state="translated">Forformateret</target>
       </trans-unit>
-    <trans-unit id="reviewChanges" xml:space="preserve" approved="yes">
+      <trans-unit id="reviewChanges" xml:space="preserve" approved="yes">
         <source>Review changes</source>
         <target state="final">Gennemse ændringer</target>
       </trans-unit>
@@ -649,6 +649,10 @@
         <source>Published</source>
         <target state="final">Publiceret</target>
       </trans-unit>
-      </body>
+      <trans-unit id="internalWorkspaceGroupLabel" xml:space="preserve">
+        <source>Internal</source>
+        <target state="needs-translation" state-qualifier="leveraged-mt">Internt</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

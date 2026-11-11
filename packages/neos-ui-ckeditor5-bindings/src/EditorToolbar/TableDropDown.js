@@ -3,7 +3,6 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 
 import {neos} from '@neos-project/neos-ui-decorators';
-import {svgToDataUri} from '@neos-project/utils-helpers';
 import ckeIcons from './icons';
 
 import style from './TableDropDown.module.css';
@@ -40,7 +39,7 @@ export default class TableDropDownButton extends PureComponent {
     }
 
     render() {
-        const iconDataUri = svgToDataUri(ckeIcons[this.props.icon]);
+        const iconDataUri = ckeIcons[this.props.icon];
         return (
             <DropDown
                 padded={false}

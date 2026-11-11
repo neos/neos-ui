@@ -56,7 +56,7 @@ export default class Frame extends PureComponent<FrameProps> {
         if (this.ref && this.ref.contentDocument && this.ref.contentWindow) {
             this.ref.contentDocument.removeEventListener('click', this.relayClickEventToHostDocument);
             this.ref.contentDocument.addEventListener('click', this.relayClickEventToHostDocument);
-            this.ref.contentWindow.addEventListener('unload', () => {
+            this.ref.contentWindow.addEventListener('pagehide', () => {
                 this.handleUnload();
             });
         }
@@ -163,7 +163,7 @@ export default class Frame extends PureComponent<FrameProps> {
             const win = this.ref.contentWindow;
 
             if (win && doc) {
-                win.addEventListener('unload', this.props.onUnload);
+                win.addEventListener('pagehide', this.props.onUnload);
 
                 const mountTarget = doc.querySelector(this.props.mountTarget);
                 const contents = React.createElement('div', undefined, this.props.children);

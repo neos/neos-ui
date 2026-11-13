@@ -3,6 +3,22 @@ import {validateElement} from '@neos-project/neos-ui-validators';
 
 import {getGuestFrameWindow, closestContextPathInGuestFrame} from './dom';
 
+//
+// Determine whether an inline editor may be created for the given property.
+//
+// Besides the node type configuration this respects the node policy: The Content Repository rejects
+// modifications of nodes the user has no edit permission for, so an editor for such a node would
+// happily accept input just to fail once the change is persisted.
+//
+// A missing `canEdit` is deliberately treated as "editable": the policy is loaded asynchronously
+// and we must not lock down content just because it has not arrived yet.
+//
+export const isPropertyInlineEditable = ({nodeType, propertyName, nodePolicy}) => (
+    nodeType?.properties?.[propertyName]?.ui?.inlineEditable !== false &&
+    nodePolicy?.canEdit !== false &&
+    !nodePolicy?.disallowedProperties?.includes(propertyName)
+);
+
 export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry, nodes}) => propertyDomNode => {
     const guestFrameWindow = getGuestFrameWindow();
     if (!guestFrameWindow['@Neos.Neos.Ui:InitializedInlineEditors']) {
@@ -21,10 +37,11 @@ export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry,
 
     const nodeTypeName = nodes?.[contextPath]?.nodeType;
     const nodeType = nodeTypesRegistry.get(nodeTypeName);
-    const isInlineEditable = (
-        nodeType?.properties?.[propertyName]?.ui?.inlineEditable !== false &&
-        !nodes?.[contextPath]?.policy?.disallowedProperties?.includes(propertyName)
-    );
+    const isInlineEditable = isPropertyInlineEditable({
+        nodeType,
+        propertyName,
+        nodePolicy: nodes?.[contextPath]?.policy
+    });
 
     if (isInlineEditable) {
         const editorIdentifier = 'ckeditor5';

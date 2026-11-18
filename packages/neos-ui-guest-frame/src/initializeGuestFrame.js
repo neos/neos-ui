@@ -2,12 +2,13 @@ import {put, select, takeEvery} from 'redux-saga/effects';
 import {$get} from 'plow-js';
 
 import {actions, actionTypes, selectors} from '@neos-project/neos-ui-redux-store';
-import {requestIdleCallback} from '@neos-project/utils-helpers';
 
 import initializeContentDomNode from './initializeContentDomNode';
+import registerContentNodeInteractionHandlers from './registerContentNodeInteractionHandlers';
 import {
     dispatchCustomEvent,
     findAllNodesInGuestFrame,
+    findAllPropertiesInGuestFrameGroupedByContextPath,
     findInGuestFrame,
     findNodeInGuestFrame,
     getGuestFrameDocument,
@@ -17,28 +18,6 @@ import {
 import style from './style.module.css';
 import {SelectionModeTypes} from '@neos-project/neos-ts-interfaces';
 import backend from '@neos-project/neos-ui-backend-connector';
-
-//
-// Get all parent elements of the event target.
-//
-// It's not possible to use `event.composedPath()` here because
-// it doesn't work in FF with past events stored in a closure.
-//
-const eventPath = event => {
-    let element = event.target;
-    const path = [];
-
-    while (element) {
-        path.push(element);
-        if (element.tagName === 'HTML') {
-            path.push(document);
-            path.push(window);
-            return path;
-        }
-        element = element.parentElement;
-    }
-    return path;
-};
 
 export default ({globalRegistry, store}) => function * initializeGuestFrame() {
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
@@ -118,79 +97,27 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
         return;
     }
 
-    const focusSelectedNode = event => {
-        const clickPath = Array.prototype.slice.call(eventPath(event));
-        const isInsideInlineUi = clickPath.some(domNode =>
-            domNode &&
-            domNode.getAttribute &&
-            domNode.getAttribute('data-__neos__inline-ui')
-        );
-        const isInsideEditableProperty = clickPath.some(domNode =>
-            domNode &&
-            domNode.getAttribute &&
-            domNode.getAttribute('data-__neos-property')
-        );
-        const selectedDomNode = clickPath.find(domNode =>
-            domNode &&
-            domNode.getAttribute &&
-            domNode.getAttribute('data-__neos-node-contextpath')
-        );
+    // Register mouse / touch / keyboard interaction event listeners and handlers
+    registerContentNodeInteractionHandlers({store, guestFrameDocument: getGuestFrameDocument()});
 
-        if (isInsideInlineUi) {
-            // Do nothing, everything OK!
-        } else if (selectedDomNode) {
-            const contextPath = selectedDomNode.getAttribute('data-__neos-node-contextpath');
-            const fusionPath = selectedDomNode.getAttribute('data-__neos-fusion-path');
-            const state = store.getState();
-            const focusedNodeContextPath = selectors.CR.Nodes.focusedNodePathSelector(state);
-            if (!isInsideEditableProperty) {
-                store.dispatch(actions.UI.ContentCanvas.setCurrentlyEditedPropertyName(''));
-            }
-            if (!isInsideEditableProperty || focusedNodeContextPath !== contextPath) {
-                store.dispatch(actions.CR.Nodes.focus(contextPath, fusionPath));
-            }
-        } else {
-            store.dispatch(actions.UI.ContentCanvas.setCurrentlyEditedPropertyName(''));
-            store.dispatch(actions.CR.Nodes.unFocus());
-        }
-    };
-
-    // We store the original mousedown event in order to prevent bugs like this: https://github.com/neos/neos-ui/issues/1934
-    let mouseDownEvent = null;
-    getGuestFrameDocument().addEventListener('mousedown', event => {
-        mouseDownEvent = event;
+    // Initialize all nodes found in the guest frame
+    const nodesToInitialize = findAllNodesInGuestFrame();
+    const propertiesByContextPath = findAllPropertiesInGuestFrameGroupedByContextPath();
+    const currentNodesByContextPath = store.getState().cr.nodes.byContextPath;
+    const initializeCurrentNode = initializeContentDomNode({
+        store,
+        globalRegistry,
+        nodeTypesRegistry,
+        inlineEditorRegistry
     });
-    getGuestFrameDocument().addEventListener('mouseup', () => {
-        if (mouseDownEvent) {
-            focusSelectedNode(mouseDownEvent);
-        }
-        mouseDownEvent = null;
-    });
+    const nodeInitializationContext = {nodes: currentNodesByContextPath, propertiesByContextPath};
 
-    getGuestFrameDocument().addEventListener('keyup', e => {
-        if (e.key === 'Tab') {
-            focusSelectedNode(e);
+    nodesToInitialize.forEach(node => {
+        // Only if guest frame document did not change in the meantime, we continue initializing the node
+        if (getGuestFrameDocument() === node.ownerDocument) {
+            initializeCurrentNode(node, nodeInitializationContext);
         }
     });
-
-    const initializeNodes = findAllNodesInGuestFrame().reduceRight((initializeSubSequentNodes, node) => () => {
-        const initializeCurrentNode = initializeContentDomNode({
-            store,
-            globalRegistry,
-            nodeTypesRegistry,
-            inlineEditorRegistry
-        });
-
-        requestIdleCallback(() => {
-            // Only of guest frame document did not change in the meantime, we continue initializing the node
-            if (getGuestFrameDocument() === node.ownerDocument) {
-                initializeCurrentNode(node);
-            }
-            initializeSubSequentNodes();
-        });
-    }, () => { /* This noop function is called right at the end of content inialization */ });
-
-    initializeNodes();
 
     // When the contentCanvas is reloaded (e.g. from the inspector change) and focused style to it
     const focusedNode = yield select(selectors.CR.Nodes.focusedNodePathSelector);

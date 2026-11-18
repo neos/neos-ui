@@ -1,12 +1,12 @@
 import debounce from 'lodash.debounce';
 import {getGuestFrameElement, getGuestFrameDocument} from '@neos-project/neos-ui-guest-frame/src/dom';
 import {isDraggingNode} from '@neos-project/neos-ui-guest-frame/src/InlineUI/DragAndDropUi';
+import {anchoredToolbars} from '@neos-project/neos-ui-guest-frame/src/ToolbarAnchoring';
 import {DecoupledEditor} from '@ckeditor/ckeditor5-editor-decoupled';
 import {Template, BodyCollection} from '@ckeditor/ckeditor5-ui';
 import {createElement} from '@ckeditor/ckeditor5-utils';
 
 import {cleanupContentBeforeCommit} from './cleanupContentBeforeCommit'
-import {anchoredToolbars} from './ToolbarAnchoring';
 
 import '@ckeditor/ckeditor5-ui/dist/index.css';
 import '@ckeditor/ckeditor5-clipboard/dist/index.css';

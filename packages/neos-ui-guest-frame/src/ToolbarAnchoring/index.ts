@@ -1,7 +1,7 @@
 /**
- * Anchoring and stickiness of the CKEditor 5 formatting toolbars in the guest
- * frame. The editor bootstrap talks to this module only; all placement rules and
- * browser workarounds live here.
+ * Anchoring and stickiness of the CKEditor 5 formatting toolbars; the geometry
+ * constants are shared with the node toolbars. All placement rules and browser
+ * workarounds live here.
  */
 export {anchoredToolbars, MAX_TRACKED_TOOLBARS, ToolbarRegistry} from './registry';
 export type {AnchoringStats} from './registry';

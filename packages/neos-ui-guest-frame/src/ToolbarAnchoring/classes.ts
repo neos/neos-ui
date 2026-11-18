@@ -1,6 +1,6 @@
 /**
- * The contract between the anchoring code and `cke-overwrites.vanilla-css`.
- * Keep both in sync when renaming.
+ * The contract between the anchoring code and `cke-overwrites.vanilla-css`
+ * (neos-ui-ckeditor5-bindings). Keep both in sync when renaming.
  */
 export const toolbarClasses = {
     /** Base class: anchors the toolbar at its property and hides it while unfocused */

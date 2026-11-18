@@ -34,6 +34,7 @@
     "@neos-project/neos-ui-decorators": "workspace:*",
     "@neos-project/neos-ui-editors": "workspace:*",
     "@neos-project/neos-ui-extensibility": "workspace:*",
+    "@neos-project/neos-ui-guest-frame": "workspace:*",
     "@neos-project/neos-ui-redux-store": "workspace:*",
     "@neos-project/react-ui-components": "workspace:*",
     "@neos-project/utils-helpers": "workspace:*",

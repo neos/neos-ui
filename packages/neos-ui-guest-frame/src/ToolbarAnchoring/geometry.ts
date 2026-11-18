@@ -3,13 +3,13 @@ import {Coordinate, Placement, Rect, Side, Size, Viewport} from './types';
 /**
  * Distance the sticky toolbar is pinned to the top of the viewport.
  * @see the `top` of `.neos-ck-anchored-toolbar--sticky` in
- * cke-overwrites.vanilla-css, which only covers the first frame.
+ * cke-overwrites.vanilla-css (neos-ui-ckeditor5-bindings), covering the first frame.
  */
 export const STICKY_TOP_OFFSET = 5;
 
 /**
- * A property counts as "in view" while its top is above this offset. Matches
- * the `ContextToolbar` threshold, so both pin at the same scroll position.
+ * A property counts as "in view" while its top is above this offset. Shared
+ * with the `ContextToolbar`, so both pin at the same scroll position.
  */
 export const PROPERTY_VISIBLE_THRESHOLD = 50;
 

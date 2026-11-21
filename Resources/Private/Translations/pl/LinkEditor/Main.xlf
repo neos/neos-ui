@@ -42,6 +42,14 @@
         <source>Create</source>
         <target state="needs-translation" state-qualifier="leveraged-mt">Utwórz</target>
       </trans-unit>
+      <trans-unit id="dialog.title.create" xml:space="preserve" approved="no">
+        <source>Create Link</source>
+        <target state="needs-translation" state-qualifier="leveraged-mt">Utwórz link</target>
+      </trans-unit>
+      <trans-unit id="dialog.title.edit" xml:space="preserve" approved="no">
+        <source>Edit Link</source>
+        <target state="needs-translation" state-qualifier="leveraged-mt">Edytuj link</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

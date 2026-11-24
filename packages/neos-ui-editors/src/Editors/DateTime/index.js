@@ -4,11 +4,18 @@ import DateInput from '@neos-project/react-ui-components/src/DateInput/';
 import moment from 'moment';
 import {neos} from '@neos-project/neos-ui-decorators';
 import convertPhpDateFormatToMoment, {has24HourFormat, hasDateFormat, hasTimeFormat} from './helpers';
+import {
+    calendarDateFromUtcMidnight,
+    calendarDateInTimezone,
+    calendarDateToUtcMidnight,
+    formatCalendarDateAsNoon
+} from './calendarDate';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
 
 @neos(globalRegistry => ({
-    i18nRegistry: globalRegistry.get('i18n')
+    i18nRegistry: globalRegistry.get('i18n'),
+    serverTimezone: $get('serverTimezone', globalRegistry.get('frontendConfiguration').get('dateTime'))
 }))
 @connect($transform({
     interfaceLanguage: $get('user.preferences.interfaceLanguage')
@@ -25,6 +32,7 @@ class DateTime extends PureComponent {
             timeConstraints: PropTypes.object
         }),
         id: PropTypes.string,
+        serverTimezone: PropTypes.string,
         i18nRegistry: PropTypes.object,
         interfaceLanguage: PropTypes.string
     }
@@ -32,6 +40,7 @@ class DateTime extends PureComponent {
     render() {
         const {
             id,
+            serverTimezone,
             className,
             value,
             commit,
@@ -39,10 +48,22 @@ class DateTime extends PureComponent {
             i18nRegistry,
             interfaceLanguage
         } = this.props;
-        const mappedValue = (typeof value === 'string' && value.length) ? moment(value).toDate() : (value || undefined);
+        const dateOnly = !hasTimeFormat(options.format);
+        let mappedValue = (typeof value === 'string' && value.length) ? moment(value).toDate() : (value || undefined);
+        if (dateOnly && mappedValue) {
+            mappedValue = calendarDateToUtcMidnight(calendarDateInTimezone(mappedValue, serverTimezone));
+        }
 
         const onChange = date => {
-            commit(date ? moment(date).format('YYYY-MM-DDTHH:mm:ssZ') : '');
+            if (!date) {
+                commit('');
+                return;
+            }
+            if (dateOnly) {
+                commit(formatCalendarDateAsNoon(calendarDateFromUtcMidnight(date), serverTimezone));
+                return;
+            }
+            commit(moment(date).format('YYYY-MM-DDTHH:mm:ssZ'));
         };
 
         const timeConstraints = Object.assign({
@@ -58,7 +79,7 @@ class DateTime extends PureComponent {
                 value={mappedValue}
                 onChange={onChange}
                 labelFormat={convertPhpDateFormatToMoment(options.format)}
-                dateOnly={!hasTimeFormat(options.format)}
+                dateOnly={dateOnly}
                 timeOnly={!hasDateFormat(options.format)}
                 is24Hour={hasTimeFormat(options.format) && has24HourFormat(options.format)}
                 placeholder={i18nRegistry.translate($get('placeholder', options) || 'Neos.Neos:Main:content.inspector.editors.dateTimeEditor.noDateSet')}

@@ -113,6 +113,12 @@ describe('<DateInput/>', () => {
         expect(receivedDate.getUTCMilliseconds()).toBe(0);
     });
 
+    it('should render the label in UTC if "dateOnly" is set, like the "DatePicker".', () => {
+        const wrapper = shallow(<DateInput {...props} dateOnly={true} labelFormat="YYYY-MM-DD" value={new Date('2026-03-29T00:00:00Z')}/>);
+
+        expect(wrapper.find('input').prop('value')).toBe('2026-03-29');
+    });
+
     it('should format time in 24 hour format', () => {
         const wrapper = shallow(<DateInput {...props} is24Hour/>);
 

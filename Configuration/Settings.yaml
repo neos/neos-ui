@@ -63,6 +63,9 @@ Neos:
 
       frontendConfiguration:
         editPreviewModes: '${Neos.Ui.PositionalArraySorter.sort(Configuration.setting(''Neos.Neos.userInterface.editPreviewModes''))}'
+        dateTime:
+          # Used by the DateTime editor for date-only values
+          serverTimezone: '${Date.format(Date.now(), "e")}'
         # You may use this place to deliver some configuration to your custom UI components, e.g.:
         # 'Your.Own:Package':
         #   someKey: someValue

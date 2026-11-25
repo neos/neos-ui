@@ -6,6 +6,7 @@ import EditorEnvelope from '@neos-project/neos-ui-editors/src/EditorEnvelope/ind
 import {neos} from '@neos-project/neos-ui-decorators';
 import {connect} from 'react-redux';
 import {selectors} from '@neos-project/neos-ui-redux-store';
+
 /**
  * (Stateful) Editor envelope
  *
@@ -43,7 +44,11 @@ export default class InspectorEditorEnvelope extends PureComponent {
     get options() {
         // This makes sure that auto-created child nodes cannot be hidden
         // via the insprector (see: #2282)
-        if (this.props.isWorkspaceReadOnly || ($get('isAutoCreated', this.props.node) === true && this.props.id === '_hidden')) {
+        const isAutoCreatedHiddenProperty = $get('isAutoCreated', this.props.node) === true && this.props.id === '_hidden';
+        // Nodes the user is not allowed to edit are shown read-only in the inspector
+        const isNodeEditingDisallowed = $get(['policy', 'canEdit'], this.props.node) === false;
+
+        if (this.props.isWorkspaceReadOnly || isNodeEditingDisallowed || isAutoCreatedHiddenProperty) {
             return {...this.props.options, disabled: true};
         }
 

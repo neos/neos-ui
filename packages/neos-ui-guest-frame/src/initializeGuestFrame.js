@@ -112,9 +112,11 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
 
     const editPreviewMode = $get(['ui', 'editPreviewMode'], state);
     const editPreviewModes = globalRegistry.get('frontendConfiguration').get('editPreviewModes');
-    const isWorkspaceReadOnly = selectors.CR.Workspaces.isWorkspaceReadOnlySelector(state);
     const currentEditMode = editPreviewModes[editPreviewMode];
-    if (!currentEditMode || !currentEditMode.isEditingMode || isWorkspaceReadOnly) {
+
+    // Read-only workspaces are handled in initializePropertyDomNode, where no
+    // inline editor is initialized for content the user is not allowed to edit
+    if (!currentEditMode || !currentEditMode.isEditingMode) {
         return;
     }
 

@@ -48,6 +48,7 @@ manifest('main.sagas', {}, globalRegistry => {
     sagasRegistry.set('neos-ui/CR/NodeOperations/showNode', {saga: crNodeOperations.showNode});
     sagasRegistry.set('neos-ui/CR/NodeOperations/removeNodeIfConfirmed', {saga: crNodeOperations.removeNodeIfConfirmed});
     sagasRegistry.set('neos-ui/CR/NodeOperations/reloadState', {saga: crNodeOperations.reloadState});
+    sagasRegistry.set('neos-ui/CR/NodeOperations/reloadTreesAfterVisibilityChange', {saga: crNodeOperations.reloadTreesAfterVisibilityChange});
 
     sagasRegistry.set('neos-ui/CR/Policies/watchNodeInformationChanges', {saga: crPolicies.watchNodeInformationChanges});
 
@@ -79,6 +80,7 @@ manifest('main.sagas', {}, globalRegistry => {
     sagasRegistry.set('neos-ui/UI/PageTree/watchRequestChildrenForContextPath', {saga: uiPageTree.watchRequestChildrenForContextPath});
     sagasRegistry.set('neos-ui/UI/PageTree/watchSearch', {saga: uiPageTree.watchSearch});
     sagasRegistry.set('neos-ui/UI/PageTree/watchToggle', {saga: uiPageTree.watchToggle});
+    sagasRegistry.set('neos-ui/UI/PageTree/watchReloadTree', {saga: uiPageTree.watchReloadTree});
 
     sagasRegistry.set('neos-ui/UI/Hotkeys/handleHotkeys', {saga: uiHotkeys.handleHotkeys});
 

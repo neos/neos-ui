@@ -170,6 +170,7 @@ export default class Node extends PureComponent {
         const {node} = this.props;
 
         const isDisabled = node?.properties?._hidden;
+        const isDisabledByAncestors = node?.properties?._hiddenByAncestors;
         const hasTimeableNodeVisibility = node?.properties?._hasTimeableNodeVisibility;
 
         if (hasTimeableNodeVisibility) {
@@ -188,6 +189,16 @@ export default class Node extends PureComponent {
                 <span className="fa-layers fa-fw">
                     <Icon icon={this.getIcon()} />
                     <Icon icon="circle" color="error" transform="shrink-3 down-6 right-4" />
+                    <Icon icon="times" transform="shrink-7 down-6 right-4" />
+                </span>
+            );
+        }
+
+        if (isDisabledByAncestors) {
+            return (
+                <span className="fa-layers fa-fw">
+                    <Icon icon={this.getIcon()} />
+                    <Icon icon="circle" color="contrastDark" transform="shrink-3 down-6 right-4" />
                     <Icon icon="times" transform="shrink-7 down-6 right-4" />
                 </span>
             );

@@ -7,6 +7,7 @@ import moveDroppedNodes from './moveDroppedNodes';
 import hideNode from './hideNode';
 import showNode from './showNode';
 import reloadState from './reloadState';
+import reloadTreesAfterVisibilityChange from './reloadTreesAfterVisibilityChange';
 import {makeReloadNodes} from './reloadNodes';
 
 export {
@@ -19,5 +20,6 @@ export {
     hideNode,
     showNode,
     reloadState,
+    reloadTreesAfterVisibilityChange,
     makeReloadNodes
 };

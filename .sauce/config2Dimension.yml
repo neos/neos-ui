@@ -12,7 +12,7 @@ sauce:
   tunnel:
     name: "circleci-tunnel"
 testcafe:
-  version: 3.6.2
+  version: 3.7.2
 # Controls what files are available in the context of a test run (unless explicitly excluded by .sauceignore).
 rootDir: ./
 suites:
@@ -22,6 +22,11 @@ suites:
       - "Tests/IntegrationTests/Fixtures/2Dimension/*.e2e.js"
     platformName: "Windows 10"
     screenResolution: "1280x1024"
+    #
+    # FIXME FOR REAL!!! (Really! - not after 10 years + !!!) remove fixed browserVersion once testcafe understands FF 144 or 145
+    # TODO CORE Issue https://github.com/DevExpress/testcafe/issues/8452
+    #
+    browserVersion: "143"
   - name: "Two dimensional Tests in Chrome on MacOS"
     browserName: "chrome"
     src:

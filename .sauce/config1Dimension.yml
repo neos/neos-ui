@@ -23,6 +23,11 @@ suites:
       - "Tests/IntegrationTests/Fixtures/1Dimension/*.e2e.js"
     platformName: "Windows 10"
     screenResolution: "1280x1024"
+    #
+    # FIXME FOR REAL!!! (Really! - not after 10 years + !!!) remove fixed browserVersion once testcafe understands FF 144 or 145
+    # TODO CORE Issue https://github.com/DevExpress/testcafe/issues/8452
+    #
+    browserVersion: "143"
   - name: "One dimensional Tests in Firefox on MacOS"
     # todo use chrome here and fix ci https://github.com/neos/neos-ui/issues/3591
     browserName: "firefox"
@@ -30,6 +35,11 @@ suites:
       - "Tests/IntegrationTests/Fixtures/1Dimension/*.e2e.js"
     platformName: "macOS 13"
     screenResolution: "1440x900"
+    #
+    # FIXME FOR REAL!!! (Really! - not after 10 years + !!!) remove fixed browserVersion once testcafe understands FF 144 or 145
+    # TODO CORE Issue https://github.com/DevExpress/testcafe/issues/8452
+    #
+    browserVersion: "143"
 npm:
   dependencies:
     - testcafe-react-selectors

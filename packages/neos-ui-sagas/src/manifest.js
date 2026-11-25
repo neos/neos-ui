@@ -1,4 +1,5 @@
 import manifest from '@neos-project/neos-ui-extensibility';
+import {getFullPackageFrontendConfiguration} from '@neos-project/neos-ui-configuration';
 import {SynchronousRegistry} from '@neos-project/neos-ui-registry';
 
 import {
@@ -80,7 +81,9 @@ manifest('main.sagas', {}, globalRegistry => {
     sagasRegistry.set('neos-ui/UI/PageTree/watchSearch', {saga: uiPageTree.watchSearch});
     sagasRegistry.set('neos-ui/UI/PageTree/watchToggle', {saga: uiPageTree.watchToggle});
 
-    sagasRegistry.set('neos-ui/UI/Hotkeys/handleHotkeys', {saga: uiHotkeys.handleHotkeys});
+    if (getFullPackageFrontendConfiguration().enableLegacyKeyboardShortcuts === true) {
+        sagasRegistry.set('neos-ui/UI/Hotkeys/handleHotkeys', {saga: uiHotkeys.handleHotkeys});
+    }
 
     sagasRegistry.set('neos-ui/UI/Impersonate/impersonateRestore', {saga: impersonate.impersonateRestore});
 

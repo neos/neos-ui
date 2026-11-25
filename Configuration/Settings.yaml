@@ -84,7 +84,8 @@ Neos:
       # const {someKey} = getFrontendConfigurationForPackage('Your.Own:Package');
       #
       frontendConfiguration:
-
+        # keyboard shortcuts will be removed in the next version of neos
+        enableLegacyKeyboardShortcuts: false
         # we use the frontendConfiguration for hotkeys here to preserve compatibility. For new settings the neos ui should use the ConfigurationProvider instead.
         hotkeys:
           'UI.RightSideBar.toggle': 't i'

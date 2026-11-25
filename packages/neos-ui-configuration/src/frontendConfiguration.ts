@@ -1,7 +1,6 @@
 import {getInlinedDataFromBackend} from './bootstrap';
 import {GlobalRegistry, SynchronousRegistry} from '@neos-project/neos-ui-registry';
 import {terminateDueToFatalInitializationError} from '@neos-project/neos-ui-error';
-import {getConfiguration} from './configuration';
 
 const frontendConfiguration = getInlinedDataFromBackend('frontendConfiguration') as Record<string, any>;
 
@@ -57,9 +56,4 @@ export function initializeFrontendConfiguration(globalRegistry: GlobalRegistry) 
             ...value
         });
     });
-
-    /**
-     * @deprecated for legacy compatibility to be removed with Neos 9.1 or later
-     */
-    frontendConfigurationRegistry.set('editPreviewModes', getConfiguration((configuration) => configuration.editPreviewModes))
 }

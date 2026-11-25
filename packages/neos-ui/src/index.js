@@ -31,13 +31,11 @@ import Root from './Containers/Root';
 import apiExposureMap from './apiExposureMap';
 import DelegatingReducer from './DelegatingReducer';
 import {getGlobalRegistry} from '@neos-project/neos-ui-registry';
-import {allowedTargetWorkspacesSelector} from '@neos-project/neos-ui-redux-store/src/CR/Workspaces/selectors';
 
 const serverState = getInlinedDataFromBackend('initialState');
 const routes = getInlinedDataFromBackend('routes');
 const menu = getInlinedDataFromBackend('menu');
 
-const configuration = getConfiguration();
 fetchWithErrorHandling.setCsrfToken(csrfToken);
 initializeJsAPI(window, {
     systemEnv,
@@ -96,7 +94,7 @@ async function main() {
 function initializePlugins() {
     manifests
         .map(manifest => manifest[Object.keys(manifest)[0]])
-        .forEach(({bootstrap}) => bootstrap(globalRegistry, {store, frontendConfiguration: getFullPackageFrontendConfiguration(), configuration, routes}));
+        .forEach(({bootstrap}) => bootstrap(globalRegistry, {store, frontendConfiguration: getFullPackageFrontendConfiguration(), configuration: getConfiguration(), routes}));
 }
 
 function initializeAdditionalReduxReducers() {
@@ -105,7 +103,7 @@ function initializeAdditionalReduxReducers() {
 }
 
 function initializeAdditionalReduxSagas() {
-    globalRegistry.get('sagas').getAllAsList().forEach(element => sagaMiddleWare.run(element.saga, {store, globalRegistry, configuration, routes}));
+    globalRegistry.get('sagas').getAllAsList().forEach(element => sagaMiddleWare.run(element.saga, {store, globalRegistry, routes}));
 }
 
 function initializeReduxState() {
@@ -176,16 +174,10 @@ async function loadImpersonateStatus() {
 }
 
 function renderApplication() {
-    /**
-     * @deprecated if accessed via neos.configuration.allowedTargetWorkspaces this information now resides in the redux store see selectors.CR.Workspaces.allowedTargetWorkspacesSelector()
-     */
-    const allowedTargetWorkspaces = allowedTargetWorkspacesSelector(store.getState());
-
     ReactDOM.render(
         <Root
             globalRegistry={globalRegistry}
             menu={menu}
-            configuration={{...configuration, allowedTargetWorkspaces}}
             routes={routes}
             store={store}
             />,

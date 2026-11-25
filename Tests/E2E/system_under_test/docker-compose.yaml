@@ -27,6 +27,7 @@ services:
       - ../../../Migrations:/neos-ui/Migrations:cached
       - ../../../Resources:/neos-ui/Resources:cached
       - ../../../composer.json:/neos-ui/composer.json:cached
+      - ./sut_file_system_overrides/app/DistributionPackages:/app/DistributionPackages
       - composer_cache:/composer_cache
     networks:
       - neos_SUT

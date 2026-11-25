@@ -1,0 +1,10 @@
+Neos:
+  Flow:
+    mvc:
+      routes:
+        'Neos.Test.CrInteraction:Endpoints':
+          position: 'before Neos.Neos'
+          providerFactory: Neos\Flow\Mvc\Routing\AttributeRoutesProviderFactory
+          providerOptions:
+            classNames:
+              - Neos\Test\CrInteraction\Controller\*Controller

@@ -1,0 +1,15 @@
+---
+privilegeTargets:
+
+  'Neos\Flow\Security\Authorization\Privilege\Method\MethodPrivilege':
+
+    'Neos.Test.CrInteraction:GenericCommandAccess':
+      matcher: 'method(Neos\Test\CrInteraction\.*Controller->.*())'
+
+roles:
+
+    'Neos.Flow:Everybody':
+      privileges:
+        -
+          privilegeTarget: 'Neos.Test.CrInteraction:GenericCommandAccess'
+          permission: GRANT

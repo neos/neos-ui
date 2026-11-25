@@ -75,13 +75,13 @@ final class MenuProvider implements MenuProviderInterface
 
         $result = [];
         foreach ($sitesForMenu as $index => $site) {
-            $name = $site['name'];
+            $name = $site['name'] ?? null;
             $name = is_string($name) ? $name : 'N/A';
 
             $uri = $site['uri'];
             $uri = is_string($uri) ? $uri : '#';
 
-            $active = $site['active'];
+            $active = $site['active'] ?? false;
             $active = is_bool($active) || is_numeric($active)
                 ? (bool) $active
                 : false;

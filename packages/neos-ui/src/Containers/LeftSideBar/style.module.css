@@ -45,6 +45,7 @@
     resize: vertical;
     overflow-y: auto;
     z-index: 1;
+    background: var(--colors-ContrastDarker);
 }
 .leftSideBar__top--isFullHeight {
     flex: 1;
@@ -57,6 +58,7 @@
     flex-direction: column;
     min-height: 40px;
     margin-right: var(--spacing-Quarter);
+    background: var(--colors-ContrastDarker);
 }
 
 .leftSideBar__bottom--isCollapsed {

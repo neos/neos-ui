@@ -19,3 +19,6 @@
     float: left;
     width: var(--spacing-GoldenUnit);
 }
+.header {
+    background: var(--colors-ContrastDarkest);
+}

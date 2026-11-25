@@ -13,11 +13,14 @@ namespace Neos\Neos\Ui\Controller;
  */
 
 use Neos\ContentRepository\Core\DimensionSpace\DimensionSpacePointSet;
+use Neos\ContentRepository\Core\Feature\WorkspaceCommandSkipped;
 use Neos\ContentRepository\Core\Feature\WorkspaceRebase\Exception\WorkspaceRebaseFailed;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeAddress;
 use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceStatus;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
+use Neos\EventStore\Exception\ConcurrencyException;
 use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Log\Utility\LogEnvironment;
 use Neos\Flow\Mvc\Controller\ActionController;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Neos\Domain\Repository\DomainRepository;
@@ -167,9 +170,11 @@ class BackendController extends ActionController
         ) {
             try {
                 $this->workspacePublishingService->rebaseWorkspace($siteDetectionResult->contentRepositoryId, $workspace->workspaceName);
-            } catch (WorkspaceRebaseFailed) {
+            } catch (WorkspaceRebaseFailed|WorkspaceCommandSkipped|ConcurrencyException $e) {
                 // currently we don't have a way to provide this rebase error directly to the neos ui and have it solved.
+                // as well for a concurrency race condition
                 // instead we ignore it and have the editor trigger it again via the sync button.
+                $this->logger->warning(sprintf('Skipped automatic rebase of workspace %s. Got %s (%s)', $workspace->workspaceName->value, $e::class, $e->getMessage()), LogEnvironment::fromMethodName(__METHOD__));
             }
         }
 

@@ -16,6 +16,7 @@ use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ControllerContext;
+use Neos\Neos\Domain\Model\SiteNodeName;
 use Neos\Neos\Ui\ContentRepository\Service\WorkspaceService as UiWorkspaceService;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
@@ -44,7 +45,8 @@ class UpdateWorkspaceInfo extends AbstractFeedback
      */
     public function __construct(
         private readonly ContentRepositoryId $contentRepositoryId,
-        private readonly WorkspaceName $workspaceName
+        private readonly WorkspaceName $workspaceName,
+        private readonly ?SiteNodeName $siteNodeName = null
     ) {
     }
 
@@ -107,7 +109,7 @@ class UpdateWorkspaceInfo extends AbstractFeedback
         if ($workspace === null) {
             return null;
         }
-        $publishableNodes = $this->uiWorkspaceService->getPublishableNodeInfo($workspace->workspaceName, $contentRepository->id);
+        $publishableNodes = $this->uiWorkspaceService->getPublishableNodeInfo($workspace->workspaceName, $contentRepository->id, $this->siteNodeName);
         return [
             'name' => $this->workspaceName->value,
             'totalNumberOfChanges' => count($publishableNodes),

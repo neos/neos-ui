@@ -17,6 +17,7 @@ namespace Neos\Neos\Ui\Controller;
 use Neos\ContentRepository\Core\DimensionSpace\DimensionSpacePoint;
 use Neos\ContentRepository\Core\Feature\WorkspaceRebase\Dto\RebaseErrorHandlingStrategy;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindAncestorNodesFilter;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindClosestNodeFilter;
 use Neos\ContentRepository\Core\SharedModel\Exception\WorkspaceContainsPublishableChanges;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeAddress;
 use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
@@ -31,6 +32,8 @@ use Neos\Flow\Mvc\Controller\ActionController;
 use Neos\Flow\Mvc\View\JsonView;
 use Neos\Flow\Property\PropertyMapper;
 use Neos\Flow\Security\Context;
+use Neos\Neos\Domain\Model\SiteNodeName;
+use Neos\Neos\Domain\Service\NodeTypeNameFactory;
 use Neos\Neos\Domain\Service\WorkspacePublishingService;
 use Neos\Neos\Domain\Service\WorkspaceService;
 use Neos\Neos\FrontendRouting\SiteDetection\SiteDetectionResult;
@@ -462,15 +465,23 @@ class BackendServiceController extends ActionController
         );
         $this->feedbackCollection->add($success);
 
-        $updateWorkspaceInfo = new UpdateWorkspaceInfo($command->contentRepositoryId, $userWorkspace->workspaceName);
-        $this->feedbackCollection->add($updateWorkspaceInfo);
-
         $contentRepository = $this->contentRepositoryRegistry->get($command->contentRepositoryId);
 
         $subgraph = $contentRepository->getContentSubgraph(
             $command->workspaceName,
             $command->documentNode->dimensionSpacePoint,
         );
+
+        $siteNodeInstance = $subgraph->findClosestNode(
+            $command->documentNode->aggregateId,
+            FindClosestNodeFilter::create(nodeTypes: NodeTypeNameFactory::NAME_SITE)
+        );
+        $updateWorkspaceInfo = new UpdateWorkspaceInfo(
+            $command->contentRepositoryId,
+            $userWorkspace->workspaceName,
+            $siteNodeInstance?->name !== null ? SiteNodeName::fromNodeName($siteNodeInstance->name) : null
+        );
+        $this->feedbackCollection->add($updateWorkspaceInfo);
 
         $newDocumentNodeToRedirect = $subgraph->findNodeById($command->documentNode->aggregateId);
 
@@ -558,8 +569,11 @@ class BackendServiceController extends ActionController
 
     public function getWorkspaceInfoAction(): void
     {
-        $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
-        $personalWorkspaceInfo = (new WorkspaceHelper())->getPersonalWorkspace($contentRepositoryId);
+        $siteDetectionResult = SiteDetectionResult::fromRequest($this->request->getHttpRequest());
+        $personalWorkspaceInfo = (new WorkspaceHelper())->getPersonalWorkspace(
+            $siteDetectionResult->contentRepositoryId,
+            $siteDetectionResult->siteNodeName->toNodeName()
+        );
         $this->view->assign('value', $personalWorkspaceInfo);
     }
 

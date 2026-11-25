@@ -159,7 +159,7 @@ Neos:
             active: '${Neos.Ui.ContentDimensions.dimensionSpacePointArray(documentNode.dimensionSpacePoint)}'
             allowedPresets: '${Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.dimensionSpacePoint, documentNode.contentRepositoryId)}'
           workspaces:
-            personalWorkspace: '${Neos.Ui.Workspace.getPersonalWorkspace(documentNode.contentRepositoryId)}'
+            personalWorkspace: '${Neos.Ui.Workspace.getPersonalWorkspace(documentNode.contentRepositoryId, site.name)}'
         ui:
           contentCanvas:
             src: '${Neos.Ui.NodeInfo.previewUri(documentNode, request)}'

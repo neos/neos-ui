@@ -17,6 +17,7 @@ use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
+use Neos\Neos\Domain\Model\SiteNodeName;
 use Neos\Neos\Domain\Service\NodeTypeNameFactory;
 use Neos\Neos\Service\UserService;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\NodeCreated;
@@ -69,7 +70,12 @@ abstract class AbstractChange implements ChangeInterface
         $subgraph = $this->contentRepositoryRegistry->subgraphForNode($this->subject);
         $documentNode = $subgraph->findClosestNode($this->subject->aggregateId, FindClosestNodeFilter::create(nodeTypes: NodeTypeNameFactory::NAME_DOCUMENT));
         if (!is_null($documentNode)) {
-            $updateWorkspaceInfo = new UpdateWorkspaceInfo($documentNode->contentRepositoryId, $documentNode->workspaceName);
+            $siteNode = $subgraph->findClosestNode($this->subject->aggregateId, FindClosestNodeFilter::create(nodeTypes: NodeTypeNameFactory::NAME_SITE));
+            $updateWorkspaceInfo = new UpdateWorkspaceInfo(
+                $documentNode->contentRepositoryId,
+                $documentNode->workspaceName,
+                $siteNode?->name !== null ? SiteNodeName::fromNodeName($siteNode->name) : null
+            );
             $this->feedbackCollection->add($updateWorkspaceInfo);
         }
     }

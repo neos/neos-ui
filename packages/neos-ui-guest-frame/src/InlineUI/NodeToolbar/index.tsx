@@ -13,6 +13,7 @@ import {InsertPosition} from '@neos-project/neos-ts-interfaces';
 import {Node} from '@neos-project/neos-ui-contentrepository-model';
 import {NodeTypesRegistry} from '@neos-project/neos-ui-contentrepository';
 import {I18nRegistry} from '@neos-project/neos-ui-i18n';
+import {supportsCSSAnchors} from '@neos-project/neos-ui-guest-frame/src/ToolbarAnchoring';
 
 import StructuralToolbar from './StructuralToolbar';
 import ContextToolbar from './ContextToolbar';
@@ -24,8 +25,6 @@ type InjectedNodeToolbarProps = {
     // We still need the i18n registry here to pass it down to the buttons
     i18nRegistry: I18nRegistry;
 }
-
-const supportsCSSAnchors = 'anchorName' in document.documentElement.style;
 
 const withNeosGlobals = neos<NodeToolbarProps, InjectedNodeToolbarProps>((globalRegistry) => ({
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository'),

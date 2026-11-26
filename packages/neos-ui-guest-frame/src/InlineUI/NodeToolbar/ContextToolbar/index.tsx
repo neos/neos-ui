@@ -4,6 +4,7 @@ import debounce from 'lodash.debounce';
 
 // @ts-ignore
 import {findNodeInGuestFrame, getGuestFrameWindow} from '@neos-project/neos-ui-guest-frame/src/dom';
+import {isPropertyPartiallyVisible} from '@neos-project/neos-ui-guest-frame/src/ToolbarAnchoring';
 import {Icon, Button} from '@neos-project/react-ui-components';
 import {translate} from '@neos-project/neos-ui-i18n';
 import {neos} from '@neos-project/neos-ui-decorators';
@@ -55,9 +56,7 @@ const ContextToolbar: React.FC<ContextToolbarProps & InjectedContextToolbarProps
         }
         const nodeElement = findNodeInGuestFrame(focusedNode.contextPath, fusionPath);
         if (nodeElement) {
-            const {top, bottom} = nodeElement.getBoundingClientRect();
-            const shouldBeSticky = top < 50 && bottom > 0;
-            setIsSticky(shouldBeSticky);
+            setIsSticky(isPropertyPartiallyVisible(nodeElement.getBoundingClientRect()));
         }
     }, [focusedNode, fusionPath]);
 

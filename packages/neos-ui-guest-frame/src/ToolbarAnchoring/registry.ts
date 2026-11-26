@@ -10,7 +10,7 @@ import {GuestFrameWindowLike, PositioningBackend, ToolbarElements, ToolbarEnviro
 /**
  * Upper bound of tracked toolbars. Instances are released on blur and pruned
  * when their elements leave the document, so normally one entry is tracked.
- * Reaching this cap means a release path is broken, so entries are dropped loudly.
+ * Reaching this cap means a release path is broken and entries are dropped.
  */
 export const MAX_TRACKED_TOOLBARS = 32;
 
@@ -25,9 +25,8 @@ export interface AnchoringStats {
 }
 
 /**
- * Owns the toolbar anchoring of one guest frame document: scroll listener,
- * resize observer and active toolbar. Being document-scoped is what stops a
- * navigation from keeping the previous document alive.
+ * Owns the toolbar anchoring of one guest frame document: scroll listener, resize observer and active toolbar.
+ * This is document scoped to prevent keeping the previous document alive.
  */
 export class ToolbarRegistry {
     private readonly toolbars = new Map<HTMLElement, AnchoredToolbar>();
@@ -47,8 +46,7 @@ export class ToolbarRegistry {
     private generation = 0;
 
     /**
-     * Only the active toolbar is updated, so the debounce already is a single
-     * batched read and write pass per scroll gesture.
+     * Update the active toolbar once per gesture
      */
     private readonly handleScroll = debounce(() => this.updateActive(), 5);
 
@@ -57,13 +55,7 @@ export class ToolbarRegistry {
         private readonly backend: PositioningBackend = positioningBackend
     ) {}
 
-    /**
-     * Prepares a freshly created editor's toolbar for anchoring. Cheap and
-     * idempotent; no instance is created before the property is edited.
-     */
     attach(elements: ToolbarElements): void {
-        // Every editor of a new document attaches before it can be edited, the
-        // earliest point at which a navigation is noticed.
         if (!this.ensureDocumentScope()) {
             return;
         }
@@ -73,10 +65,6 @@ export class ToolbarRegistry {
         }
     }
 
-    /**
-     * Makes the given toolbar the active one. The previous one is released as
-     * well, even when its editor never reported a blur.
-     */
     activate(elements: ToolbarElements): void {
         const toolbar = this.acquire(elements);
 
@@ -88,10 +76,6 @@ export class ToolbarRegistry {
         this.makeActive(toolbar);
     }
 
-    /**
-     * Releases the toolbar of a blurred editor. An untracked toolbar never
-     * touches the active one, so a late blur is harmless.
-     */
     deactivate(toolbarElement: HTMLElement): void {
         const toolbar = this.toolbars.get(toolbarElement);
 
@@ -144,9 +128,7 @@ export class ToolbarRegistry {
             if (other === toolbar) {
                 return;
             }
-            // Release toolbars which never reported a blur; keep the instances,
-            // `prune` drops them with their property and re-focus reuses them.
-            other.destroy();
+            other.deactivate();
         });
 
         // Map order is insertion order, re-adding keeps it ordered by last use.
@@ -208,7 +190,7 @@ export class ToolbarRegistry {
             this.resizeObserver = null;
         }
 
-        this.toolbars.forEach(toolbar => toolbar.destroy());
+        this.toolbars.forEach(toolbar => toolbar.deactivate());
         this.toolbars.clear();
         this.active = null;
         this.document = null;
@@ -236,16 +218,12 @@ export class ToolbarRegistry {
         }
     }
 
-    /**
-     * Forgets the toolbars whose elements left the document - replaced property
-     * nodes never come back, this is what bounds the registry.
-     */
     private prune(): void {
         this.toolbars.forEach((toolbar, element) => {
             if (toolbar.isAlive) {
                 return;
             }
-            toolbar.destroy();
+            toolbar.deactivate();
             this.toolbars.delete(element);
             if (this.active === toolbar) {
                 this.active = null;
@@ -264,14 +242,12 @@ export class ToolbarRegistry {
                 return;
             }
 
-            toolbar.destroy();
+            toolbar.deactivate();
             this.toolbars.delete(element);
             this.evicted++;
-            console.warn(`ToolbarAnchoring: dropped a toolbar which was never released, the registry ` +
-                `exceeded ${MAX_TRACKED_TOOLBARS} entries. This is a bug, see ToolbarRegistry.getStats().`);
+            console.warn(`ToolbarAnchoring: dropped a toolbar which was never released. This is a bug.`);
         });
     }
 }
 
-/** The anchoring of the current guest frame document, used by the editor bootstrap. */
 export const anchoredToolbars = new ToolbarRegistry();

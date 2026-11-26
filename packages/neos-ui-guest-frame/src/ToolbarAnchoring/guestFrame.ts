@@ -4,8 +4,8 @@ import {getGuestFrameDocument, getGuestFrameWindow} from '@neos-project/neos-ui-
 import {ToolbarEnvironment} from './types';
 
 /**
- * The only place where the anchoring reaches into the guest frame; tests inject
- * a stub into the registry instead.
+ * The only place where the anchoring reaches into the guest frame.
+ * Tests inject a stub into the registry instead.
  */
 export const guestFrameEnvironment: ToolbarEnvironment = {
     getWindow: () => getGuestFrameWindow(),

@@ -7,8 +7,7 @@ import {PositioningBackend, ToolbarElements} from '../types';
 /**
  * Browsers with CSS anchor positioning support: the browser resolves the anchored
  * placement, including the align-right and align-bottom fallbacks. Once sticky
- * we take over completely and drop the anchor - keeping it alive while writing
- * coordinates on top can desync the position and its hit test area.
+ * we take over completely and drop the anchor. Keeping both can desynchronize the actual position and hit area.
  */
 export const cssAnchorsBackend: PositioningBackend = {
     needsResizeObserver: false,

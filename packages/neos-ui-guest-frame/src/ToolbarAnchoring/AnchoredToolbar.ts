@@ -49,14 +49,6 @@ export class AnchoredToolbar {
     }
 
     /**
-     * Gives this toolbar up for another one; the anchoring class stays on purpose -
-     * the element lives on in the shared `ck-body-wrapper` and must stay hidden.
-     */
-    destroy(): void {
-        this.deactivate();
-    }
-
-    /**
      * Re-evaluates stickiness and writes the resulting placement. Called on focus,
      * on scroll and on resize of the guest frame.
      */
@@ -88,15 +80,12 @@ export class AnchoredToolbar {
         }
 
         if (this.sticky) {
-            // Hysteresis: stay sticky while the property is partially visible,
+            // Stay sticky while the property is partially visible,
             // instead of re-evaluating the position which sticky itself changes.
             return;
         }
 
-        // Instead of assuming which placement anchor positioning resolved, judge
-        // the rendered result: pin whenever the toolbar is not fully visible -
-        // clipped above the property or fallen back to the end of a long one. A
-        // fully visible toolbar, e.g. below a short property, needs no pinning.
+        // If the toolbar is not fully visible, pin it independent of the property's position.
         const toolbarRect = readRect(this.elements.toolbar);
         if (isClippedByViewport(toolbarRect, viewport, sideOf(toolbarRect, propertyRect))) {
             this.setSticky(true);

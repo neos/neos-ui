@@ -1,8 +1,7 @@
 import {anchorNameDatasetKey} from './classes';
 import {GuestFrameWindowLike, Placement, Rect, Size, Viewport} from './types';
 
-// Anchor positioning properties are missing from the TS 4.6 dom lib,
-// reached through this cast.
+// Anchor positioning properties are missing from the TS 4.6 dom lib
 type StyleWithAnchors = CSSStyleDeclaration & Record<'positionAnchor' | 'anchorName' | 'positionTryFallbacks', string | undefined>;
 
 export const readRect = (element: HTMLElement): Rect => {
@@ -35,8 +34,7 @@ export const applyPlacement = (element: HTMLElement, placement: Placement): void
 };
 
 /**
- * Removes the sticky coordinates; leftovers would conflict with the anchored
- * placement - `right` together with `left` even stretches the toolbar.
+ * Removes the sticky coordinates to prevent conflicts with CSS anchors.
  */
 export const clearPlacement = (element: HTMLElement): void => {
     element.style.top = '';

@@ -5,22 +5,20 @@ import {anchoredFallbackPlacement, stickyPlacement} from '../geometry';
 import {PositioningBackend, ToolbarElements} from '../types';
 
 /**
- * Browsers without CSS anchor positioning support, see
- * https://caniuse.com/css-anchor-position; delete this file once all supported
- * engines have it.
+ * Browsers without CSS anchor positioning support, see https://caniuse.com/css-anchor-position.
+ * TODO: Remove this file and its usage once all supported engines have it.
  *
- * Anchored placement is `position: absolute` in document coordinates, sticky is
- * `position: fixed` in viewport ones, both computed here. Align-right is
- * emulated while sticky; align-bottom is not emulated while anchored, so short
- * properties near the top pin slightly more eagerly than anchor-capable engines.
+ * Anchored placement is `position: absolute` in document coordinates.
+ * Sticky is `position: fixed` in viewport ones, both computed here.
+ * Align-right is emulated while sticky.
+ * Align-bottom is not emulated while anchored.
+ * Editable properties near the top of the viewport pin slightly more eagerly than anchor-capable engines.
  */
 export const jsFallbackBackend: PositioningBackend = {
     needsResizeObserver: true,
 
     attach: attachToProperty,
 
-    // The `@supports not (anchor-name: ...)` rules turn the sticky class into
-    // `position: fixed`, so there is nothing else to prepare.
     enterSticky: ({toolbar}: ToolbarElements) => {
         toolbar.classList.add(toolbarClasses.sticky);
     },

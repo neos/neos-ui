@@ -1,7 +1,6 @@
 /**
- * Types of the toolbar anchoring. The geometry helpers use structural
- * equivalents of `DOMRect` and friends on purpose, so the placement rules can
- * be unit tested with plain objects.
+ * The geometry helpers use structural equivalents of `DOMRect` and friends on purpose,
+ * so the placement rules can be unit tested with plain objects.
  */
 
 export interface Rect {
@@ -16,7 +15,7 @@ export interface Size {
     height: number;
 }
 
-/** Guest frame viewport; the scroll offsets are needed by the positioning fallback. */
+/** Guest frame viewport */
 export interface Viewport {
     width: number;
     height: number;
@@ -44,8 +43,7 @@ export interface ToolbarElements {
 }
 
 /**
- * Only the surface of the guest frame `Window` the anchoring uses; small enough
- * to be replaced in tests.
+ * Only the surface of the guest frame `Window` the anchoring uses.
  */
 export interface GuestFrameWindowLike {
     innerWidth: number;

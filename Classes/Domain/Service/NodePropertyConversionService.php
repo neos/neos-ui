@@ -61,6 +61,7 @@ class NodePropertyConversionService
                 throw new \Exception("not implemented here, must be handled outside.");
 
             case 'DateTime':
+            case 'DateTimeImmutable':
                 return $this->convertDateTime($rawValue);
 
             case 'float':

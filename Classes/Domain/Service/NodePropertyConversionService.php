@@ -19,6 +19,7 @@ use Neos\Flow\Mvc\Controller\MvcPropertyMappingConfiguration;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Flow\Property\PropertyMapper;
 use Neos\Flow\Property\TypeConverter\PersistentObjectConverter;
+use Neos\Neos\Service\Mapping\NodePropertyConverterService;
 use Neos\Utility\Exception\InvalidTypeException;
 use Neos\Utility\TypeHandling;
 
@@ -38,6 +39,12 @@ class NodePropertyConversionService
      * @var PropertyMapper
      */
     protected $propertyMapper;
+
+    /**
+     * @Flow\Inject
+     * @var NodePropertyConverterService
+     */
+    protected $nodePropertyConverterService;
 
     /**
      * Convert raw property values to the correct type according to a node type configuration
@@ -63,7 +70,13 @@ class NodePropertyConversionService
                 return $this->convertReferences($rawValue, $context);
 
             case 'DateTime':
-                return $this->convertDateTime($rawValue);
+                $value = $this->convertDateTime($rawValue);
+                if ($value !== null && $this->isDateOnly($nodeType->getProperties()[$propertyName] ?? [])) {
+                    // The date picker sends the selected date as UTC midnight
+                    $calendarDate = $value->setTimezone(new \DateTimeZone('UTC'))->format('Y-m-d');
+                    return new \DateTime($calendarDate . ' 12:00:00', new \DateTimeZone(date_default_timezone_get()));
+                }
+                return $value;
 
             case 'integer':
                 return $this->convertInteger($rawValue);
@@ -133,6 +146,40 @@ class NodePropertyConversionService
         }
 
         return $result;
+    }
+
+    /**
+     * Date-only values (see isDateOnly()) represent a calendar date that is the same for every editor, regardless of the
+     * browser timezone. They are passed to the UI as UTC midnight of the date in the server timezone, because that is
+     * the date the frontend renders. They are persisted as noon in the server timezone (see convert()), which stays on
+     * the same date in any timezone up to 12 hours away.
+     *
+     * @return array<string,mixed>
+     */
+    public function getPropertiesForUi(NodeInterface $node): array
+    {
+        $properties = $this->nodePropertyConverterService->getPropertiesArray($node);
+        foreach ($node->getNodeType()->getProperties() as $propertyName => $propertyConfiguration) {
+            $value = $properties[$propertyName] ?? null;
+            if (is_string($value) && $value !== '' && $this->isDateOnly($propertyConfiguration)) {
+                $calendarDate = (new \DateTimeImmutable($value))->setTimezone(new \DateTimeZone(date_default_timezone_get()))->format('Y-m-d');
+                $properties[$propertyName] = $calendarDate . 'T00:00:00+00:00';
+            }
+        }
+        return $properties;
+    }
+
+    /**
+     * @param array<string,mixed> $propertyConfiguration
+     */
+    private function isDateOnly(array $propertyConfiguration): bool
+    {
+        if (($propertyConfiguration['type'] ?? null) !== 'DateTime' || ($propertyConfiguration['ui']['inspector']['editor'] ?? null) !== 'Neos.Neos/Inspector/Editors/DateTimeEditor') {
+            return false;
+        }
+        $format = $propertyConfiguration['ui']['inspector']['editorOptions']['format'] ?? null;
+        // Must match hasTimeFormat() in packages/neos-ui-editors/src/Editors/DateTime/helpers.js
+        return is_string($format) && preg_match('/[gGhHis]/', $format) === 0;
     }
 
     /**

@@ -141,7 +141,7 @@ export class DateInput extends PureComponent<DateInputProps, DateInputState> {
             locale,
             disabled
         } = this.props;
-        const selectedDate = value ? moment(value).format(labelFormat) : '';
+        const selectedDate = value ? (dateOnly ? moment.utc(value) : moment(value)).format(labelFormat) : '';
 
         const wrapper = mergeClassNames(
             theme!.wrapper,
@@ -259,7 +259,8 @@ export class DateInput extends PureComponent<DateInputProps, DateInputState> {
         }, () => {
             let date = moment().toDate();
             if (this.props.dateOnly) {
-                date = moment().utc().startOf('day').toDate();
+                const now = moment();
+                date = moment.utc([now.year(), now.month(), now.date()]).toDate();
             }
             this.props.onChange(date);
         });

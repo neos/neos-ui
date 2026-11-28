@@ -23,8 +23,8 @@ use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Neos\Domain\Service\ContentContext;
 use Neos\Neos\Service\LinkingService;
-use Neos\Neos\Service\Mapping\NodePropertyConverterService;
 use Neos\Neos\TypeConverter\EntityToIdentityConverter;
+use Neos\Neos\Ui\Domain\Service\NodePropertyConversionService;
 use Neos\Neos\Ui\Domain\Service\UserLocaleService;
 use Neos\Neos\Ui\Service\NodePolicyService;
 
@@ -65,9 +65,9 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
     /**
      * @Flow\Inject
-     * @var NodePropertyConverterService
+     * @var NodePropertyConversionService
      */
-    protected $nodePropertyConverterService;
+    protected $nodePropertyConversionService;
 
     /**
      * @Flow\Inject
@@ -186,7 +186,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         $this->userLocaleService->switchToUILocale();
 
         $nodeInfo = $this->getBasicNodeInformation($node);
-        $nodeInfo['properties'] = $this->nodePropertyConverterService->getPropertiesArray($node);
+        $nodeInfo['properties'] = $this->nodePropertyConversionService->getPropertiesForUi($node);
         $nodeInfo['isFullyLoaded'] = true;
 
         if ($controllerContext !== null) {

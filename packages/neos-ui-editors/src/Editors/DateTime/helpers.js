@@ -45,6 +45,7 @@ export const hasDateFormat = format => /[yYFmMntdDjlNSw]/.test(format);
 //
 // Check if given format has a time formatting
 //
+// Must match NodePropertyConversionService::isDateOnly() in Classes/Domain/Service/NodePropertyConversionService.php
 export const hasTimeFormat = format => /[gGhHis]/.test(format);
 
 //

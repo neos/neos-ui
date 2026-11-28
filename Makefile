@@ -106,9 +106,9 @@ build-e2e-testing:
 test:
 	yarn test
 
-## Executes integration tests on saucelabs.
-test-e2e-saucelabs:
-	bash Tests/IntegrationTests/e2e.sh --saucelabs
+## Executes integration tests in headless Chrome (used on CI).
+test-e2e-ci:
+	bash Tests/IntegrationTests/e2e.sh --browser chrome:headless
 
 ## Executes integration tests locally.
 test-e2e:

@@ -94,7 +94,8 @@ test('Discarding: delete a document node and then discard deletion', async t => 
         .expect(Page.treeNode.withText(pageTitleToDelete).exists).ok('Deleted node reappeared in the tree');
 });
 
-test('Discarding: create a content node and then discard it', async t => {
+// Chrome reports a benign "ResizeObserver loop" error while the inline editor initializes
+test.skipJsErrors({message: /ResizeObserver loop/})('Discarding: create a content node and then discard it', async t => {
     const defaultHeadlineTitle = 'Enter headline here';
 
     subSection('Create a content node');

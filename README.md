@@ -198,7 +198,7 @@ To speed up the e2e-test workflow/feedback loop you can start the system under t
 
 ##### Debugging integration tests
 
-* View the recording via Sauce Labs. You can find the url in the beginning of the test output.
+* Screenshots of failed tests are stored in the build artifacts (`testcafe-screenshots`).
 * Observe Flow exceptions and logs in build artifacts.
 * You can trigger a SSH enabled build via the CircleCI interface and then login.
 
